@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/dashboard.min.css') }}" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block body %}
+{% include '::navbar.html.twig' %}
+<div class="container-fluid">
+    <div class="row">
+        {% include '::sidebar.html.twig' %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
+</div>
+{% endblock body %}

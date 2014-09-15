@@ -1,0 +1,17 @@
+security:
+    login:
+        username: "Usuario"
+        password: "Contraseña"
+
+resetting:
+    forgot: "¿Olvidaste tu Contraseña?"
+
+profile:
+    account: "Mi Cuenta"
+    edit: Editar
+
+layout:
+    logged_user: %username%
+
+form:
+    role: Rol

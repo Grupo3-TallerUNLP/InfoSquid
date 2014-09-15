@@ -1,0 +1,17 @@
+{% extends 'Grupo3TallerUNLPUserBundle::layout.html.twig' %}
+
+{% block fos_user_content %}
+{% stylesheets '@Grupo3TallerUNLPUserBundle/Resources/public/css/login.css' %}
+    <link href="{{ asset_url }}" rel="stylesheet" />
+{% endstylesheets %}
+
+<form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
+    {{ bootstrap_set_style('horizontal') }}
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+            <button type="submit" class="btn btn-primary">{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}</button>
+        </div>
+    </div>
+</form>
+{% endblock fos_user_content %}

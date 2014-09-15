@@ -1,0 +1,9 @@
+{% extends 'Grupo3TallerUNLPUserBundle::layout.html.twig' %}
+
+{% block fos_user_content %}
+{% stylesheets '@Grupo3TallerUNLPUserBundle/Resources/public/css/login.css' %}
+    <link href="{{ asset_url }}" rel="stylesheet" />
+{% endstylesheets %}
+
+<p class="alert alert-success">{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}</p>
+{% endblock fos_user_content %}

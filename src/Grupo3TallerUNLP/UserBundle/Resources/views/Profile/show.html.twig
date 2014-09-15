@@ -1,0 +1,13 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+<dl class="dl-horizontal">
+    <dt>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}</dt> <dd>{{ user.username }}</dd>
+    <dt>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}</dt> <dd>{{ user.email }}</dd>
+</dl>
+
+<div class="col-md-offset-1">
+    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary">{{ 'profile.edit'|trans({}, 'Grupo3TallerUNLPUserBundle') }}</a>
+    <a href="{{ path('fos_user_change_password') }}" class="btn btn-primary">{{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a>
+</div>
+{% endblock content %}

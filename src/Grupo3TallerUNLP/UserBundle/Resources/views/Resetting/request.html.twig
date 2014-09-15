@@ -1,0 +1,20 @@
+{% extends 'Grupo3TallerUNLPUserBundle::layout.html.twig' %}
+
+{% block fos_user_content %}
+{% stylesheets '@Grupo3TallerUNLPUserBundle/Resources/public/css/login.css' %}
+    <link href="{{ asset_url }}" rel="stylesheet" />
+{% endstylesheets %}
+
+<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="form-signin" role="form">
+    <h3 class="form-signin-heading">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</h3>
+    {% if invalid_username is defined %}
+        <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</p>
+    {% endif %}
+    <input type="text" name="username" class="form-control" placeholder="{{ 'security.login.username'|trans({}, 'Grupo3TallerUNLPUserBundle') }}" required autofocus />
+    <br />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">
+        {{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}
+    </button>
+</form>
+
+{% endblock fos_user_content %}

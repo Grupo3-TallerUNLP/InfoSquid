@@ -1,0 +1,17 @@
+security:
+    login:
+        username: "Username"
+        password: "Password"
+
+resetting:
+    forgot: "Forgot Password?"
+
+profile:
+    account: "My Account"
+    edit: Edit
+
+layout:
+    logged_user: %username%
+
+form:
+    role: Role

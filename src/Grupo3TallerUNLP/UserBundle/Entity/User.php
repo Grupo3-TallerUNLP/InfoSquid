@@ -21,4 +21,17 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * Adds a role to the user
+     * @throws Exception
+     * @param Role $role
+     */
+    public function addRole($role)
+    {
+        switch ($role) {
+            case 1: $this->roles = array('ROLE_USER'); break;
+            case 2: $this->roles = array('ROLE_ADMIN'); break;
+        }
+    }
 }
