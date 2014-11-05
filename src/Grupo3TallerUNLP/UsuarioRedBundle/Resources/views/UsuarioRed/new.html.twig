@@ -1,0 +1,16 @@
+{% extends '::dashboard.html.twig %}
+
+{% block content %}
+
+    <h1>Nuevo Usuario de Red</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('usuariored') }}">
+            Volver a la lista
+        </a>
+    </li>
+</ul>
+{% endblock %}

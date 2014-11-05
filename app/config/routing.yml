@@ -1,3 +1,12 @@
+#grupo3_taller_unlp_usuario_red:
+#    resource: "@Grupo3TallerUNLPUsuarioRedBundle/Resources/config/routing.yml"
+#    prefix:   /admin/usuariored
+
+#grupo3_taller_unlp_menu:
+ #   resource: "@Grupo3TallerUNLPMenuBundle/Resources/config/routing.yml"
+#    prefix:   /
+
+
 # grupo3_taller_unlp_user:
 #     resource: "@Grupo3TallerUNLPUserBundle/Resources/config/routing.yml"
 #     prefix:   /user
@@ -24,3 +33,7 @@ fos_user_change_password:
 fos_user_group:
     resource: "@FOSUserBundle/Resources/config/routing/group.xml"
     prefix: /group
+
+Grupo3TallerUNLPUsuarioRedBundle_usuariored:
+  resource: "@Grupo3TallerUNLPUsuarioRedBundle/Resources/config/routing/usuariored.yml"
+  prefix:  /usuariored

@@ -1,0 +1,30 @@
+usuariored:
+    path:     /
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:index" }
+
+usuariored_show:
+    path:     /{id}/show
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:show" }
+
+usuariored_new:
+    path:     /new
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:new" }
+
+usuariored_create:
+    path:     /create
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:create" }
+    requirements: { _method: post }
+
+usuariored_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:edit" }
+
+usuariored_update:
+    path:     /{id}/update
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:update" }
+    requirements: { _method: post|put }
+
+usuariored_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:delete" }
+    requirements: { _method: post|delete }

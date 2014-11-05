@@ -1,0 +1,27 @@
+Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRedRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombre:
+            type: string
+            length: 255
+            column: Nombre
+        apellido:
+            type: string
+            length: 255
+            column: Apellido
+        cargo:
+            type: string
+            length: 255
+            column: Cargo
+        dNI:
+            type: integer
+            column: DNI
+    lifecycleCallbacks: {  }

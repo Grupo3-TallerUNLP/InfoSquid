@@ -1,0 +1,3 @@
+#Grupo3TallerUNLPUsuarioRedBundle_usuariored:
+#    resource: "@Grupo3TallerUNLPUsuarioRedBundle/Resouces/config/routing/usuariored.yml"
+ #   prefix:  /usuariored

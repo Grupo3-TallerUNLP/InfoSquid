@@ -1,0 +1,66 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content%}
+	
+	<h3> Usuarios de Red </h3>
+	<ul>
+        <li>
+            <a href="{{ path('usuariored_new') }}">
+                Agregar Usuario
+            </a>
+        </li>
+    </ul>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Cargo </th>
+                <th>Dni</th>
+				<th>Usuario de Red</th>
+                <th>Mostrar</th>
+				<th>Editar</th>
+				<th>Eliminar </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.nombre }}       </td>
+                <td>{{ entity.apellido }}     </td>
+                <td>{{ entity.cargo }}        </td>
+                <td>{{ entity.dNI }}          </td>
+				 <td>
+                <ul>
+                    <li>
+                        <a href="">Ver Informacion</a>
+                    </li>
+				</ul>
+				<td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('usuariored_show', { 'id': entity.id }) }}">Ver</a>
+                    </li>
+				</ul>
+				<td>
+				<ul>
+                    <li>
+                        <a href="{{ path('usuariored_edit', { 'id': entity.id }) }}">Editar</a>
+                    </li>
+                </ul>
+                </td>
+				<td>
+                <ul>
+                    <li>
+                        <a href="">Eliminar</a>
+                    </li>
+				</ul>
+				<td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+   
+    {% endblock %}

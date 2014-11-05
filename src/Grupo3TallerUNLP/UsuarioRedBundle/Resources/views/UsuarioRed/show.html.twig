@@ -1,0 +1,39 @@
+{% extends '::dashboard.html.twig %}
+
+{% block content %} 
+     <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Apellido</th>
+                <td>{{ entity.apellido }}</td>
+            </tr>
+            <tr>
+                <th>Cargo</th>
+                <td>{{ entity.cargo }}</td>
+            </tr>
+            <tr>
+                <th>Dni</th>
+                <td>{{ entity.dNI }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('usuariored') }}">
+            Volver a la lista
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('usuariored_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+
+{% endblock %}

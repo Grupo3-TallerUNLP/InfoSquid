@@ -20,6 +20,8 @@ class AppKernel extends Kernel
             new Grupo3TallerUNLP\UserBundle\Grupo3TallerUNLPUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new Grupo3TallerUNLP\MenuBundle\Grupo3TallerUNLPMenuBundle(),
+            new Grupo3TallerUNLP\UsuarioRedBundle\Grupo3TallerUNLPUsuarioRedBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
