@@ -17,8 +17,8 @@ class UsuarioRedType extends AbstractType
         $builder
             ->add('nombre')
             ->add('apellido')
-            ->add('cargo')
-            ->add('dNI')
+            ->add('cargo', 'text',  array('required' => false))
+            ->add('dNI','text',  array('required' => false))
         ;
     }
     

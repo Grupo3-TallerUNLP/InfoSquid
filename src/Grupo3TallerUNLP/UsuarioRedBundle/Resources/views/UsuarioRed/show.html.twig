@@ -1,7 +1,7 @@
 {% extends '::dashboard.html.twig' %}
 
 {% block content %} 
-     <table class="record_properties">
+     <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Nombre</th>
@@ -23,17 +23,16 @@
     </table>
 
         <ul class="record_actions">
-    <li>
+	
         <a href="{{ path('usuariored') }}">
             Volver a la lista
         </a>
-    </li>
-    <li>
+    
         <a href="{{ path('usuariored_edit', { 'id': entity.id }) }}">
-            Edit
+            Editar
         </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
+   
+    {{ form(delete_form) }}
 </ul>
 
 {% endblock %}
