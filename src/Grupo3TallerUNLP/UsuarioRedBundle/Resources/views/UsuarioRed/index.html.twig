@@ -45,7 +45,7 @@
 				    <a href="{{ path('usuariored_edit', { 'id': entity.id }) }}">Editar</a>
                 </td>
 				<td>
-					<a href="">Eliminar</a>
+					<a href="{{ path('usuariored_delete', {'id': entity.id }) }}"> Eliminar </a>
 				</td>
             </tr>
         {% endfor %}
