@@ -15,8 +15,8 @@
         <thead>
             <tr>
                 <th>Dirección IP</th>
-                <th>Networkusers</th>
-                <th>Office</th>
+                <th>Usuarios de Red</th>
+                <th>Oficina</th>
                 <th class="col-xs-1">Acciones</th>
             </tr>
         </thead>
@@ -24,7 +24,7 @@
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.ipAddress }}</td>
-                <td>{{ entity.networkUsers }}</td>
+                <td><a href="#">ver usuarios</a></td>
                 <td>{{ entity.office }}</td>
                 <td>
                     <a href="{{ path('grupo3_taller_unlp_admin_host_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">

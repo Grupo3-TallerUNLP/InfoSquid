@@ -26,4 +26,8 @@ Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed:
             type: integer
             column: DNI
             nullable: true
+    manyToMany:
+        hosts:
+            targetEntity: Grupo3TallerUNLP\HostBundle\Entity\Host
+            mappedBy: networkUsers
     lifecycleCallbacks: {  }

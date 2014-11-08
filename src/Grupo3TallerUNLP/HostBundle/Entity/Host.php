@@ -42,7 +42,10 @@ class Host
     /**
      * @var array
      *
-     * @ORM\Column(name="network_users", type="array")
+     * @ORM\ManyToMany(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", inversedBy="hosts", cascade={"persist"})
+     * @ORM\JoinTable(name="UsuarioRed_Host")
+     * joinColumns={@ORM\JoinColumn(name="host_id", referencedColumnName="id")}
+     * inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
      */
     private $networkUsers;
 
@@ -57,6 +60,7 @@ class Host
     public function __construct()
     {
         $this->ipAddressFields = new \SplFixedArray(4);
+        $this->networkUsers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -253,5 +257,28 @@ class Host
     public function getOffice()
     {
         return $this->office;
+    }
+
+    /**
+     * Add networkUsers
+     *
+     * @param \Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $networkUsers
+     * @return Host
+     */
+    public function addNetworkUser(\Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $networkUsers)
+    {
+        $this->networkUsers[] = $networkUsers;
+
+        return $this;
+    }
+
+    /**
+     * Remove networkUsers
+     *
+     * @param \Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $networkUsers
+     */
+    public function removeNetworkUser(\Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $networkUsers)
+    {
+        $this->networkUsers->removeElement($networkUsers);
     }
 }

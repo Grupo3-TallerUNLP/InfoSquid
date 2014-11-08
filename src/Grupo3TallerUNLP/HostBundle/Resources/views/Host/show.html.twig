@@ -10,7 +10,9 @@
         <dd>{{ entity.ipAddress }}</dd>
 
         <dt>Usuarios de Red</dt>
-        <dd>{{ entity.networkUsers }}</dd>
+        {% for networkUser in entity.networkUsers %}
+        <dd>{{ networkUser }}</dd>
+        {% endfor %}
 
         <dt>Oficina</dt>
         <dd>{{ entity.office }}</dd>

@@ -34,11 +34,16 @@ class UsuarioRed
      */
     private $dNI;
 
+    /**
+     * @var array
+     */
+    private $hosts;
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -61,7 +66,7 @@ class UsuarioRed
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -84,7 +89,7 @@ class UsuarioRed
     /**
      * Get apellido
      *
-     * @return string 
+     * @return string
      */
     public function getApellido()
     {
@@ -107,7 +112,7 @@ class UsuarioRed
     /**
      * Get cargo
      *
-     * @return string 
+     * @return string
      */
     public function getCargo()
     {
@@ -130,10 +135,58 @@ class UsuarioRed
     /**
      * Get dNI
      *
-     * @return integer 
+     * @return integer
      */
     public function getDNI()
     {
         return $this->dNI;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->hosts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add hosts
+     *
+     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $hosts
+     * @return UsuarioRed
+     */
+    public function addHost(\Grupo3TallerUNLP\HostBundle\Entity\Host $hosts)
+    {
+        $this->hosts[] = $hosts;
+
+        return $this;
+    }
+
+    /**
+     * Remove hosts
+     *
+     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $hosts
+     */
+    public function removeHost(\Grupo3TallerUNLP\HostBundle\Entity\Host $hosts)
+    {
+        $this->hosts->removeElement($hosts);
+    }
+
+    /**
+     * Get hosts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
+    }
+
+    /**
+     * Print format
+     */
+    public function __toString()
+    {
+        return $this->apellido .', '. $this->nombre;
     }
 }
