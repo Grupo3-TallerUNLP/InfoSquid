@@ -1,0 +1,7 @@
+parameters:
+#    grupo3_taller_unlp_host.example.class: Grupo3TallerUNLP\HostBundle\Example
+
+services:
+#    grupo3_taller_unlp_host.example:
+#        class: %grupo3_taller_unlp_host.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

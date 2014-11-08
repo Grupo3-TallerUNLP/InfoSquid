@@ -19,7 +19,9 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Grupo3TallerUNLP\UserBundle\Grupo3TallerUNLPUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new Grupo3TallerUNLP\HostBundle\Grupo3TallerUNLPHostBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

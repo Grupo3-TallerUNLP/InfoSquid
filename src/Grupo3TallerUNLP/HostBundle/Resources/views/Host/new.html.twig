@@ -1,0 +1,32 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <h1>Nuevo Host</h1>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="form-group">
+            <label for="grupo3tallerunlp_hostbundle_host_ipAddress_field1" class="control-label required">
+                Dirección IP
+            </label>
+            <div class="row">
+                <div class="col-xs-2">{{ form_widget(form.ipAddress_field1, {'attr': {'min': 0, 'max':255, 'step':1}}) }}</div>
+                <div class="col-xs-2">{{ form_widget(form.ipAddress_field2, {'attr': {'min': 0, 'max':255, 'step':1}}) }}</div>
+                <div class="col-xs-2">{{ form_widget(form.ipAddress_field3, {'attr': {'min': 0, 'max':255, 'step':1}}) }}</div>
+                <div class="col-xs-2">{{ form_widget(form.ipAddress_field4, {'attr': {'min': 0, 'max':255, 'step':1}}) }}</div>
+            </div>
+        </div>
+
+        {{ form_row(form.device) }}
+        {{ form_row(form.networkUsers) }}
+        {{ form_row(form.office) }}
+
+        <p>
+            {{ form_widget(form.submit) }}
+            <a href="{{ path('grupo3_taller_unlp_admin_host') }}" class="btn btn-default">Cancelar</a>
+        </p>
+
+    {{ form_end(form) }}
+
+{% endblock content %}

@@ -1,0 +1,42 @@
+grupo3_taller_unlp_admin_host:
+    path:     /
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:index }
+    methods:  GET
+
+grupo3_taller_unlp_admin_host_create:
+    path:     /
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:create }
+    methods:  POST
+
+grupo3_taller_unlp_admin_host_new:
+    path:     /new
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:new }
+    methods:  GET
+
+grupo3_taller_unlp_admin_host_show:
+    path:     /{id}
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:show }
+    methods:  GET
+    requirements:
+        id: \d+
+
+grupo3_taller_unlp_admin_host_edit:
+    path:     /{id}/edit
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:edit }
+    methods:  GET
+    requirements:
+        id: \d+
+
+grupo3_taller_unlp_admin_host_update:
+    path:     /{id}
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:update }
+    methods:  PUT
+    requirements:
+        id: \d+
+
+grupo3_taller_unlp_admin_host_delete:
+    path:     /{id}
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:delete }
+    methods:  DELETE
+    requirements:
+        id: \d+
