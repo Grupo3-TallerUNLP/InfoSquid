@@ -1,40 +1,25 @@
 {% extends '::dashboard.html.twig' %}
 
-{% block content -%}
-    <h1>Host</h1>
+{% block content %}
+    <div class="page-header">
+        <h1>Eliminar Host</h1>
+    </div>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Dirección IP</th>
-                <td>{{ entity.ipAddress }}</td>
-            </tr>
-            <tr>
-                <th>Networkusers</th>
-                <td>{{ entity.networkUsers }}</td>
-            </tr>
-            <tr>
-                <th>Office</th>
-                <td>{{ entity.office }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <dl class="dl-horizontal">
+        <dt>Dirección IP</dt>
+        <dd>{{ entity.ipAddress }}</dd>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('grupo3_taller_unlp_admin_host') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('grupo3_taller_unlp_admin_host_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
-{% endblock %}
+        <dt>Usuarios de Red</dt>
+        <dd>{{ entity.networkUsers }}</dd>
+
+        <dt>Oficina</dt>
+        <dd>{{ entity.office }}</dd>
+    </dl>
+
+    <div class="col-md-offset-1">
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('grupo3_taller_unlp_admin_host') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
+    </div>
+{% endblock content %}

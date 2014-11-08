@@ -1,6 +1,10 @@
 {% extends '::dashboard.html.twig' %}
 
 {% block content %}
+<div class="page-header">
+    <h1>Mi Cuenta</h1>
+</div>
+
 <dl class="dl-horizontal">
     <dt>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}</dt> <dd>{{ user.username }}</dd>
     <dt>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}</dt> <dd>{{ user.email }}</dd>

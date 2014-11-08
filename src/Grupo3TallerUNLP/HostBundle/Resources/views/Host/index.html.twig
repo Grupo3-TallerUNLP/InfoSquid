@@ -1,13 +1,13 @@
 {% extends '::dashboard.html.twig' %}
 
-{% block content -%}
+{% block content %}
     <div class="page-header">
         <h1>Listado de Hosts</h1>
     </div>
 
     <p>
         <a href="{{ path('grupo3_taller_unlp_admin_host_new') }}" class="btn btn-primary">
-            Nuevo Host
+            <span class="glyphicon glyphicon-plus"></span> Agregar Host
         </a>
     </p>
 
@@ -43,4 +43,4 @@
         {{ knp_pagination_render(pagination) }}
     </nav>
 
-{% endblock %}
+{% endblock content %}

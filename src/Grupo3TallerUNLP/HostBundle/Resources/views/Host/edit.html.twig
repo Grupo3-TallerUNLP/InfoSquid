@@ -1,9 +1,10 @@
 {% extends '::dashboard.html.twig' %}
 
 {% block content %}
-    <h1>Editar Host</h1>
+    <div class="page-header">
+        <h1>Editar Host</h1>
+    </div>
 
-    {#{ form(edit_form) }#}
     {{ form_start(edit_form) }}
         {{ form_errors(edit_form) }}
 
@@ -29,5 +30,4 @@
         </p>
 
     {{ form_end(edit_form) }}
-
 {% endblock content %}

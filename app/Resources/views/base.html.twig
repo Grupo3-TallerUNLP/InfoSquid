@@ -7,13 +7,17 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{% block title %}{% endblock title %} - InfoSquid</title>
+        <link rel="shortcut icon" href="{{ asset('css/fav.ico')}}">
+		<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+        <title>{% block title %}{% endblock title %}InfoSquid</title>
 
         {% block stylesheets %}
             <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
         {% endblock stylesheets %}
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
         {% block body %}{% endblock body %}

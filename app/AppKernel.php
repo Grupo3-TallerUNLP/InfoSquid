@@ -21,6 +21,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new Grupo3TallerUNLP\MenuBundle\Grupo3TallerUNLPMenuBundle(),
+            new Grupo3TallerUNLP\UsuarioRedBundle\Grupo3TallerUNLPUsuarioRedBundle(),
             new Grupo3TallerUNLP\HostBundle\Grupo3TallerUNLPHostBundle(),
         );
 

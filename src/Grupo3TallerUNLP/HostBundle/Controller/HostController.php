@@ -290,6 +290,7 @@ class HostController extends Controller
             $em->flush();
         }
 
+        $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
         return $this->redirect($this->generateUrl('grupo3_taller_unlp_admin_host'));
     }
 
@@ -305,7 +306,7 @@ class HostController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('grupo3_taller_unlp_admin_host_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Eliminar'))
             ->getForm()
         ;
     }

@@ -1,0 +1,7 @@
+parameters:
+#    grupo3_taller_unlp_menu.example.class: Grupo3TallerUNLP\MenuBundle\Example
+
+services:
+#    grupo3_taller_unlp_menu.example:
+#        class: %grupo3_taller_unlp_menu.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

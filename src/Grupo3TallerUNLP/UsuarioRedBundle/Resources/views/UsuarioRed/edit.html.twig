@@ -1,0 +1,21 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Editar Usuario de Red</h1>
+    </div>
+
+    {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+
+        {{ form_row(edit_form.nombre) }}
+        {{ form_row(edit_form.apellido) }}
+        {{ form_row(edit_form.cargo) }}
+        {{ form_row(edit_form.dNI) }}
+
+        <p>
+            {{ form_widget(edit_form.submit) }}
+            <a href="{{ path('usuariored') }}" class="btn btn-default">Cancelar</a>
+        </p>
+    {{ form_end(edit_form) }}
+{% endblock content %}
