@@ -1,0 +1,27 @@
+Grupo3TallerUNLP\OficinaBundle\Entity\Oficina:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\OficinaBundle\Entity\OficinaRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombre:
+            type: string
+            length: 255
+            unique: true
+        descripcion:
+            type: string
+            length: 255
+            nullable: true
+        ubicacion:
+            type: string
+            length: 255
+            nullable: true
+        director:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

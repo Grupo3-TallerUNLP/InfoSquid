@@ -1,0 +1,21 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+   <div class="page-header">
+        <h1>Nueva Oficina<h1>
+    </div>
+
+    {{ form_start(form) }}
+		{{form_errors(form)}}
+		
+		{{ form_row(form.nombre) }}
+        {{ form_row(form.descripcion) }}
+        {{ form_row(form.ubicacion) }}
+        {{ form_row(form.director) }}
+
+        <p>
+            {{ form_widget(form.submit) }}
+            <a href="{{ path('oficina') }}" class="btn btn-default">Cancelar</a>
+        </p>
+	{{ form_end(form) }}
+{% endblock content%}

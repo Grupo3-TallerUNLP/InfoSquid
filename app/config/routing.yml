@@ -1,3 +1,7 @@
+grupo3_taller_unlp_oficina:
+    resource: "@Grupo3TallerUNLPOficinaBundle/Resources/config/routing.yml"
+    prefix:   /admin/oficina
+
 grupo3_taller_unlp_host:
     resource: "@Grupo3TallerUNLPHostBundle/Resources/config/routing.yml"
     prefix:   /admin/host
@@ -40,3 +44,4 @@ fos_user_change_password:
 Grupo3TallerUNLPUsuarioRedBundle_usuariored:
   resource: "@Grupo3TallerUNLPUsuarioRedBundle/Resources/config/routing.yml"
   prefix:  /admin/usuariored
+

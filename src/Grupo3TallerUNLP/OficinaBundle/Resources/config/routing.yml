@@ -1,0 +1,30 @@
+oficina:
+    path:     /
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:index" }
+
+oficina_show:
+    path:     /{id}/show
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:show" }
+
+oficina_new:
+    path:     /new
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:new" }
+
+oficina_create:
+    path:     /create
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:create" }
+    requirements: { _method: post }
+
+oficina_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:edit" }
+
+oficina_update:
+    path:     /{id}/update
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:update" }
+    requirements: { _method: post|put }
+
+oficina_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:delete" }
+    requirements: { _method: post|delete }
