@@ -6,10 +6,10 @@
 {% endblock stylesheets %}
 
 {% block body %}
-{% include '::navbar.html.twig' %}
+{% include 'Grupo3TallerUNLPMenuBundle::navbar.html.twig' %}
 <div class="container-fluid">
     <div class="row">
-        {% include '::sidebar.html.twig' %}
+        {% include 'Grupo3TallerUNLPMenuBundle::sidebar.html.twig' %}
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             {% for flashMessage in app.session.flashbag.get('error') %}
                 <div class="alert alert-danger">
