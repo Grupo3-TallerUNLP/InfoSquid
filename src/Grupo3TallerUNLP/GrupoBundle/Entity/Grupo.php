@@ -81,7 +81,7 @@ class Grupo
         return $this->descripcion;
     }
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     *  @ORM\ManyToOne(targetEntity="Grupo3TallerUNLP\SItioBundle\Entity\Sitio", inversedBy="grupo", cascade={"persist", "remove"} )
      */
     private $sitios;
 
@@ -98,6 +98,7 @@ class Grupo
      *
      * @param \Grupo3TallerUNLP\SitioBundle\Entity\Sitio $sitios
      * @return Grupo
+	 * 
      */
     public function addSitio(\Grupo3TallerUNLP\SitioBundle\Entity\Sitio $sitios)
     {

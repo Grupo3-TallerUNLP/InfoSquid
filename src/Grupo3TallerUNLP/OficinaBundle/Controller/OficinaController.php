@@ -47,7 +47,7 @@ class OficinaController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+            $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
             return $this->redirect($this->generateUrl('oficina', array('id' => $entity->getId())));
         }
 
@@ -175,7 +175,7 @@ class OficinaController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
-			$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
 		
             return $this->redirect($this->generateUrl('oficina', array('id' => $id)));
         }
@@ -199,18 +199,28 @@ class OficinaController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
-
+            $user = $entity->getDirector();
+			$hosts = $entity->getHosts();
+			
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Oficina entity.');
             }
-
-            $em->remove($entity);
-            $em->flush();
+			elseif (($user) or ($hosts)) {
+                $this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, la oficina tiene usuario de red o host asociados');
+				return $this->redirect($this->generateUrl('oficina'));
+			}
+			else{
+	
+				$em->remove($entity);
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+				return $this->redirect($this->generateUrl('oficina'));
+			}
+			}
         }
 
-        $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-        return $this->redirect($this->generateUrl('oficina'));
-    }
+        
+    
 
     /**
      * Creates a form to delete a Oficina entity by id.

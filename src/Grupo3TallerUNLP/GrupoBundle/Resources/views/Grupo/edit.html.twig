@@ -10,10 +10,13 @@
 		
 		 {{ form_row(edit_form.nombre) }}
         {{ form_row(edit_form.descripcion ) }}
-		
 		<p>
             {{ form_widget(edit_form.submit) }}
             <a href="{{ path('grupo') }}" class="btn btn-default">Cancelar</a>
         </p>
+	<div class="hide">
+		{{form_row (edit_form.sitios) }}
+	</div>
     {{ form_end(edit_form) }}
+	
 {% endblock %}

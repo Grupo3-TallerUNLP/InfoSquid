@@ -17,7 +17,7 @@ class GrupoType extends AbstractType
         $builder
             ->add('nombre')
             ->add('descripcion', 'text', array('required' => false))
-			->add('sitio')
+			->add('sitios', null, array('required' => false))
         ;
     }
     

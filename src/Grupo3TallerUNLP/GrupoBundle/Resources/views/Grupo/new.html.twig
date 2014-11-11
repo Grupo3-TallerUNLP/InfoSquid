@@ -14,5 +14,8 @@
             {{ form_widget(form.submit) }}
             <a href="{{ path('grupo') }}" class="btn btn-default">Cancelar</a>
         </p>
+	<div class="hide">
+		{{form_row (form.sitios) }}
+	</div>
     {{ form_end(form) }}
 {% endblock %}

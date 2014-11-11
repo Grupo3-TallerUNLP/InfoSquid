@@ -47,7 +47,7 @@ class SitioController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+            $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
             return $this->redirect($this->generateUrl('sitio', array('id' => $entity->getId())));
         }
 
@@ -175,7 +175,7 @@ class SitioController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
-			$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
             return $this->redirect($this->generateUrl('sitio', array('id' => $id)));
         }
 
@@ -205,7 +205,7 @@ class SitioController extends Controller
             $em->remove($entity);
             $em->flush();
         }
-		$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+		$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
         return $this->redirect($this->generateUrl('sitio'));
     }
 

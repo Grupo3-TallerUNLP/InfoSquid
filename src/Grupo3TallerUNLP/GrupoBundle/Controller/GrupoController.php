@@ -47,7 +47,7 @@ class GrupoController extends Controller
             $em->persist($entity);
             $em->flush();
 
-			$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
             return $this->redirect($this->generateUrl('grupo', array('id' => $entity->getId())));
         }
 
@@ -71,7 +71,7 @@ class GrupoController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'GUardar'));
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
     }
@@ -175,7 +175,7 @@ class GrupoController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
-			$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
             return $this->redirect($this->generateUrl('grupo', array('id' => $id)));
         }
 
@@ -201,11 +201,11 @@ class GrupoController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Grupo entity.');
             }
-
+            
             $em->remove($entity);
             $em->flush();
         }
-        $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+        $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
         return $this->redirect($this->generateUrl('grupo'));
     }
 
