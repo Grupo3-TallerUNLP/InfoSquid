@@ -1,0 +1,22 @@
+Grupo3TallerUNLP\ConfiguracionBundle\Entity\Configuracion:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\ConfiguracionBundle\Entity\ConfiguracionRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        paginacion:
+            type: integer
+        directorioLogsAntiguos:
+            type: string
+            length: 255
+        archivoDeLog:
+            type: string
+            length: 255
+        tiempoMantenimiento:
+            type: integer
+    lifecycleCallbacks: {  }

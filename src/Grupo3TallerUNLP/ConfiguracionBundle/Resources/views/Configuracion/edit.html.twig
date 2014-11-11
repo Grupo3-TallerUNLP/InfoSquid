@@ -1,0 +1,20 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Editar Configuracion</h1>
+    </div>
+    {{ form(edit_form) }}
+		{{ form_errors(edit_form) }}
+		
+		 {{ form_row(edit_form.paginacion) }}
+        {{ form_row(edit_form.directorioLogsAntiguos ) }}
+		{{ form_row(edit_form.archivoDeLog ) }}
+		{{ form_row(edit_form.tiempoMantenimiento ) }}
+       <p>
+            {{ form_widget(edit_form.submit) }}
+            <a href="{{ path('configuracion') }}" class="btn btn-default">Cancelar</a>
+        </p>
+	
+    {{ form_end(edit_form) }}
+{% endblock %}

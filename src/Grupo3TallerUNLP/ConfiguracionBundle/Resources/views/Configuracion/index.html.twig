@@ -1,0 +1,37 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+
+	<div class="page-header">
+        <h1>Configuracion</h1>
+    </div>
+
+    <dl class="dl-horizontal">
+			 {% for entities in entities %}
+			 <dt>Paginacion</dt>
+			 <dd>{{ entities.paginacion }}</dd>
+			 <dt>Directoriologsantiguos</dt>
+			 <dd>{{ entities.directorioLogsAntiguos }}</dd>
+			 <dt>Archivodelog</dt>
+			 <dd>{{ entities.archivoDeLog }}</dd>
+			 <dt>Tiempomantenimiento</dt>
+			 <dd>{{ entities.tiempoMantenimiento }}</dd>
+             
+			
+			<br>
+			<p>
+			<a href="{{ path('configuracion_edit', { 'id': entities.id }) }}" class="btn btn-primary" >
+            <span class="glyphicon glyphicon-plus"></span> Editar
+			</a>
+			</p>
+			 
+			 {% endfor %}
+			
+   
+             
+                 
+            
+                
+     </dl>
+
+    {% endblock %}

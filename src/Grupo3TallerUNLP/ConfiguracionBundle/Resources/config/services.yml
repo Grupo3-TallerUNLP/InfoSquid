@@ -1,0 +1,7 @@
+parameters:
+#    grupo3_taller_unlp_configuracion.example.class: Grupo3TallerUNLP\ConfiguracionBundle\Example
+
+services:
+#    grupo3_taller_unlp_configuracion.example:
+#        class: %grupo3_taller_unlp_configuracion.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
