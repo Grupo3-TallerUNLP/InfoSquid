@@ -27,7 +27,7 @@ class InformePredefinidoController extends Controller
 		$paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
 
-        return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:index.html.twig', array('pagination' => $pagination,));
+        return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:index.html.twig', array('pagination' => $pagination));
     }
     /**
      * Creates a new InformePredefinido entity.
