@@ -1,0 +1,30 @@
+filtro:
+    path:     /
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Filtro:index" }
+
+filtro_show:
+    path:     /{id}/show
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Filtro:show" }
+
+filtro_new:
+    path:     /new
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Filtro:new" }
+
+filtro_create:
+    path:     /create
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Filtro:create" }
+    requirements: { _method: post }
+
+filtro_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Filtro:edit" }
+
+filtro_update:
+    path:     /{id}/update
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Filtro:update" }
+    requirements: { _method: post|put }
+
+filtro_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Filtro:delete" }
+    requirements: { _method: post|delete }

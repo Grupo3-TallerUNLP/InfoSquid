@@ -1,0 +1,15 @@
+Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\PlantillaBundle\Entity\FiltroRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombre:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

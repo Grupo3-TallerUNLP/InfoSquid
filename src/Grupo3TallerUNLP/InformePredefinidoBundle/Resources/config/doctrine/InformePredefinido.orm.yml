@@ -1,0 +1,24 @@
+Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinidoRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombre:
+            type: string
+            length: 255
+        frecuenciaTiempo:
+            type: integer
+    oneToOne:
+        plantilla:
+            targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
+            inversedBy: informepredefinido
+            joinColumn:
+                name: plantilla
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

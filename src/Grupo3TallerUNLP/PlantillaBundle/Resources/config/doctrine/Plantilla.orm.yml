@@ -1,0 +1,24 @@
+Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\PlantillaBundle\Entity\PlantillaRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombre:
+            type: string
+            length: 255
+        descripcion:
+            type: string
+            length: 255
+            nullable: true		
+    oneToOne:
+        informepredefinido:
+            targetEntity: Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido
+            mapedBy: plantilla
+            nullable: true
+    lifecycleCallbacks: {  }

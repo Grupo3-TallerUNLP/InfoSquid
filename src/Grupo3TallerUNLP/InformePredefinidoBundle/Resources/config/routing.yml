@@ -1,0 +1,30 @@
+informepredefinido:
+    path:     /
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:index" }
+
+informepredefinido_show:
+    path:     /{id}/show
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:show" }
+
+informepredefinido_new:
+    path:     /new
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:new" }
+
+informepredefinido_create:
+    path:     /create
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:create" }
+    requirements: { _method: post }
+
+informepredefinido_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:edit" }
+
+informepredefinido_update:
+    path:     /{id}/update
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:update" }
+    requirements: { _method: post|put }
+
+informepredefinido_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:delete" }
+    requirements: { _method: post|delete }

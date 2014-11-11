@@ -1,0 +1,15 @@
+Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltroRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        valor:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

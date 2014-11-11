@@ -1,0 +1,7 @@
+parameters:
+#    grupo3_taller_unlp_informe_predefinido.example.class: Grupo3TallerUNLP\InformePredefinidoBundle\Example
+
+services:
+#    grupo3_taller_unlp_informe_predefinido.example:
+#        class: %grupo3_taller_unlp_informe_predefinido.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

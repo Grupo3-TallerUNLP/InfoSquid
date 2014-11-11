@@ -1,0 +1,30 @@
+plantilla:
+    path:     /
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:index" }
+
+plantilla_show:
+    path:     /{id}/show
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:show" }
+
+plantilla_new:
+    path:     /new
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:new" }
+
+plantilla_create:
+    path:     /create
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:create" }
+    requirements: { _method: post }
+
+plantilla_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:edit" }
+
+plantilla_update:
+    path:     /{id}/update
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:update" }
+    requirements: { _method: post|put }
+
+plantilla_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:delete" }
+    requirements: { _method: post|delete }

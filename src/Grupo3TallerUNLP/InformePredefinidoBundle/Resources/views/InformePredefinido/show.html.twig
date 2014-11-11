@@ -1,0 +1,25 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Eliminar Informe Predefinido</h1>
+    </div>
+
+    <dl class="dl-horizontal">
+            <dt>Nombre</dt>
+            <dd>{{ entity.nombre }}</dd>
+
+            <dt>Frecuenciatiempo</dt>
+            <dd>{{ entity.frecuenciaTiempo }}</dd>
+			
+			<dt>Plantilla</dt>
+            <dd>{{ entity.plantilla }}</dd>
+			
+    </dl>
+    <div class="col-md-offset-1">
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('informepredefinido') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
+    </div>
+{% endblock %}
