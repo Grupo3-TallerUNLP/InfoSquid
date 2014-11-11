@@ -23,13 +23,13 @@ class OficinaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
+        $query = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->createQueryBuilder('u');
 
-		//$paginator = $this->get('knp_paginator');
-        //$pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+		$paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
 		
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:index.html.twig', array(
-            'entities' => $entities,
+            'pagination' => $pagination,
         ));
     }
     /**
@@ -71,7 +71,7 @@ class OficinaController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
     }
@@ -151,7 +151,7 @@ class OficinaController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
     }
@@ -224,7 +224,7 @@ class OficinaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('oficina_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Eliminar'))
             ->getForm()
         ;
     }

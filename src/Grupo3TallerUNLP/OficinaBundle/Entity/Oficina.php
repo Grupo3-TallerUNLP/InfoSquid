@@ -136,4 +136,92 @@ class Oficina
     {
         return $this->director;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $usuariosdered;
+	/**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $hosts;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->usuariosdered = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->hosts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add usuariosdered
+     *
+     * @param \Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $usuariosdered
+     * @return Oficina
+     */
+    public function addUsuariosdered(\Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $usuariosdered)
+    {
+        $this->usuariosdered[] = $usuariosdered;
+
+        return $this;
+    }
+
+    /**
+     * Remove usuariosdered
+     *
+     * @param \Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $usuariosdered
+     */
+    public function removeUsuariosdered(\Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $usuariosdered)
+    {
+        $this->usuariosdered->removeElement($usuariosdered);
+    }
+
+    /**
+     * Get usuariosdered
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsuariosdered()
+    {
+        return $this->usuariosdered;
+    }
+	
+	/**
+     * Add host
+     *
+     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $host
+     * @return Oficina
+     */
+    public function addHosts(\Grupo3TallerUNLP\HostBundle\Entity\Host $host)
+    {
+        $this->hosts[] = $host;
+
+        return $this;
+    }
+
+    /**
+     * Remove host
+     *
+     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $host
+     */
+    public function removeHosts(\Grupo3TallerUNLP\HostBundle\Entity\Host $host)
+    {
+        $this->hosts->removeElement($host);
+    }
+
+    /**
+     * Get hosts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
+    }
+	
+	public function __toString()
+    {
+        return $this->nombre .' (' . $this->ubicacion  .')';
+    }
 }

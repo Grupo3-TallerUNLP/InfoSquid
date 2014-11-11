@@ -1,3 +1,11 @@
+grupo3_taller_unlp_sitio:
+    resource: "@Grupo3TallerUNLPSitioBundle/Resources/config/routing.yml"
+    prefix:   /admin/sitio
+
+grupo3_taller_unlp_grupo:
+    resource: "@Grupo3TallerUNLPGrupoBundle/Resources/config/routing.yml"
+    prefix:   /admin/grupo
+
 grupo3_taller_unlp_oficina:
     resource: "@Grupo3TallerUNLPOficinaBundle/Resources/config/routing.yml"
     prefix:   /admin/oficina

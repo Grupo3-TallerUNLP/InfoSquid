@@ -1,0 +1,24 @@
+Grupo3TallerUNLP\GrupoBundle\Entity\Grupo:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\GrupoBundle\Entity\GrupoRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombre:
+            type: string
+            length: 255
+        descripcion:
+            type: string
+            length: 255
+            nullable: true;
+    #relaciones
+    oneToMany:
+        sitios:
+            targetEntity: Grupo3TallerUNLP\SitioBundle\Entity\Sitio
+            mappedBy: grupo
+    lifecycleCallbacks: {  }

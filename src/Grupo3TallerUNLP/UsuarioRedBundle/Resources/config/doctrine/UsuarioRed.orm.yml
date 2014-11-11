@@ -26,8 +26,25 @@ Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed:
             type: integer
             column: DNI
             nullable: true
+    # relacion host
     manyToMany:
         hosts:
             targetEntity: Grupo3TallerUNLP\HostBundle\Entity\Host
-            mappedBy: networkUsers
+            inversedBy: networkUsers
+            joinTable:
+                name: UsuarioRed_Host
+                joinColumns:
+                    usuariored_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    host_id:
+                        referencedColumnName: id
+    # relacion con oficina
+    manyToOne:
+        oficina:
+            targetEntity: Grupo3TallerUNLP\OficinaBundle\Entity\Oficina
+            inversedBy: usuariosdered
+    joinColumn:
+        name: oficina
+        referencedColumnName: id
     lifecycleCallbacks: {  }

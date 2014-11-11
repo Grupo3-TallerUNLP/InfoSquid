@@ -1,0 +1,17 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <h1>Sitio edit</h1>
+
+   {{ form_start(edit_form) }}
+		{{ form_errors(edit_form) }}
+
+        {{ form_row(edit_form.nombre) }}
+        {{ form_row(edit_form.url) }}
+        {{ form_row(edit_form.grupo) }}
+		<p>
+            {{ form_widget(form.submit) }}
+            <a href="{{ path('sitio') }}" class="btn btn-default">Cancelar</a>
+        </p>
+    {{ form_end(edit_form) }}   
+{% endblock %}

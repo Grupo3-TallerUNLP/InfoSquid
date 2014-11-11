@@ -19,16 +19,28 @@
                 <th>Descripcion</th>
                 <th>Ubicacion</th>
                 <th>Director</th>
+				<th>Usuarios de Red</th>
+				<th>Hosts</th>
 				<th class="col-xs-1">Acciones</th>
             </tr>
         </thead>
         <tbody>
-      {% for entity in entities %}
+      {% for entity in pagination %}
             <tr>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.descripcion }}</td>
                 <td>{{ entity.ubicacion }}</td>
                 <td>{{ entity.director }}</td>
+				<td>
+					{% if entity.usuariosdered|length > 0 %}
+					<a href="#" data-toggle="popover" data-content="<ul>{% for usuario in entity.usuariosdered %}<li>{{ usuario }}</li>{% endfor %}</ul>">Ver</a>
+					{% endif %}
+				</td>
+				<td>
+					{% if entity.hosts|length > 0 %}
+					<a href="#" data-toggle="popover" data-content="<ul>{% for host in entity.hosts %}<li>{{ host }}</li>{% endfor %}</ul>">Ver</a>
+					{% endif %}
+				</td>
                 <td>            
                         <a href="{{ path('oficina_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
 							<span class="glyphicon glyphicon-pencil text-primary"></span>
@@ -43,10 +55,18 @@
         </tbody>
     </table>
 	
-	{#<nav class="text-center">
+	<nav class="text-center">
         {{ knp_pagination_render(pagination) }}
-    </nav> #}
+    </nav> 
 
-  
+	<script>
+	window.onload = function () {
+		$('[data-toggle="popover"]').popover({
+			template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-content"></div></div>',
+			placement: 'top',
+			html: true
+		});
+	};
+	</script>
         
     {% endblock %}

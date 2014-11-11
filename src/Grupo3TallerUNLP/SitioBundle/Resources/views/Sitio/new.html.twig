@@ -1,0 +1,19 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Nuevo Sitio</h1>
+    </div>
+
+    {{ form_start(form) }}
+		{{ form_errors(form) }}
+
+        {{ form_row(form.nombre) }}
+        {{ form_row(form.url) }}
+        {{ form_row(form.grupo) }}
+		<p>
+            {{ form_widget(form.submit) }}
+            <a href="{{ path('sitio') }}" class="btn btn-default">Cancelar</a>
+        </p>
+    {{ form_end(form) }}   
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content%}
+    <div class="page-header">
+        <h1>Eliminar Sitio</h1>
+    </div>
+
+    <dl class="dl-horizontal">
+      
+                <dt>Nombre</dt>
+                <dd>{{ entity.nombre }}</dd>
+            
+                <dt>Url</dt>
+                <dd>{{ entity.url }}</dd>
+              
+			    <dt> Grupo </dt>
+			    <dd> {{entity.grupo}}</dd>
+    </dl>
+    
+
+    <div class="col-md-offset-1">
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('sitio') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
+    </div>
+{% endblock %}

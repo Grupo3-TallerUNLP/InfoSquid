@@ -189,4 +189,32 @@ class UsuarioRed
     {
         return $this->apellido .', '. $this->nombre;
     }
+    /**
+     * @var \Grupo3TallerUNLP\OficinaBundle\Entity\Oficina
+     */
+    private $oficina;
+
+
+    /**
+     * Set oficina
+     *
+     * @param \Grupo3TallerUNLP\OficinaBundle\Entity\Oficina $oficina
+     * @return UsuarioRed
+     */
+    public function setOficina(\Grupo3TallerUNLP\OficinaBundle\Entity\Oficina $oficina = null)
+    {
+        $this->oficina = $oficina;
+
+        return $this;
+    }
+
+    /**
+     * Get oficina
+     *
+     * @return \Grupo3TallerUNLP\OficinaBundle\Entity\Oficina 
+     */
+    public function getOficina()
+    {
+        return $this->oficina;
+    }
 }

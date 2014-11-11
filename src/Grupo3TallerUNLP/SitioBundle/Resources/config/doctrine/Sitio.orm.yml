@@ -1,0 +1,26 @@
+Grupo3TallerUNLP\SitioBundle\Entity\Sitio:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\SitioBundle\Entity\SitioRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombre:
+            type: string
+            length: 255
+        url:
+            type: string
+            length: 255
+    
+    manyToOne:
+        grupo:
+            targetEntity: Grupo3TallerUNLP\GrupoBundle\Entity\Grupo
+            inversedBy: sitios
+            joinColumn:
+                name: grupo
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

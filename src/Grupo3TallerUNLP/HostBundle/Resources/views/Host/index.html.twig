@@ -24,7 +24,11 @@
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.ipAddress }}</td>
-                <td><a href="#">ver usuarios</a></td>
+                <td>
+					{% if entity.networkUsers|length > 0 %}
+					<a href="#" data-toggle="popover" data-content="<ul>{% for user in entity.networkUsers %}<li>{{ user }}</li>{% endfor %}</ul>">Ver</a>
+					{% endif %}
+				</td>
                 <td>{{ entity.office }}</td>
                 <td>
                     <a href="{{ path('grupo3_taller_unlp_admin_host_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
@@ -42,5 +46,15 @@
     <nav class="text-center">
         {{ knp_pagination_render(pagination) }}
     </nav>
+	
+	<script>
+	window.onload = function () {
+		$('[data-toggle="popover"]').popover({
+			template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-content"></div></div>',
+			placement: 'top',
+			html: true
+		});
+	};
+	</script>
 
 {% endblock content %}

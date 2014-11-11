@@ -31,8 +31,12 @@
                 <td>{{ entity.apellido }}</td>
                 <td>{{ entity.cargo }} </td>
                 <td>{{ entity.dNI }} </td>
-				<td><a href="">Ver Oficina</a></td>
-				<td><a href="">Ver Host</a></td>
+				<td>{{ entity.oficina }}</td>
+				<td>
+					{% if entity.hosts|length > 0 %}
+					<a href="#" data-toggle="popover" data-content="<ul>{% for host in entity.hosts %}<li>{{ host }}</li>{% endfor %}</ul>">Ver</a>
+					{% endif %}
+				</td>
                 <td>
 				    <a href="{{ path('usuariored_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-pencil text-primary"></span>
@@ -49,5 +53,15 @@
     <nav class="text-center">
         {{ knp_pagination_render(pagination) }}
     </nav>
+	
+	<script>
+	window.onload = function () {
+		$('[data-toggle="popover"]').popover({
+			template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-content"></div></div>',
+			placement: 'top',
+			html: true
+		});
+	};
+	</script>
 
     {% endblock %}

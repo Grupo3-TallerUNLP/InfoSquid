@@ -28,7 +28,7 @@ class HostType extends AbstractType
             ->add('ipAddress_field3', 'integer', array('constraints' => $constraint))
             ->add('ipAddress_field4', 'integer', array('constraints' => $constraint))
             ->add('device')
-            ->add('networkUsers')
+            ->add('networkUsers', null,  array('required' => false))
             ->add('office')
         ;
     }

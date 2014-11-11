@@ -1,0 +1,18 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Nuevo Grupo </h1>
+    </div>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.nombre) }}
+        {{ form_row(form.descripcion ) }}
+        <p>
+            {{ form_widget(form.submit) }}
+            <a href="{{ path('grupo') }}" class="btn btn-default">Cancelar</a>
+        </p>
+    {{ form_end(form) }}
+{% endblock %}

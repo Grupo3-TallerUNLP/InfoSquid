@@ -1,0 +1,30 @@
+sitio:
+    path:     /
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:index" }
+
+sitio_show:
+    path:     /{id}/show
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:show" }
+
+sitio_new:
+    path:     /new
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:new" }
+
+sitio_create:
+    path:     /create
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:create" }
+    requirements: { _method: post }
+
+sitio_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:edit" }
+
+sitio_update:
+    path:     /{id}/update
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:update" }
+    requirements: { _method: post|put }
+
+sitio_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:delete" }
+    requirements: { _method: post|delete }
