@@ -9,13 +9,16 @@
         <dt>Dirección IP</dt>
         <dd>{{ entity.ipAddress }}</dd>
 
+		<dt>Oficina</dt>
+        <dd>{{ entity.office }}</dd>
+		
         <dt>Usuarios de Red</dt>
+
         {% for networkUser in entity.networkUsers %}
         <dd>{{ networkUser }}</dd>
         {% endfor %}
 
-        <dt>Oficina</dt>
-        <dd>{{ entity.office }}</dd>
+       
     </dl>
 
     <div class="col-md-offset-1">

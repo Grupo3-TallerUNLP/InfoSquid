@@ -42,8 +42,7 @@ class Host
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", inversedBy="hosts", cascade={"persist"})
-     * @ORM\JoinTable(name="UsuarioRed_Host")
+     * @ORM\ManyToMany(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", mappedBy="hosts", cascade={"persist"})
      * joinColumns={@ORM\JoinColumn(name="host_id", referencedColumnName="id")}
      * inverseJoinColumns={@ORM\JoinColumn(name="usuariored_id", referencedColumnName="id")}
      */
@@ -53,7 +52,6 @@ class Host
      * @var integer
      *
      * @ORM\ManyToOne(targetEntity="Grupo3TallerUNLP\OficinaBundle\Entity\Oficina", inversedBy="hosts", cascade={"persist"})
-     * @ORM\JoinColumn(name="office", referencedColumnName="id")
      */
     private $office;
 

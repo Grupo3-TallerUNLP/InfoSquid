@@ -19,11 +19,11 @@
                 <div class="col-xs-2">{{ form_widget(edit_form.ipAddress_field4, {'attr': {'min': 0, 'max':255, 'step':1}}) }}</div>
             </div>
         </div>
-
+		
         {{ form_row(edit_form.device) }}
         {{ form_row(edit_form.networkUsers) }}
         {{ form_row(edit_form.office) }}
-
+		</div>
         <p>
             {{ form_widget(edit_form.submit) }}
             <a href="{{ path('grupo3_taller_unlp_admin_host') }}" class="btn btn-default">Cancelar</a>

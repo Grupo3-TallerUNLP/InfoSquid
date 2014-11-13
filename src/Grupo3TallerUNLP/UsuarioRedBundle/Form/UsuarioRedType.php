@@ -18,7 +18,7 @@ class UsuarioRedType extends AbstractType
             ->add('nombre')
             ->add('apellido')
             ->add('cargo', 'text',  array('required' => false))
-            ->add('dNI','text',  array('required' => false))
+            ->add('dNI','text',  array('required' => false, 'attr'=> array( 'maxlength'=> '8' )))
 			->add('oficina')
 			->add('hosts')
         ;
