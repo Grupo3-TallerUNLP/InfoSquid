@@ -24,11 +24,11 @@ Grupo3TallerUNLP\OficinaBundle\Entity\Oficina:
         director:
             type: string
             length: 255
+            nullable: true
     oneToMany:
         hosts:
             targetEntity: Grupo3TallerUNLP\HostBundle\Entity\Host
             mappedBy: office
-    oneToMany:
         usuariosdered:
             targetEntity: Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed
             mappedBy: oficina

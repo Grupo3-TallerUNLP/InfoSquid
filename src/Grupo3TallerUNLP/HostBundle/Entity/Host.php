@@ -42,16 +42,15 @@ class Host
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", mappedBy="hosts", cascade={"persist"})
-     * joinColumns={@ORM\JoinColumn(name="host_id", referencedColumnName="id")}
-     * inverseJoinColumns={@ORM\JoinColumn(name="usuariored_id", referencedColumnName="id")}
+     * @ORM\ManyToMany(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", mappedBy="hosts")
      */
     private $networkUsers;
 
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Grupo3TallerUNLP\OficinaBundle\Entity\Oficina", inversedBy="hosts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Grupo3TallerUNLP\OficinaBundle\Entity\Oficina", inversedBy="hosts")
+     * @ORM\JoinColumn(name="office", referencedColumnName="id")
      */
     private $office;
 
@@ -280,10 +279,10 @@ class Host
     {
         $this->networkUsers->removeElement($networkUsers);
     }
-	
+
 	public function __toString()
     {
         return $this->device -> __toString() . ' ' . $this->ipAddress ->__toString() . '  (' . $this->office-> getNombre() . ')';
     }
-	
+
 }

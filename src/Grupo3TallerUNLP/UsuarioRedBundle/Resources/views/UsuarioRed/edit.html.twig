@@ -5,7 +5,7 @@
         <h1>Editar Usuario de Red</h1>
     </div>
 
-    {{ form_start(edit_form) }}
+    {{ form_start(edit_form, { 'style': 'horizontal', 'label_col': 3, 'widget_col': 7 }) }}
         {{ form_errors(edit_form) }}
 
         {{ form_row(edit_form.nombre) }}
@@ -15,9 +15,12 @@
 		{{ form_row(edit_form.oficina) }}
 		{{ form_row(edit_form.hosts) }}
 
-        <p>
-            {{ form_widget(edit_form.submit) }}
-            <a href="{{ path('usuariored') }}" class="btn btn-default">Cancelar</a>
-        </p>
+        <div class="col-lg-offset-3 col-lg-7">
+            <p>
+                {{ form_widget(edit_form.submit) }}
+                <a href="{{ path('usuariored') }}" class="btn btn-default">Cancelar</a>
+            </p>
+        </div>
+
     {{ form_end(edit_form) }}
 {% endblock content %}
