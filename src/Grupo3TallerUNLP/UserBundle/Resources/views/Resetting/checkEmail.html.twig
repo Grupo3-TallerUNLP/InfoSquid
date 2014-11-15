@@ -6,4 +6,5 @@
 {% endstylesheets %}
 
 <p class="alert alert-success">{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}</p>
+<a href="{{ path('fos_user_profile_show') }}" class="btn btn-default">Volver</a>
 {% endblock fos_user_content %}

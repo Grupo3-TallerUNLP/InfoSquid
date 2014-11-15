@@ -199,11 +199,6 @@ class Oficina
         return $this->hosts;
     }
 
-	public function __toString()
-    {
-        return $this->nombre .' (' . $this->ubicacion  .')';
-    }
-
     /**
      * Add hosts
      *
@@ -226,4 +221,16 @@ class Oficina
     {
         $this->hosts->removeElement($hosts);
     }
+	
+	public function __toString(){
+		$ubi = $this -> ubicacion;
+		
+		if(empty ($ubi)){
+			return $this->nombre;	
+		}
+		else{
+		return $this->nombre .' (' . $this->ubicacion  .')';
+		}
+    }
+	
 }

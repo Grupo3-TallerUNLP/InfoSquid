@@ -280,9 +280,15 @@ class Host
         $this->networkUsers->removeElement($networkUsers);
     }
 
-	public function __toString()
-    {
-        return $this->device -> __toString() . ' ' . $this->ipAddress ->__toString() . '  (' . $this->office-> getNombre() . ')';
+	public function __toString(){
+		$ofi = $this -> office;
+		
+		if(empty ($ofi)){
+			return $this->device -> __toString() . ' ' . $this->ipAddress ->__toString();
+		}
+		else{
+			return $this->device -> __toString() . ' ' . $this->ipAddress ->__toString() . '  (' . $this->office-> getNombre() . ')';
+		}	
+        
     }
-
 }
