@@ -80,4 +80,55 @@ class Grupo
     {
         return $this->descripcion;
     }
+    /**
+     *  @ORM\ManyToOne(targetEntity="Grupo3TallerUNLP\SItioBundle\Entity\Sitio", inversedBy="grupo", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $sitios;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->sitios = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add sitios
+     *
+     * @param \Grupo3TallerUNLP\SitioBundle\Entity\Sitio $sitios
+     * @return Grupo
+	 * 
+     */
+    public function addSitio(\Grupo3TallerUNLP\SitioBundle\Entity\Sitio $sitios)
+    {
+        $this->sitios[] = $sitios;
+
+        return $this;
+    }
+
+    /**
+     * Remove sitios
+     *
+     * @param \Grupo3TallerUNLP\SitioBundle\Entity\Sitio $sitios
+     */
+    public function removeSitio(\Grupo3TallerUNLP\SitioBundle\Entity\Sitio $sitios)
+    {
+        $this->sitios->removeElement($sitios);
+    }
+
+    /**
+     * Get sitios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSitios()
+    {
+        return $this->sitios;
+    }
+	
+	public function __toString()
+    {
+        return $this->nombre;
+    }
 }

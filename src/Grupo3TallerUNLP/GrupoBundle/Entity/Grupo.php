@@ -81,7 +81,7 @@ class Grupo
         return $this->descripcion;
     }
     /**
-     *  @ORM\ManyToOne(targetEntity="Grupo3TallerUNLP\SItioBundle\Entity\Sitio", inversedBy="grupo", cascade={"persist", "remove"} )
+     *  @ORM\ManyToOne(targetEntity="Grupo3TallerUNLP\SItioBundle\Entity\Sitio", inversedBy="grupo", cascade={"remove"})
      */
     private $sitios;
 

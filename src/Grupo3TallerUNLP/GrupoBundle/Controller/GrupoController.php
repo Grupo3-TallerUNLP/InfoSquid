@@ -197,7 +197,6 @@ class GrupoController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($id);
-
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Grupo entity.');
             }

@@ -17,6 +17,20 @@
         
 		<dt>Director</dt>
         <dd>{{ entity.director }}</dd>
+		
+		{% if entity.usuariosdered|length > 0 %}
+			<dt>Usuarios de Red</dt>
+		{% for user in entity.usuariosdered %}
+			<dd>{{ user}}</dd>
+		{% endfor %}
+		{% endif %}
+		
+		{% if entity.hosts|length > 0 %}
+			<dt>Hosts</dt>
+		{% for host in entity.hosts %}
+			<dd>{{ host}}</dd>
+		{% endfor %}
+		{% endif %}
             
     </dl>
    

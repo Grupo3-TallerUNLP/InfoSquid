@@ -80,4 +80,37 @@ class Sitio
     {
         return $this->url;
     }
+    /**
+     * @var \Grupo3TallerUNLP\GrupoBundle\Entity\Grupo
+     */
+    private $grupo;
+
+
+    /**
+     * Set grupo
+     *
+     * @param \Grupo3TallerUNLP\GrupoBundle\Entity\Grupo $grupo
+     * @return Sitio
+     */
+    public function setGrupo(\Grupo3TallerUNLP\GrupoBundle\Entity\Grupo $grupo = null)
+    {
+        $this->grupo = $grupo;
+
+        return $this;
+    }
+
+    /**
+     * Get grupo
+     *
+     * @return \Grupo3TallerUNLP\GrupoBundle\Entity\Grupo 
+     */
+    public function getGrupo()
+    {
+        return $this->grupo;
+    }
+	
+	public function __toString()
+    {
+        return $this->nombre;
+    }
 }

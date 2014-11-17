@@ -11,7 +11,17 @@
 
         <dt>Descripcion</dt>
         <dd>{{ entity.descripcion }}</dd>
+		
+		
+	{% if entity.informepredefinido|length > 0 %}
+			<dt>Informe Predefinido</dt>
+			<dd>{{ entity.informepredefinido }}</dd>
+		{% endif %}
+		
+		
 	</dl>
+	
+	
 
     <div class="col-md-offset-1">
         {{ form_start(delete_form) }}

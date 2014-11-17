@@ -1,15 +1,10 @@
 de lo que tenemos:
-	-achicar los input
-	-arreglar host que no muestra los usuarios.
 	-editar y agregar doble caja
-	-achicar para no scrollear (intentar)
-	-agregar el boton cancelar.
 
 
 de los casos de uso
 	-abm de usuario del sistema
 	-modificar datos personales
-	-Eliminacion de grupos (ver todas las bajas)
 
 	-ABM de plantillas
 

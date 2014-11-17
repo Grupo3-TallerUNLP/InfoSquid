@@ -23,4 +23,5 @@ Grupo3TallerUNLP\SitioBundle\Entity\Sitio:
             joinColumn:
                 name: grupo
                 referencedColumnName: id
+                onDelete: "CASCADE"
     lifecycleCallbacks: {  }
