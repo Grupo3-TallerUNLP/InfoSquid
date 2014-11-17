@@ -12,4 +12,11 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro:
         nombre:
             type: string
             length: 255
+        tipo:
+            type: string
+            length: 255
+    oneToMany:
+        valorfiltro:
+            targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro
+            mappedBy: filtro
     lifecycleCallbacks: {  }

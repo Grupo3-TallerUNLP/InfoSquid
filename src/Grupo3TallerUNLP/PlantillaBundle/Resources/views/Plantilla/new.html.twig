@@ -10,6 +10,9 @@
 		
 		{{ form_row(form.nombre) }}
 		{{ form_row(form.descripcion) }}
+		{% for f in form.filtros %}
+			{{ form_row(f.nombre) }}
+		{% endfor %}
 
         <p>
             {{ form_widget(form.submit) }}

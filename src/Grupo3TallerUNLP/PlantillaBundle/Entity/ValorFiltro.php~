@@ -81,32 +81,4 @@ class ValorFiltro
         return $this->plantilla;
     }
 	
-    /**
-     * @var \Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro
-     */
-    private $filtro;
-
-
-    /**
-     * Set filtro
-     *
-     * @param \Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro $filtro
-     * @return ValorFiltro
-     */
-    public function setFiltro(\Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro $filtro = null)
-    {
-        $this->filtro = $filtro;
-
-        return $this;
-    }
-
-    /**
-     * Get filtro
-     *
-     * @return \Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro 
-     */
-    public function getFiltro()
-    {
-        return $this->filtro;
-    }
 }

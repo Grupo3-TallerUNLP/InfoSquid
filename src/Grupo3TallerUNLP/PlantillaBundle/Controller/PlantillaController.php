@@ -23,22 +23,75 @@ class PlantillaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->findAll();
+        $query = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->findAll();
+		$paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
 
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:index.html.twig', array(
-            'entities' => $entities,
+            'pagination' => $pagination,
         ));
     }
     /**
      * Creates a new Plantilla entity.
      *
      */
+	 
+	private function listFiltros()
+	{
+		$em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Filtro')->findAll();
+		return $entities;
+	}
+	
+	private function listGrupos()
+	{
+		$em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
+		return $entities;
+	}
+	
+	private function listSitios()
+	{
+		$em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
+		return $entities;
+	}
+	
+	private function listOficinas()
+	{
+		$em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
+		return $entities;
+	}
+	
+	private function listUsuarios()
+	{
+		$em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->findAll();
+		return $entities;
+	}
+	
+	private function lists()
+	{
+		$filtros = $this->listFiltros();
+		$grupos = $this->listGrupos();
+		$sitios = $this->listSitios();
+		$oficinas = $this->listOficinas();
+		$usuarios = $this->listUsuarios();
+		$datos = array ('filtros' => $filtros,
+					'grupos' => $grupos,
+					'sitios' => $sitios,
+					'oficinas' => $oficinas,
+					'usuarios' => $usuarios);
+		return $datos;
+	}
+	
     public function createAction(Request $request)
     {
         $entity = new Plantilla();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+		
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -54,6 +107,7 @@ class PlantillaController extends Controller
         ));
     }
 
+	
     /**
      * Creates a form to create a Plantilla entity.
      *
@@ -68,7 +122,7 @@ class PlantillaController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
     }

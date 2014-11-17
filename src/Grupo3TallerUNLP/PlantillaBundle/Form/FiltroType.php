@@ -16,6 +16,7 @@ class FiltroType extends AbstractType
     {
         $builder
             ->add('nombre')
+			->add('tipo')
         ;
     }
     

@@ -19,6 +19,10 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla:
     oneToOne:
         informepredefinido:
             targetEntity: Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido
-            mapedBy: plantilla
+            mappedBy: plantilla
             nullable: true
+    oneToMany:
+        valorfiltro:
+            targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro
+            mappedBy: plantilla
     lifecycleCallbacks: {  }

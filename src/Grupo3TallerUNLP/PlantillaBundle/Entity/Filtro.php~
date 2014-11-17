@@ -5,9 +5,9 @@ namespace Grupo3TallerUNLP\PlantillaBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Plantilla
+ * Filtro
  */
-class Plantilla
+class Filtro
 {
     /**
      * @var integer
@@ -18,12 +18,6 @@ class Plantilla
      * @var string
      */
     private $nombre;
-
-    /**
-     * @var string
-     */
-    private $descripcion;
-
 
     /**
      * Get id
@@ -39,7 +33,7 @@ class Plantilla
      * Set nombre
      *
      * @param string $nombre
-     * @return Plantilla
+     * @return Filtro
      */
     public function setNombre($nombre)
     {
@@ -57,62 +51,9 @@ class Plantilla
     {
         return $this->nombre;
     }
-
     /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     * @return Plantilla
+     * @var \Doctrine\Common\Collections\Collection
      */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string 
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-    /**
-     * @var \Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido
-     */
-    private $informepredefinido;
-
-
-    /**
-     * Set informepredefinido
-     *
-     * @param \Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido $informepredefinido
-     * @return Plantilla
-     */
-    public function setInformepredefinido(\Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido $informepredefinido = null)
-    {
-        $this->informepredefinido = $informepredefinido;
-
-        return $this;
-    }
-
-    /**
-     * Get informepredefinido
-     *
-     * @return \Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido 
-     */
-    public function getInformepredefinido()
-    {
-        return $this->informepredefinido;
-    }
-	
-	public function __toString()
-    {
-        return $this->nombre ;
-    }
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -130,7 +71,7 @@ class Plantilla
      * Add valorfiltro
      *
      * @param \Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro $valorfiltro
-     * @return Plantilla
+     * @return Filtro
      */
     public function addValorfiltro(\Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro $valorfiltro)
     {

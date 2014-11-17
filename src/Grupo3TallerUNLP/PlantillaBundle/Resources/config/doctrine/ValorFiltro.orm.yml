@@ -12,4 +12,17 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro:
         valor:
             type: string
             length: 255
+    manyToOne:
+        filtro:
+            targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro
+            inversedBy: valorfiltro
+            joinColumn: 
+                name: filtro_id
+                referenceColumnName: id
+        plantilla:
+            targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
+            inversedBy: plantilla
+            joinColumn: 
+                name: plantilla_id
+                referenceColumnName: id   
     lifecycleCallbacks: {  }

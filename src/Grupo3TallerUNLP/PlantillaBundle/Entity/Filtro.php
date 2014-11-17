@@ -51,4 +51,80 @@ class Filtro
     {
         return $this->nombre;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $valorfiltro;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->valorfiltro = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add valorfiltro
+     *
+     * @param \Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro $valorfiltro
+     * @return Filtro
+     */
+    public function addValorfiltro(\Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro $valorfiltro)
+    {
+        $this->valorfiltro[] = $valorfiltro;
+
+        return $this;
+    }
+
+    /**
+     * Remove valorfiltro
+     *
+     * @param \Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro $valorfiltro
+     */
+    public function removeValorfiltro(\Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro $valorfiltro)
+    {
+        $this->valorfiltro->removeElement($valorfiltro);
+    }
+
+    /**
+     * Get valorfiltro
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getValorfiltro()
+    {
+        return $this->valorfiltro;
+    }
+    /**
+     * @var string
+     */
+    private $tipo;
+
+
+    /**
+     * Set tipo
+     *
+     * @param string $tipo
+     * @return Filtro
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return string 
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
 }

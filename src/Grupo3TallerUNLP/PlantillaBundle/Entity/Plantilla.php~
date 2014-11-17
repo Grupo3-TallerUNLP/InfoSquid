@@ -80,4 +80,37 @@ class Plantilla
     {
         return $this->descripcion;
     }
+    /**
+     * @var \Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido
+     */
+    private $informepredefinido;
+
+
+    /**
+     * Set informepredefinido
+     *
+     * @param \Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido $informepredefinido
+     * @return Plantilla
+     */
+    public function setInformepredefinido(\Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido $informepredefinido = null)
+    {
+        $this->informepredefinido = $informepredefinido;
+
+        return $this;
+    }
+
+    /**
+     * Get informepredefinido
+     *
+     * @return \Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido 
+     */
+    public function getInformepredefinido()
+    {
+        return $this->informepredefinido;
+    }
+	
+	public function __toString()
+    {
+        return $this->nombre ;
+    }
 }
