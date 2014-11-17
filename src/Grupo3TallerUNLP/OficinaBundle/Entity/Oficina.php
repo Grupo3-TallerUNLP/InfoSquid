@@ -38,7 +38,7 @@ class Oficina
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -61,7 +61,7 @@ class Oficina
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -84,7 +84,7 @@ class Oficina
     /**
      * Get descripcion
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
@@ -107,7 +107,7 @@ class Oficina
     /**
      * Get ubicacion
      *
-     * @return string 
+     * @return string
      */
     public function getUbicacion()
     {
@@ -130,16 +130,18 @@ class Oficina
     /**
      * Get director
      *
-     * @return string 
+     * @return string
      */
     public function getDirector()
     {
         return $this->director;
     }
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $usuariosdered;
+
 	/**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -180,48 +182,55 @@ class Oficina
     /**
      * Get usuariosdered
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsuariosdered()
     {
         return $this->usuariosdered;
     }
-	
-	/**
-     * Add host
-     *
-     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $host
-     * @return Oficina
-     */
-    public function addHosts(\Grupo3TallerUNLP\HostBundle\Entity\Host $host)
-    {
-        $this->hosts[] = $host;
-
-        return $this;
-    }
-
-    /**
-     * Remove host
-     *
-     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $host
-     */
-    public function removeHosts(\Grupo3TallerUNLP\HostBundle\Entity\Host $host)
-    {
-        $this->hosts->removeElement($host);
-    }
 
     /**
      * Get hosts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getHosts()
     {
         return $this->hosts;
     }
-	
-	public function __toString()
+
+    /**
+     * Add hosts
+     *
+     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $hosts
+     * @return Oficina
+     */
+    public function addHost(\Grupo3TallerUNLP\HostBundle\Entity\Host $hosts)
     {
-        return $this->nombre .' (' . $this->ubicacion  .')';
+        $this->hosts[] = $hosts;
+
+        return $this;
     }
+
+    /**
+     * Remove hosts
+     *
+     * @param \Grupo3TallerUNLP\HostBundle\Entity\Host $hosts
+     */
+    public function removeHost(\Grupo3TallerUNLP\HostBundle\Entity\Host $hosts)
+    {
+        $this->hosts->removeElement($hosts);
+    }
+	
+	public function __toString(){
+		$ubi = $this -> ubicacion;
+		
+		if(empty ($ubi)){
+			return $this->nombre;	
+		}
+		else{
+		return $this->nombre .' (' . $this->ubicacion  .')';
+		}
+    }
+	
 }

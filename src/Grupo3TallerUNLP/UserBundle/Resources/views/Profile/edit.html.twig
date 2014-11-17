@@ -6,7 +6,8 @@
     {{ form_widget(form) }}
     <div class="form-group">
         <div class="col-lg-offset-2 col-lg-10">
-            <button type="submit" class="btn btn-primary">{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}</button>
+            <button type="submit" class="btn btn-default">{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}</button>
+			<a href="{{ path('fos_user_profile_show') }}" class="btn btn-primary">Cancelar</a>
         </div>
     </div>
 </form>

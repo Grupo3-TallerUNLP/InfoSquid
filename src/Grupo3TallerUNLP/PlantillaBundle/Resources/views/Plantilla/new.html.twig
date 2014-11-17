@@ -5,20 +5,21 @@
         <h1>Nueva Plantilla</h1>
     </div>
 
-    {{ form_start(form) }}
+    {{ form_start(form, { 'style': 'horizontal', 'label_col': 3, 'widget_col': 7 }) }}
 		{{ form_errors(form) }}
-		
+
 		{{ form_row(form.nombre) }}
 		{{ form_row(form.descripcion) }}
 		{% for f in form.filtros %}
 			{{ form_row(f.nombre) }}
 		{% endfor %}
 
-        <p>
-            {{ form_widget(form.submit) }}
-			<a href="{{ path('plantilla') }}" class="btn btn-default">
-				Cancelar
-			</a>
-		</p>
-		{{ form_end(form) }}		
+        <div class="col-lg-offset-3 col-lg-7">
+            <p>
+                {{ form_widget(form.submit) }}
+                <a href="{{ path('plantilla') }}" class="btn btn-default">Cancelar</a>
+            </p>
+        </div>
+
+	{{ form_end(form) }}
 {% endblock %}
