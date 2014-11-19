@@ -18,11 +18,11 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro:
             inversedBy: valorfiltro
             joinColumn: 
                 name: filtro_id
-                referenceColumnName: id
+                referencedColumnName: id
         plantilla:
             targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
-            inversedBy: plantilla
+            inversedBy: valorfiltro
             joinColumn: 
                 name: plantilla_id
-                referenceColumnName: id   
+                referencedColumnName: id   
     lifecycleCallbacks: {  }

@@ -60,8 +60,8 @@ Grupo3TallerUNLPUsuarioRedBundle_usuariored:
   
 grupo3_taller_unlp_plantilla:
     resource: "@Grupo3TallerUNLPPlantillaBundle/Resources/config/routing.yml"
-    prefix: /admin/plantilla
+    prefix: /plantilla
 
 grupo3_taller_unlp_informepredefinido:
     resource: "@Grupo3TallerUNLPInformePredefinidoBundle/Resources/config/routing.yml"
-    prefix: /admin/informepredefinido
+    prefix: /informepredefinido

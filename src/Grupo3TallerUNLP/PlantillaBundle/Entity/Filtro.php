@@ -99,32 +99,9 @@ class Filtro
     {
         return $this->valorfiltro;
     }
-    /**
-     * @var string
-     */
-    private $tipo;
-
-
-    /**
-     * Set tipo
-     *
-     * @param string $tipo
-     * @return Filtro
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return string 
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
+	
+	public function __toString(){
+		return $this->nombre ;
+	}
+	
 }

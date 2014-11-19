@@ -2,6 +2,7 @@
 
 namespace Grupo3TallerUNLP\PlantillaBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -20,21 +21,18 @@ class PlantillaType extends AbstractType
      */
 	private function listFiltros()
 	{
-		// $em = $this->getDoctrine()->getManager();
-		$filtro = new FiltroRepository;
-        $entities = $filtro->findAll();
-		var_dump($entities);
-		die();
-		return $entities;
+		#$filtro= $this->getDoctrine()->getRepository('Grupo3TallerUNLPPlantillaBundle:Filtro')->findAll();
+        //$entities = $filtro->findAll();
+
+		#return $entities;
 	}
 	 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$filtros = $this->listFiltros();
         $builder
             ->add('nombre')
             ->add('descripcion', 'text', array('required'=>false))
-			->add($filtros[0].id, 'text', array('name'=>$filtros[0]))
+			//add('filtro', 'choice', array('mapped'=>false, 'choices' =>$this-> buildChoicesFiltro()))
 			// ->add('filtros', $options['datos']['filtros'])
 			// ->add('grupos', $options['datos']['grupos'])
 			// ->add('sitios', $options['datos']['sitios'])
@@ -46,6 +44,18 @@ class PlantillaType extends AbstractType
     /**
      * @param OptionsResolverInterface $resolver
      */
+	 
+	/**protected function buildChoicesFiltro(){
+		$choices = [];
+		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPPlantillaBundle:FiltroRed')->findAll();
+		
+		foreach($table as $t) {
+			$choices[$t->getId()] = $t->__toString();
+		}
+		return $choices;
+	}
+	**/
+	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

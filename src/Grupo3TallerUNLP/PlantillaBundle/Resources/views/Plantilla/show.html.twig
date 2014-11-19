@@ -8,16 +8,20 @@
     <dl class="dl-horizontal">
         <dt>Nombre</dt>
         <dd>{{ entity.nombre }}</dd>
-
+	{% if entity.descripcion|length > 0 %}
         <dt>Descripcion</dt>
         <dd>{{ entity.descripcion }}</dd>
-		
+	{% endif %}	
 		
 	{% if entity.informepredefinido|length > 0 %}
-			<dt>Informe Predefinido</dt>
-			<dd>{{ entity.informepredefinido }}</dd>
-		{% endif %}
-		
+		<dt>Informe Predefinido</dt>
+		<dd>{{ entity.informepredefinido }}</dd>
+	{% endif %}
+	
+	{% for ent in entity.valorfiltro %}
+		<dt> {{ ent.filtro.nombre }} </dt> 
+		<dd> {{ ent.valor }} </dd>
+	{% endfor %}
 		
 	</dl>
 	

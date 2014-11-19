@@ -10,10 +10,101 @@
 
 		{{ form_row(form.nombre) }}
 		{{ form_row(form.descripcion) }}
-		{% for f in form.filtros %}
-			{{ form_row(f.nombre) }}
-		{% endfor %}
-
+		
+		<div class="form-group">{# rango días #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[1].nombre }}</label>
+			<div class="col-lg-7"><input class="form-control" type="number" min="1" step="1" name="filtros[{{ datos.filtros[1].id }}]" /></div>
+		</div>
+		<div class="form-group">{# hora desde #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[2].nombre }}</label>
+			<div class="col-lg-7"><input class="form-control" type="time" name="filtros[{{ datos.filtros[2].id }}]" /></div>
+		</div>
+		<div class="form-group">{# hora hasta #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[3].nombre }}</label>
+			<div class="col-lg-7"><input class="form-control" type="time" name="filtros[{{ datos.filtros[3].id }}]" /></div>
+		</div>
+		<div class="form-group" id="div_oficina">{# oficina #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[4].nombre }}</label>
+			<div class="col-lg-7">
+				<select class="form-control" name="filtros[{{ datos.filtros[4].id }}]">
+					<option value=""></option>
+					{% for f in datos.oficinas %}
+					<option value="{{f.id}}">{{ f }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			
+		</div>
+		<div class="form-group" id="div_usuario">{# usuario #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[5].nombre }}</label>
+			<div class="col-lg-7">
+				<select class="form-control" name="filtros[{{ datos.filtros[5].id }}]">
+					<option value=""></option>
+					{% for u in datos.usuarios %}
+					<option value="{{u.id}}">{{ u }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group" id="div_ip">{# ip #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[6].nombre }}</label>
+			<div class="col-lg-7 row">
+				<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][0]" min="0" max="255" step="1" /></div>
+				<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][1]" min="0" max="255" step="1" /></div>
+				<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][2]" min="0" max="255" step="1" /></div>
+				<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][3]" min="0" max="255" step="1" /> </div>
+			</div>
+		</div>
+		<div id="div_rango">
+			<div class="form-group" >{# ip desde #}
+				<label class="col-lg-3 control-label">{{ datos.filtros[7].nombre }}</label>
+				<div class="col-lg-7 row">
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][0]" min="0" max="255" step="1" /></div>
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][1]" min="0" max="255" step="1" /></div>
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][2]" min="0" max="255" step="1" /></div>
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][3]" min="0" max="255" step="1" /> </div>
+				</div>
+			</div>
+			<div class="form-group">{# ip hasta #}
+				<label class="col-lg-3 control-label">{{ datos.filtros[8].nombre }}</label>
+				<div class="col-lg-7 row">
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][0]" min="0" max="255" step="1" /></div>
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][1]" min="0" max="255" step="1" /></div>
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][2]" min="0" max="255" step="1" /></div>
+					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][3]" min="0" max="255" step="1" /> </div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group" id="div_grupo">{# grupo sitios #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[9].nombre }}</label>
+			<div class="col-lg-7">
+				<select class="form-control" name="filtros[{{ datos.filtros[9].id }}]">
+					<option value=""></option>
+					{% for g in datos.grupos %}
+					<option value="{{g.id}}">{{ g }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group" id="div_sitio">{# sitios #}
+			<label class="col-lg-3 control-label">{{ datos.filtros[10].nombre }}</label>
+			<div class="col-lg-7">
+				<select class="form-control" name="filtros[{{ datos.filtros[10].id }}]">
+					<option value=""></option>
+					{% for s in datos.sitios %}
+					<option value="{{s.id}}">{{ s }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">{# trafico denegado #}
+			<div class="col-lg-offset-3 col-lg-7">
+				<div class="checkbox">
+					<label><input type="checkbox" name="filtros[{{ datos.filtros[11].id }}]" /> {{ datos.filtros[11].nombre }}</label>
+				</div>
+			</div>
+		</div>
+		
         <div class="col-lg-offset-3 col-lg-7">
             <p>
                 {{ form_widget(form.submit) }}

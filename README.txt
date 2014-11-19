@@ -6,8 +6,7 @@ de los casos de uso
 	-abm de usuario del sistema
 	-modificar datos personales
 
-	-ABM de plantillas
-
+	-falta modificacion
 
 	-Generar Informe
 	-Exportar informe
@@ -20,3 +19,6 @@ de los casos de uso
 
 	-Alta de Informacion del log
 	-Mantenimiento de la base de datos
+
+	-usuario de red estandar
+
