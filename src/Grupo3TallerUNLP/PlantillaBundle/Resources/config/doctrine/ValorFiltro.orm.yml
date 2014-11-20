@@ -24,5 +24,6 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro:
             inversedBy: valorfiltro
             joinColumn: 
                 name: plantilla_id
-                referencedColumnName: id   
+                referencedColumnName: id
+                onDelete: "CASCADE"				
     lifecycleCallbacks: {  }

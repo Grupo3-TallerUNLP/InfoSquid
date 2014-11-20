@@ -17,11 +17,15 @@
 		</div>
 		<div class="form-group">{# hora desde #}
 			<label class="col-lg-3 control-label">{{ datos.filtros[2].nombre }}</label>
-			<div class="col-lg-7"><input class="form-control" type="time" name="filtros[{{ datos.filtros[2].id }}]" /></div>
+			<div class="col-lg-7"><input class="form-control" type="time" name="filtros[{{ datos.filtros[2].id }}]" />
+			<span class="help-block">Formato hh:mm</span>
+			</div>
 		</div>
 		<div class="form-group">{# hora hasta #}
 			<label class="col-lg-3 control-label">{{ datos.filtros[3].nombre }}</label>
-			<div class="col-lg-7"><input class="form-control" type="time" name="filtros[{{ datos.filtros[3].id }}]" /></div>
+			<div class="col-lg-7"><input class="form-control" type="time" name="filtros[{{ datos.filtros[3].id }}]" />
+			<span class="help-block">Formato hh:mm</span>
+			</div>
 		</div>
 		<div class="form-group" id="div_oficina">{# oficina #}
 			<label class="col-lg-3 control-label">{{ datos.filtros[4].nombre }}</label>

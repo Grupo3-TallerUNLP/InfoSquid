@@ -45,7 +45,7 @@ class PlantillaController extends Controller
 	 
 	private function listFiltros()
 	{
-		$choices = [];
+		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPPlantillaBundle:Filtro')->findAll();
 		
 		foreach($table as $t) {
@@ -56,7 +56,7 @@ class PlantillaController extends Controller
 	
 	private function listGrupos()
 	{
-		$choices = [];
+		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
 		
 		foreach($table as $t) {
@@ -67,7 +67,7 @@ class PlantillaController extends Controller
 	
 	private function listSitios()
 	{
-		$choices = [];
+		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
 		
 		foreach($table as $t) {
@@ -78,7 +78,7 @@ class PlantillaController extends Controller
 	
 	private function listOficinas()
 	{
-		$choices = [];
+		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
 		
 		foreach($table as $t) {
@@ -89,7 +89,7 @@ class PlantillaController extends Controller
 	
 	private function listUsuarios()
 	{
-		$choices = [];
+		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->findAll();
 		
 		foreach($table as $t) {
@@ -128,7 +128,6 @@ class PlantillaController extends Controller
 			} else {
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($entity);
-				$em->flush();
 				foreach ($validos as $valido){
 					$valorFiltro = new ValorFiltro();
 					$valorFiltro->setPlantilla($entity);
@@ -139,10 +138,10 @@ class PlantillaController extends Controller
 						$valorFiltro->setValor($filtros[$valido]);
 					}
 					$em->persist($valorFiltro);
-					$em->flush();
 				}
+				$em->flush();
+				
 				$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-
 				return $this->redirect($this->generateUrl('plantilla', array('id' => $entity->getId())));
 			}
         }
@@ -276,18 +275,52 @@ class PlantillaController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $em->flush();
-			
-			$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-            return $this->redirect($this->generateUrl('plantilla', array('id' => $id)));
-        }
-
+			$filtros = $request->request->get('filtros');
+			$validos = array();
+			$error = $this->validarFiltros($filtros, $validos);
+			if (!is_null($error)) {
+				$this->get('session')->getFlashBag()->add('error', $error);
+			} else {
+				$valorfiltros = $entity->getValorfiltro();
+				foreach ($valorfiltros as $valorfiltro){
+					$idFiltro = $valorfiltro->getFiltro()->getId();
+					if (in_array($idFiltro, $validos)){
+						if (is_array($filtros[$idFiltro])) {
+							$valorfiltro->setValor(implode('.', $filtros[$idFiltro]));
+						}else{
+							$valorfiltro->setValor($filtros[$idFiltro]);
+						}
+						unset($validos[$idFiltro]);
+					}
+					else{
+						$entity->removeValorfiltro($valorfiltro);
+						$em->remove($valorfiltro);
+					}
+				}
+				foreach ($validos as $valido){
+					$valorFiltro = new ValorFiltro();
+					$valorFiltro->setPlantilla($entity);
+					$valorFiltro->setFiltro($em->getRepository('Grupo3TallerUNLPPlantillaBundle:Filtro')->find($valido));
+					if (is_array($filtros[$valido])) {
+						$valorFiltro->setValor(implode('.', $filtros[$valido]));
+					} else {
+						$valorFiltro->setValor($filtros[$valido]);
+					}
+					$em->persist($valorFiltro);
+				}
+				$em->persist($entity);
+				$em->flush();
+				
+				$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+				return $this->redirect($this->generateUrl('plantilla', array('id' => $entity->getId())));
+			}
+		}
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+			'datos'  => $this->lists(),
         ));
-    }
+	}
     /**
      * Deletes a Plantilla entity.
      *

@@ -21,4 +21,5 @@ Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido:
             joinColumn:
                 name: plantilla
                 referencedColumnName: id
+                onDelete: "CASCADE"
     lifecycleCallbacks: {  }
