@@ -48,7 +48,7 @@ class UsuarioRedController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-            return $this->redirect($this->generateUrl('usuariored', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('usuariored'));
         }
 
         return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:new.html.twig', array(
@@ -176,7 +176,7 @@ class UsuarioRedController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
             $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-            return $this->redirect($this->generateUrl('usuariored', array('id' => $id)));
+            return $this->redirect($this->generateUrl('usuariored'));
         }
 
         return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:edit.html.twig', array(

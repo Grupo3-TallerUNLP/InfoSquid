@@ -5,6 +5,7 @@ namespace Grupo3TallerUNLP\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class UserType extends AbstractType
 {
@@ -16,11 +17,17 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('password')
+            ->add('password', 'password', array('required' => $options['required']))
             ->add('email')
+            ->add('usuariored', 'entity', array('class'=>'Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed'))
+            ->add('administrador', 'checkbox', array(
+                'label'    => 'Administrador',
+                'required' => false,
+            ))
+            ->add('enabled', null, array('label'=>'Activado'))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

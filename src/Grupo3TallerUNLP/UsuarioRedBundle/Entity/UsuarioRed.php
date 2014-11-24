@@ -39,6 +39,11 @@ class UsuarioRed
      */
     private $hosts;
 
+    /**
+     * @var Grupo3TallerUNLPUserBundle:User
+     */
+    private $usuarioSistema;
+
 
     /**
      * Get id
@@ -211,10 +216,33 @@ class UsuarioRed
     /**
      * Get oficina
      *
-     * @return \Grupo3TallerUNLP\OficinaBundle\Entity\Oficina 
+     * @return \Grupo3TallerUNLP\OficinaBundle\Entity\Oficina
      */
     public function getOficina()
     {
         return $this->oficina;
+    }
+
+    /**
+     * Set usuarioSistema
+     *
+     * @param \Grupo3TallerUNLP\UserBundle\Entity\User $usuarioSistema
+     * @return UsuarioRed
+     */
+    public function setUsuarioSistema(\Grupo3TallerUNLP\UserBundle\Entity\User $usuarioSistema = null)
+    {
+        $this->usuarioSistema = $usuarioSistema;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioSistema
+     *
+     * @return \Grupo3TallerUNLP\UserBundle\Entity\User 
+     */
+    public function getUsuarioSistema()
+    {
+        return $this->usuarioSistema;
     }
 }

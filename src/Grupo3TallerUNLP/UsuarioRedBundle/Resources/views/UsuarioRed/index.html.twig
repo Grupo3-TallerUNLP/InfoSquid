@@ -19,6 +19,7 @@
                 <th>Apellido</th>
                 <th>Cargo </th>
                 <th>Dni</th>
+                <th>Usuario de Sistema</th>
 				<th>Oficina</th>
 				<th>Host</th>
                 <th class="col-xs-1">Acciones</th>
@@ -31,6 +32,7 @@
                 <td>{{ entity.apellido }}</td>
                 <td>{{ entity.cargo }} </td>
                 <td>{{ entity.dNI }} </td>
+                <td>{{ entity.usuariosistema }} </td>
 				<td>{{ entity.oficina }}</td>
 				<td>
 					{% if entity.hosts|length > 0 %}
@@ -53,7 +55,7 @@
     <nav class="text-center">
         {{ knp_pagination_render(pagination) }}
     </nav>
-	
+
 	<script>
 	window.onload = function () {
 		$('[data-toggle="popover"]').popover({

@@ -27,7 +27,7 @@ class OficinaController extends Controller
 
 		$paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
-		
+
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:index.html.twig', array(
             'pagination' => $pagination,
         ));
@@ -48,7 +48,7 @@ class OficinaController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('oficina', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('oficina'));
         }
 
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:new.html.twig', array(
@@ -176,11 +176,11 @@ class OficinaController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-		
-            return $this->redirect($this->generateUrl('oficina', array('id' => $id)));
+
+            return $this->redirect($this->generateUrl('oficina'));
         }
 
-		
+
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
@@ -201,7 +201,7 @@ class OficinaController extends Controller
             $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
             $user = $entity->getDirector();
 			$hosts = $entity->getHosts();
-			
+
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Oficina entity.');
             }
@@ -210,7 +210,7 @@ class OficinaController extends Controller
 				return $this->redirect($this->generateUrl('oficina'));
 			}
 			else{
-	
+
 				$em->remove($entity);
 				$em->flush();
 				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
@@ -219,8 +219,8 @@ class OficinaController extends Controller
 			}
         }
 
-        
-    
+
+
 
     /**
      * Creates a form to delete a Oficina entity by id.

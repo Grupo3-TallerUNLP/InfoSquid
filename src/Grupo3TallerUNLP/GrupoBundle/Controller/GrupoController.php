@@ -48,7 +48,7 @@ class GrupoController extends Controller
             $em->flush();
 
 			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('grupo', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('grupo'));
         }
 
         return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:new.html.twig', array(
@@ -176,7 +176,7 @@ class GrupoController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('grupo', array('id' => $id)));
+            return $this->redirect($this->generateUrl('grupo'));
         }
 
         return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:edit.html.twig', array(
@@ -200,7 +200,7 @@ class GrupoController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Grupo entity.');
             }
-            
+
             $em->remove($entity);
             $em->flush();
         }

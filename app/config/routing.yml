@@ -26,9 +26,9 @@ grupo3_taller_unlp_host:
  #   resource: "@Grupo3TallerUNLPMenuBundle/Resources/config/routing.yml"
 #    prefix:   /
 
-# grupo3_taller_unlp_user:
-#     resource: "@Grupo3TallerUNLPUserBundle/Resources/config/routing.yml"
-#     prefix:   /user
+grupo3_taller_unlp_user:
+    resource: "@Grupo3TallerUNLPUserBundle/Resources/config/routing.yml"
+    prefix:   /admin/usuariosistema
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
@@ -57,7 +57,7 @@ Grupo3TallerUNLPUsuarioRedBundle_usuariored:
   resource: "@Grupo3TallerUNLPUsuarioRedBundle/Resources/config/routing.yml"
   prefix:  /admin/usuariored
 
-  
+
 grupo3_taller_unlp_plantilla:
     resource: "@Grupo3TallerUNLPPlantillaBundle/Resources/config/routing.yml"
     prefix: /plantilla

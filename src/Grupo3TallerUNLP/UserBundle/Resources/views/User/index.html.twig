@@ -1,13 +1,12 @@
 {% extends '::dashboard.html.twig' %}
 
 {% block content %}
-
 	<div class="page-header">
-        <h1>Usuarios de Red</h1>
+        <h1>Usuarios de Sistema</h1>
     </div>
 
 	<p>
-        <a href="{{ path('_new') }}" class="btn btn-primary">
+        <a href="{{ path('grupo3_taller_unlp_user_new') }}" class="btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span> Agregar Usuario
         </a>
     </p>
@@ -15,33 +14,25 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Cargo </th>
-                <th>Dni</th>
-				<th>Oficina</th>
-				<th>Host</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Activado</th>
+                <th>Administrador</th>
                 <th class="col-xs-1">Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr>
-                <td>{{ entity.nombre }} </td>
-                <td>{{ entity.apellido }}</td>
-                <td>{{ entity.cargo }} </td>
-                <td>{{ entity.dNI }} </td>
-				<td>{{ entity.oficina }}</td>
-				<td>
-					{% if entity.hosts|length > 0 %}
-					<a href="#" data-toggle="popover" data-content="<ul>{% for host in entity.hosts %}<li>{{ host }}</li>{% endfor %}</ul>">Ver</a>
-					{% endif %}
-				</td>
+                <td>{{ entity.username }} </td>
+                <td>{{ entity.email }}</td>
+                <td>{% if entity.enabled %}{{ icon('ok') }}{% else %}{{ icon('remove') }}{% endif %}</td>
+                <td>{% if entity.administrador %}{{ icon('ok') }}{% else %}{{ icon('remove') }}{% endif %}</td>
                 <td>
-				    <a href="{{ path('usuariored_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
+				    <a href="{{ path('grupo3_taller_unlp_user_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-pencil text-primary"></span>
                     </a>
-					<a href="{{ path('usuariored_show', {'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
+					<a href="{{ path('grupo3_taller_unlp_user_show', {'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-remove text-danger"></span>
                     </a>
 				</td>
@@ -53,7 +44,7 @@
     <nav class="text-center">
         {{ knp_pagination_render(pagination) }}
     </nav>
-	
+
 	<script>
 	window.onload = function () {
 		$('[data-toggle="popover"]').popover({
@@ -63,5 +54,4 @@
 		});
 	};
 	</script>
-
-    {% endblock %}
+{% endblock content %}

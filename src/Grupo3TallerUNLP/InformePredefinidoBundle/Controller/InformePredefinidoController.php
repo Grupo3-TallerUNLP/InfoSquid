@@ -43,9 +43,9 @@ class InformePredefinidoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-			
+
 			$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-            return $this->redirect($this->generateUrl('informepredefinido', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('informepredefinido'));
         }
 
         return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:new.html.twig', array(
@@ -174,7 +174,7 @@ class InformePredefinidoController extends Controller
             $em->flush();
 
 			$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-            return $this->redirect($this->generateUrl('informepredefinido', array('id' => $id)));
+            return $this->redirect($this->generateUrl('informepredefinido'));
         }
 
         return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:edit.html.twig', array(

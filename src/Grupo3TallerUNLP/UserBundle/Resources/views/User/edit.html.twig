@@ -1,0 +1,26 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Editar Usuario de Red</h1>
+    </div>
+
+    {{ form_start(edit_form, { 'style': 'horizontal', 'label_col': 3, 'widget_col': 7 }) }}
+        {{ form_errors(edit_form) }}
+
+        {{ form_row(edit_form.username) }}
+        {{ form_row(edit_form.password) }}
+        {{ form_row(edit_form.email) }}
+        {{ form_row(edit_form.usuariored) }}
+        <div class="col-lg-offset-3 col-lg-7">{{ form_row(edit_form.enabled) }}</div>
+        <div class="col-lg-offset-3 col-lg-7">{{ form_row(edit_form.administrador) }}</div>
+
+        <div class="col-lg-offset-3 col-lg-7">
+            <p>
+                {{ form_widget(edit_form.submit) }}
+                <a href="{{ path('grupo3_taller_unlp_user') }}" class="btn btn-default">Cancelar</a>
+            </p>
+        </div>
+
+    {{ form_end(edit_form) }}
+{% endblock content %}

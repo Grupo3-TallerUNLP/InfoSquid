@@ -23,15 +23,82 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\OneToOne(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", inversedBy="usuarioSistema")
+     * @ORM\JoinColumn(name="usuariored", referencedColumnName="id")
+     */
+    private $usuarioRed;
+
+    /**
      * Adds a role to the user
      * @throws Exception
      * @param Role $role
      */
     public function addRole($role)
     {
-        switch ($role) {
-            case 1: $this->roles = array('ROLE_USER'); break;
-            case 2: $this->roles = array('ROLE_ADMIN'); break;
+        $this->roles = array($role);
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set usuarioRed
+     *
+     * @param \Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $usuarioRed
+     * @return User
+     */
+    public function setUsuarioRed(\Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed $usuarioRed = null)
+    {
+        $this->usuarioRed = $usuarioRed;
+
+        return $this;
+    }
+
+    /**
+     * Get usuarioRed
+     *
+     * @return \Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed
+     */
+    public function getUsuarioRed()
+    {
+        return $this->usuarioRed;
+    }
+
+    /**
+     *
+     */
+    public function setAdministrador($administrador)
+    {
+        if ($administrador) {
+            $this->setRoles(array('ROLE_ADMIN'));
+        } else {
+            $this->setRoles(array('ROLE_USER'));
         }
+
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function getAdministrador()
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles());
+    }
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setEnabled(true);
     }
 }

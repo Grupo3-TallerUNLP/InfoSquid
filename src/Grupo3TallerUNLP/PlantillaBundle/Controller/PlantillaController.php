@@ -42,62 +42,62 @@ class PlantillaController extends Controller
      * Creates a new Plantilla entity.
      *
      */
-	 
+
 	private function listFiltros()
 	{
 		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPPlantillaBundle:Filtro')->findAll();
-		
+
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;
 		}
 		return $choices;
 	}
-	
+
 	private function listGrupos()
 	{
 		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
-		
+
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;
 		}
 		return $choices;
 	}
-	
+
 	private function listSitios()
 	{
 		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
-		
+
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;
 		}
 		return $choices;
 	}
-	
+
 	private function listOficinas()
 	{
 		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
-		
+
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;
 		}
 		return $choices;
 	}
-	
+
 	private function listUsuarios()
 	{
 		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->findAll();
-		
+
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;
 		}
 		return $choices;
 	}
-	
+
 	private function lists()
 	{
 		$filtros = $this->listFiltros();
@@ -112,10 +112,10 @@ class PlantillaController extends Controller
 					'usuarios' => $usuarios);
 		return $datos;
 	}
-	
+
     public function createAction(Request $request)
     {
-		
+
         $entity = new Plantilla();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -140,9 +140,9 @@ class PlantillaController extends Controller
 					$em->persist($valorFiltro);
 				}
 				$em->flush();
-				
+
 				$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-				return $this->redirect($this->generateUrl('plantilla', array('id' => $entity->getId())));
+				return $this->redirect($this->generateUrl('plantilla'));
 			}
         }
 
@@ -150,12 +150,12 @@ class PlantillaController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
 			'datos'  => $this->lists(),
-			
-			
+
+
         ));
     }
 
-	
+
     /**
      * Creates a form to create a Plantilla entity.
      *
@@ -200,7 +200,7 @@ class PlantillaController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
-	
+
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
@@ -252,7 +252,7 @@ class PlantillaController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
     }
@@ -310,9 +310,9 @@ class PlantillaController extends Controller
 				}
 				$em->persist($entity);
 				$em->flush();
-				
+
 				$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-				return $this->redirect($this->generateUrl('plantilla', array('id' => $entity->getId())));
+				return $this->redirect($this->generateUrl('plantilla'));
 			}
 		}
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:edit.html.twig', array(
@@ -341,7 +341,7 @@ class PlantillaController extends Controller
             $em->remove($entity);
             $em->flush();
         }
-		
+
 		$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
         return $this->redirect($this->generateUrl('plantilla'));
     }
@@ -358,11 +358,11 @@ class PlantillaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('plantilla_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Eliminar'))
             ->getForm()
         ;
     }
-	
+
 	/**
 	 * Comprueba que haya al menos un filtro y que los enviados sean válidos
 	 */

@@ -33,6 +33,7 @@ assetic:
     bundles:
         - Grupo3TallerUNLPUserBundle
         - FOSUserBundle
+        - Grupo3TallerUNLPPlantillaBundle
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

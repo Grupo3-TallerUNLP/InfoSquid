@@ -1,0 +1,26 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Nuevo Usuario de Sistema</h1>
+    </div>
+
+    {{ form_start(form, { 'style': 'horizontal', 'label_col': 3, 'widget_col': 7 }) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.username) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.usuariored) }}
+        <div class="col-lg-offset-3 col-lg-7">{{ form_row(form.enabled) }}</div>
+        <div class="col-lg-offset-3 col-lg-7">{{ form_row(form.administrador) }}</div>
+
+        <div class="col-lg-offset-3 col-lg-7">
+            <p>
+                {{ form_widget(form.submit) }}
+                <a href="{{ path('grupo3_taller_unlp_user') }}" class="btn btn-default">Cancelar</a>
+            </p>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock content %}

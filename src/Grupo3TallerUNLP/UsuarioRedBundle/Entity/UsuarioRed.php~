@@ -39,6 +39,11 @@ class UsuarioRed
      */
     private $hosts;
 
+    /**
+     * @var Grupo3TallerUNLPUserBundle:User
+     */
+    private $usuarioSistema;
+
 
     /**
      * Get id
@@ -211,7 +216,7 @@ class UsuarioRed
     /**
      * Get oficina
      *
-     * @return \Grupo3TallerUNLP\OficinaBundle\Entity\Oficina 
+     * @return \Grupo3TallerUNLP\OficinaBundle\Entity\Oficina
      */
     public function getOficina()
     {

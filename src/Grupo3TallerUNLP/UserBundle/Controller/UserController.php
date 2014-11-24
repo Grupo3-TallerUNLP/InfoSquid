@@ -29,16 +29,19 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('Grupo3TallerUNLPUserBundle:User')->findAll();
+        $query = $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u');
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
         );
     }
     /**
      * Creates a new User entity.
      *
-     * @Route("/", name="user_create")
+     * @Route("/", name="grupo3_taller_unlp_user_create")
      * @Method("POST")
      * @Template("Grupo3TallerUNLPUserBundle:User:new.html.twig")
      */
@@ -53,7 +56,8 @@ class UserController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+            return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
         }
 
         return array(
@@ -72,11 +76,12 @@ class UserController extends Controller
     private function createCreateForm(User $entity)
     {
         $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_create'),
-            'method' => 'POST',
+            'action'   => $this->generateUrl('grupo3_taller_unlp_user_create'),
+            'method'   => 'POST',
+            'required' => true,
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
     }
@@ -84,7 +89,7 @@ class UserController extends Controller
     /**
      * Displays a form to create a new User entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new", name="grupo3_taller_unlp_user_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +107,7 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="grupo3_taller_unlp_user_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +132,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", name="grupo3_taller_unlp_user_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,18 +166,19 @@ class UserController extends Controller
     private function createEditForm(User $entity)
     {
         $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+            'action'   => $this->generateUrl('grupo3_taller_unlp_user_update', array('id' => $entity->getId())),
+            'method'   => 'PUT',
+            'required' => false,
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
     }
     /**
      * Edits an existing User entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", name="grupo3_taller_unlp_user_update")
      * @Method("PUT")
      * @Template("Grupo3TallerUNLPUserBundle:User:edit.html.twig")
      */
@@ -193,7 +199,8 @@ class UserController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+            return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
         }
 
         return array(
@@ -205,7 +212,7 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", name="grupo3_taller_unlp_user_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +232,7 @@ class UserController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user'));
+        return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
     }
 
     /**
@@ -238,9 +245,9 @@ class UserController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('grupo3_taller_unlp_user_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Eliminar'))
             ->getForm()
         ;
     }

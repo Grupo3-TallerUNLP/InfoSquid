@@ -4,6 +4,7 @@ de lo que tenemos:
 
 de los casos de uso
 	-abm de usuario del sistema
+		- falta la creación/modificación de contraseña
 	-modificar datos personales
 
 	-falta modificacion
@@ -20,5 +21,4 @@ de los casos de uso
 	-Alta de Informacion del log
 	-Mantenimiento de la base de datos
 
-	-usuario de red estandar
-
+	-usuario de sistema estandar

@@ -24,10 +24,10 @@ class SitioController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->createQueryBuilder('u');
-	
+
 		$paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
-		
+
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:index.html.twig', array(
             'pagination' => $pagination,
         ));
@@ -48,7 +48,7 @@ class SitioController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('sitio', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('sitio'));
         }
 
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:new.html.twig', array(
@@ -176,7 +176,7 @@ class SitioController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('sitio', array('id' => $id)));
+            return $this->redirect($this->generateUrl('sitio'));
         }
 
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:edit.html.twig', array(

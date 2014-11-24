@@ -47,4 +47,9 @@ Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed:
     joinColumn:
         name: oficina
         referencedColumnName: id
+    # relacion con usuario de sistema
+    oneToOne:
+        usuarioSistema:
+            targetEntity: Grupo3TallerUNLP\UserBundle\Entity\User
+            mappedBy: usuarioRed
     lifecycleCallbacks: {  }

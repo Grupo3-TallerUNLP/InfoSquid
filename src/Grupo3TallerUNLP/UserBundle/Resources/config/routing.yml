@@ -1,3 +1,42 @@
-# grupo3_taller_unlp_user_homepage:
-#     path:     /hello/{name}
-#     defaults: { _controller: Grupo3TallerUNLPUserBundle:Default:index }
+grupo3_taller_unlp_user:
+    path:     /
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:index }
+    methods:  GET
+
+grupo3_taller_unlp_user_create:
+    path:     /
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:create }
+    methods:  POST
+
+grupo3_taller_unlp_user_new:
+    path:     /new
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:new }
+    methods:  GET
+
+grupo3_taller_unlp_user_show:
+    path:     /{id}
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:show }
+    methods:  GET
+    requirements:
+        id: \d+
+
+grupo3_taller_unlp_user_edit:
+    path:     /{id}/edit
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:edit }
+    methods:  GET
+    requirements:
+        id: \d+
+
+grupo3_taller_unlp_user_update:
+    path:     /{id}
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:update }
+    methods:  PUT
+    requirements:
+        id: \d+
+
+grupo3_taller_unlp_user_delete:
+    path:     /{id}
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:delete }
+    methods:  DELETE
+    requirements:
+        id: \d+
