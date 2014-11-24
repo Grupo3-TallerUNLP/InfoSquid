@@ -33,35 +33,37 @@
 				</div>
 				<label class="col-xs-3 control-label">{{ datos.filtros[3].nombre }}</label>
 				<div class="col-xs-4">
-					<input class="form-control" type="time" name="filtros[{{ datos.filtros[3].id }}]" /> 
+					<input class="form-control" type="time" name="filtros[{{ datos.filtros[3].id }}]" />
 					<span class="help-block">Formato hh:mm</span>
 				</div>
-				
+
 			</div>
 		</div>
-		
+
 		<div class="form-group">
 			<label class="col-lg-3 control-label">Filtrar por</label>
 			<div class="col-lg-7 row">
 				<div class="col-lg-8">
-					<div class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-primary"><input type="radio" name="filtro1"  onchange="mostrarOficina()" > Oficina </label>
-						<label class="btn btn-primary"><input type="radio" name="filtro1" onchange="mostrarusuarioespecifico()" > Usuario </label>
-						<label class="btn btn-primary"> <input type="radio" name="filtro1" onchange="mostrarip()" > IP </label>
-						<label class="btn btn-primary"> <input type="radio" name="filtro1" onchange="mostrarrangoip()" > Rango IP </label>
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default"><input type="radio" name="filtro1" value="4" onchange="mostrarOficina()">Oficina</label>
+						<label class="btn btn-default"><input type="radio" name="filtro1" value="5" onchange="mostrarusuarioespecifico()">Usuario</label>
+						<label class="btn btn-default"><input type="radio" name="filtro1" value="6" onchange="mostrarip()">IP</label>
+						<label class="btn btn-default"><input type="radio" name="filtro1" value="7" onchange="mostrarrangoip()">Rango IP</label>
+						<label class="btn btn-default active"><input type="radio" name="filtro1" value="0" onchange="ocultarfiltro1()" checked="checked">{{ icon('remove') }}</label>
 					</div>
 				</div>
 				<div class="col-lg-4">
-					<div class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-primary"> <input type="radio" name="filtro2" onchange="mostrargrupo()" > Grupo </label>
-						<label class="btn btn-primary"><input type="radio" name="filtro2" onchange="mostrarsitio()" > Sitio </label>
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default"><input type="radio" name="filtro2" value="9" onchange="mostrargrupo()">Grupo</label>
+						<label class="btn btn-default"><input type="radio" name="filtro2" value="10" onchange="mostrarsitio()">Sitio</label>
+						<label class="btn btn-default active"><input type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()" checked="checked">{{ icon('remove') }}</label>
 					</div>
 				</div>
-				
-				
+
+
 			</div>
 		</div>
-		
+
 		<div class="form-group" id="div_oficina" style='display:none;'>{# oficina #}
 			<label class="col-lg-3 control-label">{{ datos.filtros[4].nombre }}</label>
 			<div class="col-lg-7">

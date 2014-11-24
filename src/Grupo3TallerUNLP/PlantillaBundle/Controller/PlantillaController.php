@@ -120,9 +120,11 @@ class PlantillaController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
         if ($form->isValid()) {
-			$filtros = $request->request->get('filtros');
+            $filtros = $request->request->get('filtros');
+            $filtro1 = $request->request->get('filtro1');
+			$filtro2 = $request->request->get('filtro2');
 			$validos = array();
-			$error = $this->validarFiltros($filtros, $validos);
+			$error = $this->validarFiltros($filtros, $filtro1, $filtro2, $validos);
 			if (!is_null($error)) {
 				$this->get('session')->getFlashBag()->add('error', $error);
 			} else {
@@ -276,8 +278,10 @@ class PlantillaController extends Controller
 
         if ($editForm->isValid()) {
 			$filtros = $request->request->get('filtros');
+            $filtro1 = $request->request->get('filtro1');
+            $filtro2 = $request->request->get('filtro2');
 			$validos = array();
-			$error = $this->validarFiltros($filtros, $validos);
+			$error = $this->validarFiltros($filtros, $filtro1, $filtro2, $validos);
 			if (!is_null($error)) {
 				$this->get('session')->getFlashBag()->add('error', $error);
 			} else {
@@ -366,24 +370,26 @@ class PlantillaController extends Controller
 	/**
 	 * Comprueba que haya al menos un filtro y que los enviados sean válidos
 	 */
-	private function validarFiltros($filtros, &$validos)
+	private function validarFiltros($filtros, $filtro1, $filtro2, &$validos)
 	{
 		$ok = false;
 		$validos = array();
 		foreach ($filtros as $id => $f){
-			if(is_array($f)){
-				if ((!empty($f[0]) || $f[0]=='0') && (!empty($f[1]) || $f[1]=='0') && (!empty($f[2]) || $f[2]=='0') && (!empty($f[3]) || $f[3]=='0')) {
-					$ok = true;
-					$validos[$id] = $id;
-				}
-			} else{
-				If (!empty ($f)){
-					$ok=true;
-					$validos[$id] = $id;
-				}
-			}
+            if (in_array($id, array(1,2,3,11)) || $id == $filtro1 || $id == $filtro2 || ($filtro1 == 7 && $id == 8)) {
+                if (is_array($f)) {
+                    if ((!empty($f[0]) || $f[0]=='0') && (!empty($f[1]) || $f[1]=='0') && (!empty($f[2]) || $f[2]=='0') && (!empty($f[3]) || $f[3]=='0')) {
+                        $ok = true;
+                        $validos[$id] = $id;
+                    }
+                } else {
+                    If (!empty ($f)){
+                        $ok=true;
+                        $validos[$id] = $id;
+                    }
+                }
+            }
 		}
-		if(!$ok){
+		if (!$ok) {
 			return 'Debe completar al menos un filtro';
 		} else {
 			if (in_array(1, $validos) && !preg_match('/^\d+$/', $filtros[1])) {

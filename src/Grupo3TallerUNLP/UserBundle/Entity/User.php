@@ -101,4 +101,12 @@ class User extends BaseUser
         parent::__construct();
         $this->setEnabled(true);
     }
+
+    /**
+     *
+     */
+    public function __toString()
+    {
+        return $this->getUsuarioRed() .' ('. $this->username .')';
+    }
 }

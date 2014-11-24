@@ -21,12 +21,17 @@ class UserType extends AbstractType
                 ->add('plainPassword', null, array('label'=>'Contraseña'))
                 ;
         }
-        $builder
-            ->add('email')
-            ->add('usuariored', 'entity', array(
+
+        $builder->add('email');
+
+        if ($options['required']) {
+            $builder->add('usuariored', 'entity', array(
                 'class' => 'Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed',
                 'label' => 'Usuario de Red',
-            ))
+            ));
+        }
+
+        $builder
             ->add('administrador', 'checkbox', array(
                 'label'    => 'Administrador',
                 'required' => false,

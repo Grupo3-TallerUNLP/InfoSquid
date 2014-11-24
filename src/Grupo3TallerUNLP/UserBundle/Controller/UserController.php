@@ -53,11 +53,32 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-            return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
+            $repo = $em->getRepository('Grupo3TallerUNLPUserBundle:User');
+
+            // username unico
+            $user = $repo->findOneByUsername($entity->getUsername());
+            if (!$user) {
+                // email unico
+                $user = $repo->findOneByEmail($entity->getEmail());
+                if (!$user) {
+                    // usuario red unico
+                    $user = $repo->findOneByUsuarioRed($entity->getUsuarioRed());
+                    if (!$user) {
+                        $em->persist($entity);
+                        $em->flush();
+
+                        $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+                        return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
+                    } else {
+                        $this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario de sistema para ese usuario de red');
+                    }
+                } else {
+                    $this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese email');
+                }
+            } else {
+                $this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese nombre de usuario');
+            }
         }
 
         return array(
@@ -185,8 +206,8 @@ class UserController extends Controller
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('Grupo3TallerUNLPUserBundle:User')->find($id);
+        $repo = $em->getRepository('Grupo3TallerUNLPUserBundle:User');
+        $entity = $repo->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -197,10 +218,15 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $em->flush();
+            $user = $repo->findOneByEmail($entity->getEmail());
+            if (!$user || $user->getId() == $entity->getId()) {
+                $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-            return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
+                $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+                return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
+            } else {
+                $this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese email');
+            }
         }
 
         return array(
