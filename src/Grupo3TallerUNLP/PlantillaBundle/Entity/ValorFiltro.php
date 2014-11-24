@@ -23,7 +23,7 @@ class ValorFiltro
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -46,7 +46,7 @@ class ValorFiltro
     /**
      * Get valor
      *
-     * @return string 
+     * @return string
      */
     public function getValor()
     {
@@ -74,13 +74,13 @@ class ValorFiltro
     /**
      * Get plantilla
      *
-     * @return \Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla 
+     * @return \Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
      */
     public function getPlantilla()
     {
         return $this->plantilla;
     }
-	
+
     /**
      * @var \Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro
      */
@@ -103,10 +103,15 @@ class ValorFiltro
     /**
      * Get filtro
      *
-     * @return \Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro 
+     * @return \Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro
      */
     public function getFiltro()
     {
         return $this->filtro;
     }
+
+    /**
+     * @var integer
+     */
+    private $filtroId;
 }

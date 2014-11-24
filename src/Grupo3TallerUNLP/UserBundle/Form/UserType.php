@@ -15,17 +15,24 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['required']) {
+            $builder
+                ->add('username', null, array('label'=>'Nombre de usuario'))
+                ->add('plainPassword', null, array('label'=>'Contraseña'))
+                ;
+        }
         $builder
-            ->add('username')
-            ->add('password', 'password', array('required' => $options['required']))
             ->add('email')
-            ->add('usuariored', 'entity', array('class'=>'Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed'))
+            ->add('usuariored', 'entity', array(
+                'class' => 'Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed',
+                'label' => 'Usuario de Red',
+            ))
             ->add('administrador', 'checkbox', array(
                 'label'    => 'Administrador',
                 'required' => false,
             ))
             ->add('enabled', null, array('label'=>'Activado'))
-        ;
+            ;
     }
 
     /**

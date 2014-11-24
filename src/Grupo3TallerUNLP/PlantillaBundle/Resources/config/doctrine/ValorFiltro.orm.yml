@@ -12,18 +12,21 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro:
         valor:
             type: string
             length: 255
+        filtroId:
+            type: integer
+            column: filtro_id
     manyToOne:
         filtro:
             targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Filtro
             inversedBy: valorfiltro
-            joinColumn: 
+            joinColumn:
                 name: filtro_id
                 referencedColumnName: id
         plantilla:
             targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
             inversedBy: valorfiltro
-            joinColumn: 
+            joinColumn:
                 name: plantilla_id
                 referencedColumnName: id
-                onDelete: "CASCADE"				
+                onDelete: "CASCADE"
     lifecycleCallbacks: {  }

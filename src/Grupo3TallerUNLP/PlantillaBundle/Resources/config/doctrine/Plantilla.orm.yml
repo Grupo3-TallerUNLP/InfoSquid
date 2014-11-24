@@ -15,7 +15,7 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla:
         descripcion:
             type: string
             length: 255
-            nullable: true		
+            nullable: true
     oneToOne:
         informepredefinido:
             targetEntity: Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido
@@ -23,6 +23,7 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla:
             nullable: true
     oneToMany:
         valorfiltro:
+            orderBy: { 'filtroId': 'ASC' }
             targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro
             mappedBy: plantilla
     lifecycleCallbacks: {  }

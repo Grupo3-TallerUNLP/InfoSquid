@@ -6,12 +6,16 @@
 </div>
 
 <dl class="dl-horizontal">
-    <dt>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}</dt> <dd>{{ user.username }}</dd>
-    <dt>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}</dt> <dd>{{ user.email }}</dd>
+    <dt>Nombre de usuario</dt> <dd>{{ user.username }}</dd>
+    <dt>Email</dt> <dd>{{ user.email }}</dd>
+    <dt>Nombre</dt> <dd>{{ user.usuariored.nombre }}</dd>
+    <dt>Apellido</dt> <dd>{{ user.usuariored.apellido }}</dd>
+    <dt>Cargo</dt> <dd>{{ user.usuariored.cargo }}</dd>
+    <dt>DNI</dt> <dd>{{ user.usuariored.dNI }}</dd>
 </dl>
 
 <div class="col-md-offset-1">
-    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary">{{ 'profile.edit'|trans({}, 'Grupo3TallerUNLPUserBundle') }}</a>
-    <a href="{{ path('fos_user_change_password') }}" class="btn btn-primary">{{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a>
+    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-primary">Editar</a>
+    <a href="{{ path('fos_user_change_password') }}" class="btn btn-primary">Cambiar contraseña</a>
 </div>
 {% endblock content %}

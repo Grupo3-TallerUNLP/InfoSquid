@@ -16,8 +16,10 @@
             <tr>
                 <th>Usuario</th>
                 <th>Email</th>
-                <th>Activado</th>
                 <th>Administrador</th>
+                <th>Activado</th>
+                <th>Oficina</th>
+                <th>Usuario de red</th>
                 <th class="col-xs-1">Acciones</th>
             </tr>
         </thead>
@@ -26,8 +28,10 @@
             <tr>
                 <td>{{ entity.username }} </td>
                 <td>{{ entity.email }}</td>
-                <td>{% if entity.enabled %}{{ icon('ok') }}{% else %}{{ icon('remove') }}{% endif %}</td>
                 <td>{% if entity.administrador %}{{ icon('ok') }}{% else %}{{ icon('remove') }}{% endif %}</td>
+                <td>{% if entity.enabled %}{{ icon('ok') }}{% else %}{{ icon('remove') }}{% endif %}</td>
+                <td>{{ entity.usuariored.oficina }}</td>
+                <td>{{ entity.usuariored }}</td>
                 <td>
 				    <a href="{{ path('grupo3_taller_unlp_user_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-pencil text-primary"></span>
