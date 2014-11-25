@@ -73,9 +73,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Grupo3TallerUNLP\UserBundle\Entity\User
-    registration:
+    profile:
         form:
-            type: grupo3_taller_unlp_user_registration
+            type: grupo3tallerunlp_profile
 
 # Braincrafted Bootstrap
 braincrafted_bootstrap:
