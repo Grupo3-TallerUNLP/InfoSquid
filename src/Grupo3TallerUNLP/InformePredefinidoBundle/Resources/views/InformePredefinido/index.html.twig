@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Informe Predefinido</h1>
+        <h3>Informe Predefinido</h3>
     </div>
 	
 	<p>
@@ -17,6 +17,7 @@
                 <th>Nombre</th>
                 <th>Frecuenciatiempo</th>
 				<th>Plantilla</th>
+				<th> Proximo Envio </th>
                 <th class="col-xs-1">Actions</th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.frecuenciaTiempo }}</td>
                 <td>{{ entity.plantilla }}</td>
+				<td>{{ entity.proximoEnvio|date('d-m-Y') }}</td>
 				<td>
 					<a href="{{ path('informepredefinido_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-pencil text-primary"></span>

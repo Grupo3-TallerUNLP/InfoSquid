@@ -17,7 +17,7 @@
 
 		{{ form_row(form.nombre) }}
 		{{ form_row(form.descripcion) }}
-
+		{{ form_row(form.usuariosistema) }}
 
 
 		<div class="form-group" >{# rango días #}
@@ -82,7 +82,7 @@
 				<select class="form-control" name="filtros[{{ datos.filtros[5].id }}]">
 					<option value=""></option>
 					{% for u in datos.usuarios %}
-					<option value="{{u.id}}">{{ u }}</option>
+					<option value="{{u.id}}">{{ u }} ( {{u.oficina.nombre}} )</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -133,7 +133,7 @@
 				<select class="form-control" name="filtros[{{ datos.filtros[10].id }}]">
 					<option value=""></option>
 					{% for s in datos.sitios %}
-					<option value="{{s.id}}">{{ s }}</option>
+					<option value="{{s.id}}">{{ s }} ( {{s.grupo.nombre}} )</option>
 					{% endfor %}
 				</select>
 			</div>

@@ -26,8 +26,13 @@ class User extends BaseUser
      * @ORM\OneToOne(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", inversedBy="usuarioSistema")
      * @ORM\JoinColumn(name="usuariored", referencedColumnName="id")
      */
-    private $usuarioRed;
-
+	 private $usuarioRed;
+		
+	/**
+     * @ORM\OneToMany(targetEntity="Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla", mappedBy="usuariosistema")
+     */
+	 protected $plantilla;
+	 
     /**
      * Adds a role to the user
      * @throws Exception
@@ -108,5 +113,38 @@ class User extends BaseUser
     public function __toString()
     {
         return $this->getUsuarioRed() .' ('. $this->username .')';
+    }
+
+    /**
+     * Add plantilla
+     *
+     * @param \Grupo3TallerUNLP\UserBundle\Entity\User $plantilla
+     * @return User
+     */
+    public function addPlantilla(\Grupo3TallerUNLP\UserBundle\Entity\User $plantilla)
+    {
+        $this->plantilla[] = $plantilla;
+
+        return $this;
+    }
+
+    /**
+     * Remove plantilla
+     *
+     * @param \Grupo3TallerUNLP\UserBundle\Entity\User $plantilla
+     */
+    public function removePlantilla(\Grupo3TallerUNLP\UserBundle\Entity\User $plantilla)
+    {
+        $this->plantilla->removeElement($plantilla);
+    }
+
+    /**
+     * Get plantilla
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlantilla()
+    {
+        return $this->plantilla;
     }
 }

@@ -113,4 +113,33 @@ class InformePredefinido
     {
         return $this->nombre .', '. $this->frecuenciaTiempo;
     }
+ 
+    /**
+     * @var \DateTime
+     */
+    private $proximoEnvio;
+
+
+    /**
+     * Set proximoEnvio
+     *
+     * @param \DateTime $proximoEnvio
+     * @return InformePredefinido
+     */
+    public function setProximoEnvio($proximoEnvio)
+    {
+        $this->proximoEnvio = $proximoEnvio;
+
+        return $this;
+    }
+
+    /**
+     * Get proximoEnvio
+     *
+     * @return \DateTime 
+     */
+    public function getProximoEnvio()
+    {
+        return $this->proximoEnvio;
+    }
 }

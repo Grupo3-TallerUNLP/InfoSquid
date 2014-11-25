@@ -68,8 +68,12 @@ class PlantillaController extends Controller
 	private function listSitios()
 	{
 		$choices = array();
-		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
-
+		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->createQueryBuilder('s')
+							  ->join('s.grupo', 'g')
+							  ->addOrderBy('g.nombre', 'ASC')
+							  ->addOrderBy('s.nombre', 'ASC');
+				
+		$table = $table->getQuery()->getResult();
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;
 		}
@@ -90,7 +94,12 @@ class PlantillaController extends Controller
 	private function listUsuarios()
 	{
 		$choices = array();
-		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->findAll();
+		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->createQueryBuilder('u')
+							  ->join('u.oficina', 'o')
+							  ->addOrderBy('o.nombre', 'ASC')
+							  ->addOrderBy('u.nombre', 'ASC');
+				
+		$table = $table->getQuery()->getResult();
 
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;

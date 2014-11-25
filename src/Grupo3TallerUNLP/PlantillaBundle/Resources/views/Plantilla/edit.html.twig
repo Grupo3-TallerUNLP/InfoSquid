@@ -17,6 +17,7 @@
 
 		{{ form_row(edit_form.nombre) }}
 		{{ form_row(edit_form.descripcion) }}
+		{{ form_row(edit_form.usuariosistema) }}
 
 		{% set i=0 %}
 		<div class="form-group">{# rango días #}
@@ -64,26 +65,36 @@
 			<div class="col-lg-7 row">
 				<div class="col-lg-8">
 					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="4" onchange="mostrarOficina()">Oficina</label>
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="5" onchange="mostrarusuarioespecifico()">Usuario</label>
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="6" onchange="mostrarip()">IP</label>
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="7" onchange="mostrarrangoip()">Rango IP</label>
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="0" onchange="ocultarfiltro1()">{{ icon('remove') }}</label>
+						
+						<label class="btn btn-default"><input id ="filtro1_4" type="radio"  name="filtro1" value="4" onchange="mostrarOficina()">Oficina</label>
+						<label class="btn btn-default"><input id ="filtro1_5" type="radio" name="filtro1" value="5" onchange="mostrarusuarioespecifico()">Usuario</label>
+						<label class="btn btn-default"><input id ="filtro1_6" type="radio" name="filtro1" value="6" onchange="mostrarip()">IP</label>
+						<label class="btn btn-default"><input id ="filtro1_7" type="radio" name="filtro1" value="7" onchange="mostrarrangoip()">Rango IP</label>
+						<label class="btn btn-default active" ><input id ="filtro1_0" type="radio" name="filtro1" value="0" checked="checked" onchange="ocultarfiltro1()">{{ icon('remove') }}</label>
 					</div>
 				</div>
 				<div class="col-lg-4">
 					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default"><input type="radio" name="filtro2" value="9" onchange="mostrargrupo()">Grupo</label>
-						<label class="btn btn-default"><input type="radio" name="filtro2" value="10" onchange="mostrarsitio()">Sitio</label>
-						<label class="btn btn-default"><input type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()">{{ icon('remove') }}</label>
+						<label class="btn btn-default"><input id ="filtro2_9" type="radio" name="filtro2" value="9" onchange="mostrargrupo()">Grupo</label>
+						<label class="btn btn-default"><input id ="filtro2_10" type="radio" name="filtro2" value="10" onchange="mostrarsitio()">Sitio</label>
+						<label class="btn btn-default active"><input id ="filtro2_0" type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()">{{ icon('remove') }}</label>
 					</div>
 				</div>
 
 
 			</div>
 		</div>
-
-		<div class="form-group" id="div_oficina" style='display:none;'>{# oficina #}
+		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 4)  %}
+			<div class="form-group" id="div_oficina" style='display:block;'>{# oficina #}
+			<script>
+				function filtro_1(){
+					$('#filtro1_4').attr('checked', 'checked').parent().addClass('active');
+					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+				};
+			</script>
+		{%else %}
+			<div class="form-group" id="div_oficina" style='display:none;'>{# oficina #}
+		{% endif %}
 			<label class="col-lg-3 control-label">{{ datos.filtros[4].nombre }}</label>
 			<div class="col-lg-7">
 				<select class="form-control" name="filtros[{{ datos.filtros[4].id }}]">
@@ -106,7 +117,17 @@
 			</div>
 
 		</div>
-		<div class="form-group" id="div_usuario" style='display:none;'>{# usuario #}
+		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 5)  %}
+			<div class="form-group" id="div_usuario" style='display:block;'>{# oficina #}
+			<script>
+				function filtro_1(){
+					$('#filtro1_5').attr('checked', 'checked').parent().addClass('active');
+					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+				}
+			</script>
+		{%else %}
+			<div class="form-group" id="div_usuario" style='display:none;'>{# usuario #}
+		{% endif %}
 			<label class="col-lg-3 control-label">{{ datos.filtros[5].nombre }}</label>
 			<div class="col-lg-7">
 				<select class="form-control" name="filtros[{{ datos.filtros[5].id }}]">
@@ -128,7 +149,17 @@
 				</select>
 			</div>
 		</div>
-		<div class="form-group" id="div_ip" style='display:none;'>{# ip #}
+		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 6)  %}
+			<div class="form-group" id="div_ip" style='display:block;'>{# oficina #}
+			<script>
+				function filtro_1(){
+					$('#filtro1_6').attr('checked', 'checked').parent().addClass('active');
+					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+				}
+			</script>
+		{%else %}
+			<div class="form-group" id="div_ip" style='display:none;'>{# ip #}
+		{% endif %}
 			<label class="col-lg-3 control-label">{{ datos.filtros[6].nombre }}</label>
 			<div class="col-lg-7 row">
 				{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 6)  %}
@@ -146,7 +177,18 @@
 				{% endif %}
 			</div>
 		</div>
-		<div id="div_rango" style='display:none;'>
+		
+		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 7)  %}
+			<div class="form-group" id="div_rango" style='display:block;'>{# oficina #}
+			<script>
+				function filtro_1(){
+					$('#filtro1_7').attr('checked', 'checked').parent().addClass('active');
+					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+				}
+			</script>
+		{%else %}
+			<div id="div_rango" style='display:none;'>
+		{% endif %}
 			<div class="form-group" >{# ip desde #}
 				<label class="col-lg-3 control-label">{{ datos.filtros[7].nombre }}</label>
 				<div class="col-lg-7 row">
@@ -184,7 +226,17 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group" id="div_grupo" style='display:none;'>{# grupo sitios #}
+		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 9)  %}
+			<div class="form-group" id="div_grupo" style='display:block;'>{# oficina #}
+			<script>
+				function filtro_2(){
+					$('#filtro2_9').attr('checked', 'checked').parent().addClass('active');
+					$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
+				}
+			</script>
+		{%else %}
+			<div class="form-group" id="div_grupo" style='display:none;'>{# grupo sitios #}
+		{% endif %}
 			<label class="col-lg-3 control-label">{{ datos.filtros[9].nombre }}</label>
 			<div class="col-lg-7">
 				<select class="form-control" name="filtros[{{ datos.filtros[9].id }}]">
@@ -206,7 +258,17 @@
 				</select>
 			</div>
 		</div>
-		<div class="form-group" id="div_sitio" style='display:none;'>{# sitios #}
+		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 10)  %}
+			<div class="form-group" id="div_oficina" style='display:block;'>{# oficina #}
+			<script>
+				function filtro_2(){
+					$('#filtro2_10').attr('checked', 'checked').parent().addClass('active');
+					$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
+				}
+			</script>
+		{%else %}
+			<div class="form-group" id="div_sitio" style='display:none;'>{# sitios #}
+		{% endif %}
 			<label class="col-lg-3 control-label">{{ datos.filtros[10].nombre }}</label>
 			<div class="col-lg-7">
 				<select class="form-control" name="filtros[{{ datos.filtros[10].id }}]">
@@ -248,6 +310,19 @@
                 <a href="{{ path('plantilla') }}" class="btn btn-default">Cancelar</a>
             </p>
         </div>
+<script>
+	window.onload = function(){
+		console.log(filtro_1);
+		if (filtro_1 !== undefined) {
+			filtro_1();
+		}
+		if (filtro_2 !== undefined){ 
+			filtro_2();
+		}
+		
+	};
+</script>
+
 
     {{ form_end(edit_form) }}
 {% endblock %}

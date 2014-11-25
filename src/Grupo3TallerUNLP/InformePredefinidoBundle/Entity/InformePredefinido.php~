@@ -80,4 +80,65 @@ class InformePredefinido
     {
         return $this->frecuenciaTiempo;
     }
+    /**
+     * @var \Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
+     */
+    private $plantilla;
+
+
+    /**
+     * Set plantilla
+     *
+     * @param \Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla $plantilla
+     * @return InformePredefinido
+     */
+    public function setPlantilla(\Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla $plantilla = null)
+    {
+        $this->plantilla = $plantilla;
+
+        return $this;
+    }
+
+    /**
+     * Get plantilla
+     *
+     * @return \Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla 
+     */
+    public function getPlantilla()
+    {
+        return $this->plantilla;
+    }
+	
+	public function __toString()
+    {
+        return $this->nombre .', '. $this->frecuenciaTiempo;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $proximoenvio;
+
+
+    /**
+     * Set proximoenvio
+     *
+     * @param \DateTime $proximoenvio
+     * @return InformePredefinido
+     */
+    public function setProximoenvio($proximoenvio)
+    {
+        $this->proximoenvio = $proximoenvio;
+
+        return $this;
+    }
+
+    /**
+     * Get proximoenvio
+     *
+     * @return \DateTime 
+     */
+    public function getProximoenvio()
+    {
+        return $this->proximoenvio;
+    }
 }

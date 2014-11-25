@@ -20,10 +20,20 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla:
         informepredefinido:
             targetEntity: Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido
             mappedBy: plantilla
-            nullable: true
+            nullable: true    
     oneToMany:
         valorfiltro:
             orderBy: { 'filtroId': 'ASC' }
             targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro
             mappedBy: plantilla
+    manyToOne:
+        usuariosistema:
+            targetEntity: Grupo3TallerUNLP\UserBundle\Entity\User
+            inversedBy: plantilla
+            nullable: false
+            joinColumn:
+                name: usuariosistema
+                referencedColumnName: id
+                onDelete: "CASCADE"
     lifecycleCallbacks: {  }
+    

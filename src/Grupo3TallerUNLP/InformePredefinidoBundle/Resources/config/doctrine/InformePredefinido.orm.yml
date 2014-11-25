@@ -11,9 +11,11 @@ Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido:
     fields:
         nombre:
             type: string
-            length: 255
+            length: 50
         frecuenciaTiempo:
             type: integer
+        proximoEnvio:
+            type: date
     oneToOne:
         plantilla:
             targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
