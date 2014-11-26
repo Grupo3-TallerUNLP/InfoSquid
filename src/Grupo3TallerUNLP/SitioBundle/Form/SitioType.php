@@ -17,10 +17,11 @@ class SitioType extends AbstractType
         $builder
             ->add('nombre')
             ->add('url')
-			->add('grupo', null, array('required'=>true))
+            ->add('grupo', null, array('required'=>true))
+			->add('gradoAceptacion', null, array('required'=>true, 'label'=>'Grado de aceptación'))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

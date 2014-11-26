@@ -16,12 +16,15 @@
                 <dt>Grado de aceptación</dt>
                 <dd>{{entity.gradoAceptacion}}</dd>
 
-			    <dt>Grupo</dt>
-			    <dd>{{entity.grupo}}</dd>
+                <dt>Grupo</dt>
+                <dd>{{entity.grupo}}</dd>
     </dl>
 
 
     <div class="col-md-offset-1">
-        <a href="{{ path('sitio') }}" class="btn btn-primary">Volver</a>
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('sitio') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
     </div>
 {% endblock %}

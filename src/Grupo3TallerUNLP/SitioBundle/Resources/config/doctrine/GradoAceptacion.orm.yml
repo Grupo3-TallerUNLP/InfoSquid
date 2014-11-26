@@ -1,0 +1,19 @@
+Grupo3TallerUNLP\SitioBundle\Entity\GradoAceptacion:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\SitioBundle\Entity\GradoAceptacionRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        grado:
+            type: string
+            length: '20'
+    oneToMany:
+        sitios:
+            targetEntity: Sitio
+            mappedBy: gradoAceptacion
+    lifecycleCallbacks: {  }

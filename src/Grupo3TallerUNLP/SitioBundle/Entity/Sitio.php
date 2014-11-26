@@ -113,4 +113,32 @@ class Sitio
     {
         return $this->nombre;
     }
+    /**
+     * @var \Grupo3TallerUNLP\SitioBundle\Entity\GradoAceptacion
+     */
+    private $gradoAceptacion;
+
+
+    /**
+     * Set gradoAceptacion
+     *
+     * @param \Grupo3TallerUNLP\SitioBundle\Entity\GradoAceptacion $gradoAceptacion
+     * @return Sitio
+     */
+    public function setGradoAceptacion(\Grupo3TallerUNLP\SitioBundle\Entity\GradoAceptacion $gradoAceptacion = null)
+    {
+        $this->gradoAceptacion = $gradoAceptacion;
+
+        return $this;
+    }
+
+    /**
+     * Get gradoAceptacion
+     *
+     * @return \Grupo3TallerUNLP\SitioBundle\Entity\GradoAceptacion 
+     */
+    public function getGradoAceptacion()
+    {
+        return $this->gradoAceptacion;
+    }
 }

@@ -5,6 +5,14 @@ sitio:
 sitio_show:
     path:     /{id}/show
     defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:show" }
+    requirements:
+        id: \d+
+
+sitio_show_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:showDelete" }
+    requirements:
+        id: \d+
 
 sitio_new:
     path:     /new
@@ -13,18 +21,24 @@ sitio_new:
 sitio_create:
     path:     /create
     defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:create" }
-    requirements: { _method: post }
+    methods:  POST
 
 sitio_edit:
     path:     /{id}/edit
     defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:edit" }
+    requirements:
+        id: \d+
 
 sitio_update:
     path:     /{id}/update
     defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:update" }
-    requirements: { _method: post|put }
+    methods:  POST|PUT
+    requirements:
+        id: \d+
 
 sitio_delete:
     path:     /{id}/delete
     defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:delete" }
-    requirements: { _method: post|delete }
+    methods:  POST|DELETE
+    requirements:
+        id: \d+
