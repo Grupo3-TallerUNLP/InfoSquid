@@ -18,6 +18,7 @@ class InformePredefinidoType extends AbstractType
             ->add('nombre')
             ->add('frecuenciaTiempo')
 			->add('plantilla')
+			->add('proximoEnvio' ,null, array( 'widget' => 'single_text', 'format' => 'dd-MM-yyyy'))
         ;
     }
     

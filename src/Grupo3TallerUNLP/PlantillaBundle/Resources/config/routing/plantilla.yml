@@ -28,3 +28,4 @@ plantilla_delete:
     path:     /{id}/delete
     defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:delete" }
     requirements: { _method: post|delete }
+	

@@ -1,6 +1,7 @@
 <?php
 
 namespace Grupo3TallerUNLP\UserBundle\Form;
+
 use Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRedRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +24,7 @@ class UserType extends AbstractType
         }
 
         $builder->add('email');
+
 
         if ($options['required']) {
             $builder->add('usuariored', 'entity', array(

@@ -158,4 +158,32 @@ class Plantilla
     {
         return $this->valorfiltro;
     }
+    /**
+     * @var \Grupo3TallerUNLP\UserBundle\Entity\User
+     */
+    private $usuariosistema;
+
+
+    /**
+     * Set usuariosistema
+     *
+     * @param \Grupo3TallerUNLP\UserBundle\Entity\User $usuariosistema
+     * @return Plantilla
+     */
+    public function setUsuariosistema(\Grupo3TallerUNLP\UserBundle\Entity\User $usuariosistema = null)
+    {
+        $this->usuariosistema = $usuariosistema;
+
+        return $this;
+    }
+
+    /**
+     * Get usuariosistema
+     *
+     * @return \Grupo3TallerUNLP\UserBundle\Entity\User 
+     */
+    public function getUsuariosistema()
+    {
+        return $this->usuariosistema;
+    }
 }
