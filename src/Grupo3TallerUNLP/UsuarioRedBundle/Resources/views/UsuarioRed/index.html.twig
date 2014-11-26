@@ -55,15 +55,4 @@
     <nav class="text-center">
         {{ knp_pagination_render(pagination) }}
     </nav>
-
-	<script>
-	window.onload = function () {
-		$('[data-toggle="popover"]').popover({
-			template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-content"></div></div>',
-			placement: 'top',
-			html: true
-		});
-	};
-	</script>
-
     {% endblock %}

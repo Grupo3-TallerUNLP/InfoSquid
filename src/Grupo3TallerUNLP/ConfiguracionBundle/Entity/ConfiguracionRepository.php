@@ -12,4 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ConfiguracionRepository extends EntityRepository
 {
+	public function getArchivoLog(){
+		return $this->find(1)->getArchivoDeLog();
+	}
 }

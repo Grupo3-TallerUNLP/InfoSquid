@@ -1,0 +1,35 @@
+Grupo3TallerUNLP\InformeBundle\Entity\Request:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\InformeBundle\Entity\RequestRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        uRL:
+            type: string
+            length: 255
+            column: URL
+        denegado:
+            type: boolean
+        protocolo:
+            type: string
+            length: '20'
+        dateTime:
+            type: string
+            length: '20'
+        hora:
+            type: time
+        fecha:
+            type: date
+    manyToOne:
+        ip:
+            targetEntity: Grupo3TallerUNLP\HostBundle\Entity\IPAddress
+            inversedBy: request
+            joinColumn:
+                name: ip
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

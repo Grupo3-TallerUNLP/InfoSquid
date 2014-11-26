@@ -12,6 +12,7 @@ Grupo3TallerUNLP\GrupoBundle\Entity\Grupo:
         nombre:
             type: string
             length: 255
+            unique: true
         descripcion:
             type: string
             length: 255

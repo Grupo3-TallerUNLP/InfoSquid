@@ -3,6 +3,10 @@ oficina:
     defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:index" }
 
 oficina_show:
+    path:     /{id}/oficina
+    defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:mostrar" }
+
+oficina_showdelete:
     path:     /{id}/show
     defaults: { _controller: "Grupo3TallerUNLPOficinaBundle:Oficina:show" }
 

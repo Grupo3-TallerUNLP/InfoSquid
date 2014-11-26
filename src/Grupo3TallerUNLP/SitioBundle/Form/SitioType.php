@@ -17,7 +17,7 @@ class SitioType extends AbstractType
         $builder
             ->add('nombre')
             ->add('url')
-			->add('grupo')
+			->add('grupo', null, array('required'=>true))
         ;
     }
     

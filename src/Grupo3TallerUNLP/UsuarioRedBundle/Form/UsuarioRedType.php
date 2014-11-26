@@ -15,12 +15,11 @@ class UsuarioRedType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('apellido')
-            ->add('cargo', 'text',  array('required' => false))
+            ->add('nombre', null, array('attr'=> array( 'maxlength'=> '50' )))
+            ->add('apellido', null, array('attr'=> array( 'maxlength'=> '50' )))
+            ->add('cargo', 'text',  array('required' => false, 'attr'=> array( 'maxlength'=> '50' )))
             ->add('dNI','text',  array('required' => false, 'attr'=> array( 'maxlength'=> '8' )))
-			->add('oficina')
-			->add('hosts')
+			->add('oficina', null, array('required'=>true))
         ;
     }
 

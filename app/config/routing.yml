@@ -1,3 +1,7 @@
+grupo3_taller_unlp_informe:
+    resource: "@Grupo3TallerUNLPInformeBundle/Resources/config/routing.yml"
+    prefix:   /
+
 grupo3_taller_unlp_configuracion:
     resource: "@Grupo3TallerUNLPConfiguracionBundle/Resources/config/routing.yml"
     prefix:   /admin/configuracion

@@ -192,44 +192,4 @@ class IPAddress
     {
         return $this->field1 .'.'. $this->field2 .'.'. $this->field3 .'.'. $this->field4;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->request = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add request
-     *
-     * @param \Grupo3TallerUNLP\InformeBundle\Entity\request $request
-     * @return IPAddress
-     */
-    public function addRequest(\Grupo3TallerUNLP\InformeBundle\Entity\request $request)
-    {
-        $this->request[] = $request;
-
-        return $this;
-    }
-
-    /**
-     * Remove request
-     *
-     * @param \Grupo3TallerUNLP\InformeBundle\Entity\request $request
-     */
-    public function removeRequest(\Grupo3TallerUNLP\InformeBundle\Entity\request $request)
-    {
-        $this->request->removeElement($request);
-    }
-
-    /**
-     * Get request
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
 }

@@ -11,15 +11,15 @@ Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed:
     fields:
         nombre:
             type: string
-            length: 255
+            length: 50
             column: Nombre
         apellido:
             type: string
-            length: 255
+            length: 50
             column: Apellido
         cargo:
             type: string
-            length: 255
+            length: 50
             column: Cargo
             nullable: true
         dNI:

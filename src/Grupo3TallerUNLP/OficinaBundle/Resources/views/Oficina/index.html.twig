@@ -41,11 +41,14 @@
 					<a href="#" data-toggle="popover" data-content="<ul>{% for host in entity.hosts %}<li>{{ host }}</li>{% endfor %}</ul>">Ver</a>
 					{% endif %}
 				</td>
-                <td>            
+                <td>     
+						<a href="{{ path('oficina_show', { 'id': entity.id }) }}" title="Ver" class="btn btn-default btn-xs">
+							<span class="glyphicon glyphicon-list text-primary"></span>
+						</a>
                         <a href="{{ path('oficina_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
 							<span class="glyphicon glyphicon-pencil text-primary"></span>
 						</a>
-						<a href="{{ path('oficina_show', { 'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
+						<a href="{{ path('oficina_showdelete', { 'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
 							<span class="glyphicon glyphicon-remove text-danger"></span>
 						</a>
 				</td>

@@ -41,14 +41,25 @@ class SitioController extends Controller
         $entity = new Sitio();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
+		$sitioNombre = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByNombre($entity->getNombre());
+		$sitioUrl = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByurl($entity->getUrl());
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+			if(!($sitioNombre || $sitioUrl)){
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($entity);
+				$em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('sitio'));
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+				return $this->redirect($this->generateUrl('sitio'));
+			}
+			else{
+				$this->get('session')->getFlashBag()->add('error', 'El nombre del sitio o la URL ya existe');
+				return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:new.html.twig', array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+				));
+			}
         }
 
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:new.html.twig', array(
@@ -172,11 +183,22 @@ class SitioController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+		$sitioNombre = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findOneByNombre($entity->getNombre());
+		$sitioUrl = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findOneByurl($entity->getUrl());
 
         if ($editForm->isValid()) {
-            $em->flush();
-			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('sitio'));
+			if(!($sitioNombre && $sitioUrl) || ($entity->getId() == $sitioNombre->getId() && $entity->getId() == $sitioUrl->getId() )){
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+				return $this->redirect($this->generateUrl('sitio'));
+			}
+			else{
+				$this->get('session')->getFlashBag()->add('error', 'El nombre del sitio o la URL ya existe');
+				return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:edit.html.twig', array(
+					'entity' => $entity,
+					'edit_form'   => $editForm->createView(),
+				));
+			}
         }
 
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:edit.html.twig', array(

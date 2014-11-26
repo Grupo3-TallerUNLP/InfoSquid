@@ -41,14 +41,23 @@ class OficinaController extends Controller
         $entity = new Oficina();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+		$oficina = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findByNombre($entity->getNombre());
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+			if(!$oficina){
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($entity);
+				$em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('oficina'));
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+				return $this->redirect($this->generateUrl('oficina'));
+			}
+			else{
+				$this->get('session')->getFlashBag()->add('error', 'El nombre de la oficina ya existe');
+				return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:new.html.twig', array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+				));
+			}
         }
 
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:new.html.twig', array(
@@ -107,9 +116,24 @@ class OficinaController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:show.html.twig', array(
+        return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+        ));
+    }
+	
+	public function mostrarAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Oficina entity.');
+        }
+
+        return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:show.html.twig', array(
+            'entity'      => $entity,
         ));
     }
 
@@ -172,12 +196,21 @@ class OficinaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
+		$oficina = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findOneByNombre($entity->getNombre());
         if ($editForm->isValid()) {
-            $em->flush();
-			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+			if(!$oficina || $entity->getId() == $oficina->getId()){
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
 
-            return $this->redirect($this->generateUrl('oficina'));
+				return $this->redirect($this->generateUrl('oficina'));
+			}
+			else{
+				$this->get('session')->getFlashBag()->add('error', 'El nombre de la oficina ya existe');
+				return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:edit.html.twig', array(
+					'entity' => $entity,
+					'edit_form'   => $editForm->createView(),
+				));
+			}
         }
 
 
@@ -198,9 +231,11 @@ class OficinaController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
-            $user = $entity->getDirector();
-			$hosts = $entity->getHosts();
+            $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findOneById($id);
+			// $user = $entity->getUsuariosdered()->getNombre();
+			// $hosts = $entity->getHosts();
+			$user = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->findOneByoficina($id);
+			$hosts = $em->getRepository('Grupo3TallerUNLPHostBundle:Host')->findOneByoffice($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Oficina entity.');

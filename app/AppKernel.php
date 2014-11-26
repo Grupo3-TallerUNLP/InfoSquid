@@ -30,6 +30,7 @@ class AppKernel extends Kernel
 			new Grupo3TallerUNLP\PlantillaBundle\Grupo3TallerUNLPPlantillaBundle(),
             new Grupo3TallerUNLP\InformePredefinidoBundle\Grupo3TallerUNLPInformePredefinidoBundle(),
             new Grupo3TallerUNLP\ConfiguracionBundle\Grupo3TallerUNLPConfiguracionBundle(),
+            new Grupo3TallerUNLP\InformeBundle\Grupo3TallerUNLPInformeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

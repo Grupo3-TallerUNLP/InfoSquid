@@ -1,0 +1,3 @@
+grupo3_taller_unlp_informe_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: Grupo3TallerUNLPInformeBundle:Default:index }

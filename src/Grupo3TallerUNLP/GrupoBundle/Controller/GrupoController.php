@@ -41,14 +41,23 @@ class GrupoController extends Controller
         $entity = new Grupo();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+		$grupo = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findByNombre($entity->getNombre());
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+			if (!$grupo){
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($entity);
+				$em->flush();
 
-			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('grupo'));
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+				return $this->redirect($this->generateUrl('grupo'));
+			}
+			else{
+				$this->get('session')->getFlashBag()->add('error', 'El nombre del grupo ya existe');
+				return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:new.html.twig', array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+				));
+			}
         }
 
         return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:new.html.twig', array(
@@ -172,11 +181,21 @@ class GrupoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+		$grupo = $em->getRepository('Grupo3TallerUNLPGrupoBundle:grupo')->findOneByNombre($entity->getNombre());
 
         if ($editForm->isValid()) {
-            $em->flush();
-			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-            return $this->redirect($this->generateUrl('grupo'));
+			if(!$grupo || $entity->getId() == $grupo->getId()){
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+				return $this->redirect($this->generateUrl('grupo'));
+			}
+			else{
+				$this->get('session')->getFlashBag()->add('error', 'El nombre del grupo ya existe');
+				return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:edit.html.twig', array(
+					'entity' => $entity,
+					'edit_form'   => $editForm->createView(),
+				));
+			}
         }
 
         return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:edit.html.twig', array(
