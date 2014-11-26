@@ -16,22 +16,22 @@
 			 <dd>{{ entities.archivoDeLog }}</dd>
 			 <dt>Tiempomantenimiento</dt>
 			 <dd>{{ entities.tiempoMantenimiento }}</dd>
-             
-			
+
+
 			<br>
 			<p>
 			<a href="{{ path('configuracion_edit', { 'id': entities.id }) }}" class="btn btn-primary" >
-            <span class="glyphicon glyphicon-plus"></span> Editar
+            {{ icon('pencil') }} Editar
 			</a>
 			</p>
-			 
+
 			 {% endfor %}
-			
-   
-             
-                 
-            
-                
+
+
+
+
+
+
      </dl>
 
     {% endblock %}

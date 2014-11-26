@@ -9,6 +9,7 @@
             </button>
             <a class="navbar-brand" href="#">InfoSquid</a>
         </div>
+
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav visible-xs">
                 <li><a href="#">Generar Informe</a></li>
@@ -29,9 +30,12 @@
                 <li><a href="#">Sitios</a></li>
                 <li><a href="#">Grupos de Sitios</a></li>
             </ul>
+
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ path('fos_user_profile_show') }}"><span class="glyphicon glyphicon-user"></span> Mi Cuenta</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Configuración</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('configuracion') }}">{{ icon('cog') }} Configuración</a></li>
+                {% endif %}
                 <li><a href="{{ path('fos_user_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
             </ul>
         </div>
