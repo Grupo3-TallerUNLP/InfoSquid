@@ -104,12 +104,27 @@ class InformePredefinidoController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:show.html.twig', array(
+        return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
+	    public function mostrarAction($id)
+		{
+			$em = $this->getDoctrine()->getManager();
+
+			$entity = $em->getRepository('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido')->find($id);
+
+			if (!$entity) {
+				throw $this->createNotFoundException('Unable to find InformePredefinido entity.');
+			}
+
+			return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:show.html.twig', array(
+				'entity'      => $entity,
+			));
+		}
+	
     /**
      * Displays a form to edit an existing InformePredefinido entity.
      *

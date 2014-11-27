@@ -14,7 +14,14 @@ grupo3_taller_unlp_admin_host_new:
     methods:  GET
 
 grupo3_taller_unlp_admin_host_show:
-    path:     /{id}
+    path:     /{id}/host
+    defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:mostrar }
+    methods:  GET
+    requirements:
+        id: \d+
+
+grupo3_taller_unlp_admin_host_showdelete:
+    path:     /{id}/show
     defaults: { _controller: Grupo3TallerUNLPHostBundle:Host:show }
     methods:  GET
     requirements:

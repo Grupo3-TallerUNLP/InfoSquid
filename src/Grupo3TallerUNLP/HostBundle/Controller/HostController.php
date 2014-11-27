@@ -167,11 +167,27 @@ class HostController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        return $this->render('Grupo3TallerUNLPHostBundle:Host:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        );
+        ));
     }
+	
+	public function mostrarAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('Grupo3TallerUNLPHostBundle:Host')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Host entity.');
+        }
+
+        return $this->render('Grupo3TallerUNLPHostBundle:Host:show.html.twig', array(
+            'entity'      => $entity,
+        ));
+    }
+	
 
     /**
      * Displays a form to edit an existing Host entity.

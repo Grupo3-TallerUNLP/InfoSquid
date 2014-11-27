@@ -7,6 +7,7 @@
 	use Symfony\Component\Console\Input\InputInterface;
 	use Symfony\Component\Console\Output\OutputInterface;
 	use Grupo3TallerUNLP\HostBundle\Entity\IPAddress;
+	use Grupo3TallerUNLP\InformeBundle\Entity\Request;
 	
 	class AltaLogCommand extends ContainerAwareCommand{
 	
@@ -18,8 +19,9 @@
 		}
 		
 		private function findByIP($field1, $field2, $field3, $field4)
-		{
-			$repository = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPHostBundle:IPAddress');
+		{			
+			$em = $this->getContainer()->get('doctrine')->getEntityManager();
+			$repository= $em->getRepository('Grupo3TallerUNLPHostBundle:IPAddress');
 			$ipAddress = $repository->findOneBy(array(
 				'field1' => $field1,
 				'field2' => $field2,
@@ -27,12 +29,19 @@
 				'field4' => $field4,
 			));
 			if (!$ipAddress) {
-				$ipAddress = new IPAddress();
-				$ipAddress->setField1($field1);
-				$ipAddress->setField2($field2);
-				$ipAddress->setField3($field3);
-				$ipAddress->setField4($field4);
-				$this->getDoctrine()->getManager()->persist($ipAddress);
+				$em->getConnection()->beginTransaction();
+				try{
+					$ipAddress = new IPAddress();
+					$ipAddress->setField1($field1);
+					$ipAddress->setField2($field2);
+					$ipAddress->setField3($field3);
+					$ipAddress->setField4($field4);
+					$em->persist($ipAddress);
+					$em->flush();
+					$em->getConnection()->commit();
+				}catch(\Exception $e){
+					$em->getConnection()->rollback();
+				}
 			}
 			return $ipAddress;
 		}
@@ -44,16 +53,19 @@
 			$batch = 0;
 			$inserts = 0;
 			foreach ($log as $linea){
+				$matches = array();
 				preg_match_all('/^(\d+\.\d+)\s+(\d+)\s+([\d\.]+)\s+(\w+)\/([\d\.]+)\s+(\d+)\s+(\w+)\s+(\S+)/', $linea, $matches);
 				$fields = explode('.', $matches[3][0]);
 				$ip = $this->findByIP($fields[0], $fields[1], $fields[2], $fields[3]);
 				$request = new Request();
+				$datetime=new \DateTime();
+				$datetime->setTimestamp($matches[1][0]);
+				$request->setDateTime($matches[1][0]);
+				$request->setHora($datetime);
+				$request->setFecha($datetime);
 				$request->setURL($matches[8][0]);
 				$request->setDenegado(preg_match('/DENIED/i', $matches[5][0]));
 				$request->setProtocolo(parse_url($matches[8][0], PHP_URL_SCHEME));
-				$request->setDateTime($matches[1][0]);
-				$request->setHora(date('H:i:s', $matches[1][0]));
-				$request->setFecha(date('Y-m-d', $matches[1][0]));
 				$request->setIp($ip);
 				$em->persist($request);
 				

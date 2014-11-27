@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h3>Host</h3>
+        <h3>Eliminar Host</h3>
     </div>
 
     <dl class="dl-horizontal">
@@ -22,6 +22,9 @@
     </dl>
 
     <div class="col-md-offset-1">
-            <a href="{{ path('grupo3_taller_unlp_admin_host') }}" class="btn btn-primary">Volver</a>
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('grupo3_taller_unlp_admin_host') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
     </div>
 {% endblock content %}

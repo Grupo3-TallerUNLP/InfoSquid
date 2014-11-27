@@ -17,7 +17,7 @@
                 <th>Dirección IP</th>
                 <th>Usuarios de Red</th>
                 <th>Oficina</th>
-                <th class="col-xs-1">Acciones</th>
+                <th class="col-xs-2">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -31,10 +31,12 @@
 				</td>
                 <td>{{ entity.office }}</td>
                 <td>
+					<a href="{{ path('grupo3_taller_unlp_admin_host_show', { 'id': entity.id }) }}" title="Ver" class="btn btn-default btn-xs">
+							<span class="glyphicon glyphicon-list text-primary"></span></a>
                     <a href="{{ path('grupo3_taller_unlp_admin_host_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-pencil text-primary"></span>
                     </a>
-                    <a href="{{ path('grupo3_taller_unlp_admin_host_show', { 'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
+                    <a href="{{ path('grupo3_taller_unlp_admin_host_showdelete', { 'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-remove text-danger"></span>
                     </a>
                 </td>

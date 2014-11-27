@@ -116,9 +116,24 @@ class GrupoController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:show.html.twig', array(
+        return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+        ));
+    }
+	
+		public function mostrarAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Group entity.');
+        }
+
+        return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:show.html.twig', array(
+            'entity'      => $entity,
         ));
     }
 

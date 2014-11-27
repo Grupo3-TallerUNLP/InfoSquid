@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h3>Grupo</h3>
+        <h3>Eliminar Grupo</h3>
     </div>
 
     <dl class="dl-horizontal">
@@ -23,7 +23,10 @@
 	</dl>
 	 
 	<div class="col-md-offset-1">
-            <a href="{{ path('grupo') }}" class="btn btn-primary">Volver</a>
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('grupo') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
     </div>
 	
 {% endblock %}

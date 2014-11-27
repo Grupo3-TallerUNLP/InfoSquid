@@ -2,14 +2,15 @@
 
 {% block content %}
     <div class="page-header">
-        <h3>Informe Predefinido</h3>
+        <h3>Eliminar Informe Predefinido</h3>
+		
     </div>
 
     <dl class="dl-horizontal">
             <dt>Nombre</dt>
             <dd>{{ entity.nombre }}</dd>
 
-            <dt>Frecuenciatiempo</dt>
+            <dt>Frecuencia tiempo</dt>
             <dd>{{ entity.frecuenciaTiempo }}</dd>
 			
 			<dt>Plantilla</dt>
@@ -20,6 +21,9 @@
 			
     </dl>
     <div class="col-md-offset-1">
-            <a href="{{ path('informepredefinido') }}" class="btn btn-primary">Volver</a>
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('informepredefinido') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
     </div>
 {% endblock %}

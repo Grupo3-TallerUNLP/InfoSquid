@@ -3,6 +3,10 @@ grupo:
     defaults: { _controller: "Grupo3TallerUNLPGrupoBundle:Grupo:index" }
 
 grupo_show:
+    path:     /{id}/grupo
+    defaults: { _controller: "Grupo3TallerUNLPGrupoBundle:Grupo:mostrar" }
+
+grupo_showdelete:
     path:     /{id}/show
     defaults: { _controller: "Grupo3TallerUNLPGrupoBundle:Grupo:show" }
 

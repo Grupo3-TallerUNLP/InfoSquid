@@ -216,14 +216,75 @@ class PlantillaController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
+		
+		$valorfiltros = $entity->getValorfiltro();
+		$oficina = '';
+		$gsitio = '';
+		$sitio = '';
+		foreach ($valorfiltros as $valorfiltro){
+			if ($valorfiltro->getFiltro()->getId() == 4 ){
+				$id = $valorfiltro->getValor();
+				$oficina = 	$em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id)->getNombre();
+			}
+			if ($valorfiltro->getFiltro()->getId() == 9 ){
+				$id = $valorfiltro->getValor();
+				$gsitio = 	$em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($id)->getNombre();
+			}
+			if ($valorfiltro->getFiltro()->getId() == 10 ){
+				$id = $valorfiltro->getValor();
+				$sitio = 	$em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id)->getNombre();
+			}
+		}
 
         $deleteForm = $this->createDeleteForm($id);
-        return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:show.html.twig', array(
+        return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:delete.html.twig', array(
             'entity'      => $entity,
+			'oficina'	  => $oficina,
+			'gsitio'	  => $gsitio,
+			'sitio'	  	  => $sitio,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
+	public function mostarAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
+
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Plantilla entity.');
+        }
+		
+		$valorfiltros = $entity->getValorfiltro();
+		$oficina = '';
+		$gsitio = '';
+		$sitio = '';
+		foreach ($valorfiltros as $valorfiltro){
+			if ($valorfiltro->getFiltro()->getId() == 4 ){
+				$id = $valorfiltro->getValor();
+				$oficina = 	$em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id)->getNombre();
+			}
+			if ($valorfiltro->getFiltro()->getId() == 9 ){
+				$id = $valorfiltro->getValor();
+				$gsitio = 	$em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($id)->getNombre();
+			}
+			if ($valorfiltro->getFiltro()->getId() == 10 ){
+				$id = $valorfiltro->getValor();
+				$sitio = 	$em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id)->getNombre();
+			}
+		}
+
+        $deleteForm = $this->createDeleteForm($id);
+        return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:show.html.twig', array(
+            'entity'      => $entity,
+			'oficina'	  => $oficina,
+			'gsitio'	  => $gsitio,
+			'sitio'	  	  => $sitio,
+        ));
+    }
+	
     /**
      * Displays a form to edit an existing Plantilla entity.
      *

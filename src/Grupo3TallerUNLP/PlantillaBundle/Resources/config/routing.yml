@@ -2,9 +2,13 @@ plantilla:
     path:     /
     defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:index" }
 
-plantilla_show:
+plantilla_showdelete:
     path:     /{id}/show
     defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:show" }
+
+plantilla_show:
+    path:     /{id}/plantilla
+    defaults: { _controller: "Grupo3TallerUNLPPlantillaBundle:Plantilla:mostar" }
 
 plantilla_new:
     path:     /new
