@@ -20,6 +20,13 @@ grupo3_taller_unlp_user_show:
     requirements:
         id: \d+
 
+grupo3_taller_unlp_user_show_delete:
+    path:     /{id}/delete
+    defaults: { _controller: Grupo3TallerUNLPUserBundle:User:showDelete }
+    methods:  GET
+    requirements:
+        id: \d+
+
 grupo3_taller_unlp_user_edit:
     path:     /{id}/edit
     defaults: { _controller: Grupo3TallerUNLPUserBundle:User:edit }

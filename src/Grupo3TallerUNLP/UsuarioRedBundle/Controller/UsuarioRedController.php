@@ -105,9 +105,28 @@ class UsuarioRedController extends Controller
             throw $this->createNotFoundException('Unable to find UsuarioRed entity.');
         }
 
+        return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:show.html.twig', array(
+            'entity'      => $entity,
+        ));
+    }
+
+    /**
+     * Finds and displays a UsuarioRed entity.
+     *
+     */
+    public function showDeleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find UsuarioRed entity.');
+        }
+
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:show.html.twig', array(
+        return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));

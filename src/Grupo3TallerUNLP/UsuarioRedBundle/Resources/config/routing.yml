@@ -10,6 +10,13 @@ usuariored_show:
     requirements:
         id: \d+
 
+usuariored_show_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:showDelete" }
+    methods:  GET
+    requirements:
+        id: \d+
+
 usuariored_new:
     path:     /new
     defaults: { _controller: "Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:new" }

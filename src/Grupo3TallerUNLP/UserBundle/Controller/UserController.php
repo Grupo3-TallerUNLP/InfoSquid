@@ -142,12 +142,27 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        return array(
+            'entity' => $entity,
+        );
+    }
+
+    public function showDeleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('Grupo3TallerUNLPUserBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        return $this->render('Grupo3TallerUNLPUserBundle:User:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        );
+        ));
     }
 
     /**
@@ -252,6 +267,11 @@ class UserController extends Controller
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find User entity.');
+            }
+
+            if ($request->request->get('eliminar_usuariored', false)) {
+                $usuariored = $entity->getUsuarioRed();
+                $em->remove($usuariored);
             }
 
             $em->remove($entity);

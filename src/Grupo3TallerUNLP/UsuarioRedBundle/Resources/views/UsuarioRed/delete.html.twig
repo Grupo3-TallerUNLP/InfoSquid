@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Usuario de Red</h1>
+        <h1>Eliminar Usuario de Red</h1>
     </div>
 
     <dl class="dl-horizontal">
@@ -18,27 +18,30 @@
         <dt>DNI</dt>
         <dd>{{ entity.dNI }}</dd>
 
-		{% if entity.oficina|length > 0 %}
-			<dt>Oficina</dt>
-			<dd>{{ entity.oficina}}</dd>
-		{% endif %}
+        {% if entity.oficina|length > 0 %}
+            <dt>Oficina</dt>
+            <dd>{{ entity.oficina}}</dd>
+        {% endif %}
 
         {% if entity.usuariosistema|length > 0 %}
             <dt>Usuario de Sistema</dt>
             <dd>{{ entity.usuariosistema }}</dd>
         {% endif %}
 
-		{% if entity.hosts|length > 0 %}
-			<dt>Hosts</dt>
-    		{% for host in entity.hosts %}
-    			<dd>{{ host}}</dd>
-    		{% endfor %}
-		{% endif %}
+        {% if entity.hosts|length > 0 %}
+            <dt>Hosts</dt>
+            {% for host in entity.hosts %}
+                <dd>{{ host}}</dd>
+            {% endfor %}
+        {% endif %}
 
 
     </dl>
 
     <div class="col-md-offset-1">
-        <a href="{{ path('usuariored') }}" class="btn btn-primary">Volver</a>
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('usuariored') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
     </div>
 {% endblock %}

@@ -20,7 +20,7 @@
                 <th>Activado</th>
                 <th>Oficina</th>
                 <th>Usuario de red</th>
-                <th class="col-xs-1">Acciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -33,11 +33,14 @@
                 <td>{{ entity.usuariored.oficina }}</td>
                 <td>{{ entity.usuariored }}</td>
                 <td>
-				    <a href="{{ path('grupo3_taller_unlp_user_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-pencil text-primary"></span>
+                    <a href="{{ path('grupo3_taller_unlp_user_show', { 'id': entity.id }) }}" title="Ver" class="btn btn-default btn-xs">
+                        <span class="text-primary">{{ icon('list') }}</span>
                     </a>
-					<a href="{{ path('grupo3_taller_unlp_user_show', {'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
-                        <span class="glyphicon glyphicon-remove text-danger"></span>
+				    <a href="{{ path('grupo3_taller_unlp_user_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
+                        <span class="text-primary">{{ icon('pencil') }}</span>
+                    </a>
+					<a href="{{ path('grupo3_taller_unlp_user_show_delete', {'id': entity.id }) }}" title="Eliminar" class="btn btn-default btn-xs">
+                        <span class="text-danger">{{ icon('remove') }}</span>
                     </a>
 				</td>
             </tr>

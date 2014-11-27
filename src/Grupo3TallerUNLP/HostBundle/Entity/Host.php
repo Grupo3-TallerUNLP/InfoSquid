@@ -42,7 +42,10 @@ class Host
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", mappedBy="hosts")
+     * @ORM\ManyToMany(targetEntity="Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed", inversedBy="hosts", cascade={"persist"})
+     * @ORM\JoinTable(name="UsuarioRed_Host")
+     * joinColumns={@ORM\JoinColumn(name="host_id", referencedColumnName="id")}
+     * inverseJoinColumns={@ORM\JoinColumn(name="usuariored_id", referencedColumnName="id")}
      */
     private $networkUsers;
 
@@ -282,13 +285,13 @@ class Host
 
 	public function __toString(){
 		$ofi = $this -> office;
-		
+
 		if(empty ($ofi)){
 			return $this->device -> __toString() . ' ' . $this->ipAddress ->__toString();
 		}
 		else{
 			return $this->device -> __toString() . ' ' . $this->ipAddress ->__toString() . '  (' . $this->office-> getNombre() . ')';
-		}	
-        
+		}
+
     }
 }

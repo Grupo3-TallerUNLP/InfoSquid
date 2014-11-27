@@ -30,15 +30,7 @@ Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed:
     manyToMany:
         hosts:
             targetEntity: Grupo3TallerUNLP\HostBundle\Entity\Host
-            inversedBy: networkUsers
-            joinTable:
-                name: UsuarioRed_Host
-                joinColumns:
-                    usuariored_id:
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    host_id:
-                        referencedColumnName: id
+            mappedBy: networkUsers
     # relacion con oficina
     manyToOne:
         oficina:
