@@ -18,7 +18,7 @@
                 <th>Frecuenciatiempo</th>
 				<th>Plantilla</th>
 				<th> Proximo Envio </th>
-                <th class="col-xs-1">Actions</th>
+                <th class="col-xs-2">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,10 +29,13 @@
                 <td>{{ entity.plantilla }}</td>
 				<td>{{ entity.proximoEnvio|date('d-m-Y') }}</td>
 				<td>
+					<a href="{{ path('informepredefinido_show', { 'id': entity.id }) }}" title="Ver" class="btn btn-default btn-xs">
+                        <span class="glyphicon glyphicon-list text-primary"></span>
+                    </a>
 					<a href="{{ path('informepredefinido_edit', { 'id': entity.id }) }}" title="Editar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-pencil text-primary"></span>
                     </a>
-                        <a href="{{ path('informepredefinido_show', { 'id': entity.id }) }}"title="Eliminar" class="btn btn-default btn-xs">
+                        <a href="{{ path('informepredefinido_showdelete', { 'id': entity.id }) }}"title="Eliminar" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-remove text-danger"></span>
                     </a>
 				</td>

@@ -18,6 +18,7 @@ Grupo3TallerUNLP\InformeBundle\Entity\Request:
         protocolo:
             type: string
             length: '20'
+            nullable: true
         dateTime:
             type: string
             length: '20'

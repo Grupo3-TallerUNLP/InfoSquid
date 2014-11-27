@@ -2,9 +2,13 @@ informepredefinido:
     path:     /
     defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:index" }
 
-informepredefinido_show:
+informepredefinido_showdelete:
     path:     /{id}/show
     defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:show" }
+
+informepredefinido_show:
+    path:     /{id}/informepredefinido
+    defaults: { _controller: "Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:mostrar" }
 
 informepredefinido_new:
     path:     /new

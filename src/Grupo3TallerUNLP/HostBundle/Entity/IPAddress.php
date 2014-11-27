@@ -55,7 +55,7 @@ class IPAddress
     protected $host;    
 	
 	/**
-     * @ORM\OneToMany(targetEntity="Grupo3TallerUNLP\InformeBundle\Entity\request", mappedBy="request")
+     * @ORM\OneToMany(targetEntity="Grupo3TallerUNLP\InformeBundle\Entity\Request", mappedBy="ip")
      */
     protected $request;
 

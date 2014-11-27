@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h3>Plantilla</h3>
+        <h3>Eliminar Plantilla</h3>
     </div>
 
     <dl class="dl-horizontal">
@@ -36,6 +36,9 @@
 	
 
     <div class="col-md-offset-1">
-            <a href="{{ path('plantilla') }}" class="btn btn-primary">Volver</a>
+        {{ form_start(delete_form) }}
+            {{ form_widget(delete_form.submit) }}
+            <a href="{{ path('plantilla') }}" class="btn btn-default">Cancelar</a>
+        {{ form_end(delete_form) }}
     </div>
 {% endblock %}
