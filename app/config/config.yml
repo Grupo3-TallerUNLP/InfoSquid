@@ -34,6 +34,7 @@ assetic:
         - Grupo3TallerUNLPUserBundle
         - FOSUserBundle
         - Grupo3TallerUNLPPlantillaBundle
+        - Grupo3TallerUNLPInformeBundle
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

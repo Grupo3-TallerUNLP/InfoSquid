@@ -1,0 +1,49 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h3>InfoSquid</h3>
+    </div>
+
+    <div class="mt">
+        <div class="page-header">
+            <h4>Informes</h4>
+        </div>
+        <a href="{{ path('informe_generar') }}" class="btn btn-primary ml">
+            <h4>{{ icon('list-alt') }} Generar Informe</h4>
+        </a>
+        <a href="{{ path('plantilla') }}" class="btn btn-primary ml">
+            <h4>{{ icon('list') }} Plantillas</h4>
+        </a>
+    </div>
+
+    <div class="mt">
+        <div class="page-header">
+            <h4>Rankings</h4>
+        </div>
+        <a href="{{ path('informe_ranking_sitios_generar') }}" class="btn btn-primary ml">
+            <h4>{{ icon('stats') }} Sitios más<br /> visitados</h4>
+        </a>
+        <a href="{{ path('informe_ranking_usuario_trafico_generar') }}" class="btn btn-primary ml">
+            <h4>{{ icon('stats') }} Usuarios con<br /> más tráfico</h4>
+        </a>
+        <a href="{{ path('informe_ranking_usuario_trafico_denegado_generar') }}" class="btn btn-primary ml">
+            <h4>{{ icon('stats') }} Usuarios con más<br /> tráfico denegado</h4>
+        </a>
+        <a href="{{ path('informe_ranking_protocolo_generar') }}" class="btn btn-primary ml">
+            <h4>{{ icon('stats') }} Protocolos más<br /> utilizados</h4>
+        </a>
+    </div>
+
+    <style>
+    .mt {
+        margin-top: 30px;
+    }
+    .ml {
+        margin-left: 10px;
+    }
+    .ml:first {
+        margin-left: 0;
+    }
+    </style>
+{% endblock content %}

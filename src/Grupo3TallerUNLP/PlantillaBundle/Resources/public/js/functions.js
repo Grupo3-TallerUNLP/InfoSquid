@@ -58,3 +58,15 @@ function ocultarfiltro2()
     document.getElementById('div_grupo').style.display = 'none';
     document.getElementById('div_sitio').style.display = 'none';
 }
+
+function mostrarPlantilla()
+{
+    document.getElementById('div_plantillas').style.display = 'block';
+    document.getElementById('div_filtros').style.display = 'none';
+}
+
+function mostrarFiltros()
+{
+    document.getElementById('div_plantillas').style.display = 'none';
+    document.getElementById('div_filtros').style.display = 'block';
+}

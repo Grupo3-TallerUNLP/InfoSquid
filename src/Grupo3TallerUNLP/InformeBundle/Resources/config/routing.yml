@@ -6,12 +6,14 @@ informe_home:
 informe_generar:
     path:	/informe
     defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:generar"}
-    methods: POST
+    methods: GET
 
 informe_mostrarplantilla:
-    path:	/informeplantilla
+    path:	/informeplantilla/{id}
     defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:mostrarPlantilla"}
-    methods: POST
+    methods: GET
+    requirements: 
+        id: \d+
 
 informe_mostrarfiltros:
     path:	/informefiltro

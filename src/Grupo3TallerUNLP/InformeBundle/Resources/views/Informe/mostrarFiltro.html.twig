@@ -1,0 +1,48 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+
+	<div class="page-header">
+        <h1>Usuarios de Red</h1>
+    </div>
+
+	<p>
+        <a href="{{ path('usuariored_new') }}" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span> Agregar Usuario
+        </a>
+    </p>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Dia</th>
+                <th>Hora</th>
+                <th>URL </th>
+                <th>Denegado</th>  {# de aca en mas es todo opcional si es que filtro por algo de esto#}
+                <th>IP</th>
+				<th>Dispositivo</th>
+				<th>Usuario de Red</th>
+				<th>Oficina</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in pagination %}
+            <tr>
+                <td>{{ entity.nombre }} </td>
+                <td>{{ entity.apellido }}</td>
+                <td>{{ entity.cargo }} </td>
+                <td>{{ entity.dNI }} </td>
+                <td>{{ entity.usuariosistema }} </td>
+				<td>{{ entity.oficina }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <nav class="text-center">
+        {{ knp_pagination_render(pagination) }}
+    </nav>
+
+    {% endblock %}
+
+
