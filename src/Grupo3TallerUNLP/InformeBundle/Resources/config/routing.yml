@@ -1,3 +1,59 @@
-grupo3_taller_unlp_informe_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: Grupo3TallerUNLPInformeBundle:Default:index }
+informe_home:
+    path:    /
+    defaults: { _controller: "Grupo3TallerUNLPInformeBundle:Informe:index" }
+    methods: GET
+
+informe_generar:
+    path:	/informe
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:generar"}
+    methods: POST
+
+informe_mostrarplantilla:
+    path:	/informeplantilla
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:mostrarPlantilla"}
+    methods: POST
+
+informe_mostrarfiltros:
+    path:	/informefiltro
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:mostrarFiltro"}
+    methods: POST
+
+informe_ranking_sitios_generar:
+    path:	/rankingsitios
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:sitiosGenerar"}
+    methods: GET
+
+informe_ranking_sitios_mostrar:
+    path:	/rankingsitios
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:sitiosMostrar"}
+    methods: POST	
+
+informe_ranking_usuario_trafico_generar:
+    path:	/rankingtrafico
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:usuarioTraficoGenerar"}
+    methods: GET
+
+informe_ranking_usuario_trafico_mostrar:
+    path:	/rankingtrafico
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:usuarioTraficoMostrar"}
+    methods: POST
+
+informe_ranking_usuario_trafico_denegado_generar:
+    path:	/rankingdenegado
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:usuarioTraficoDenegadoGenerar"}
+    methods: GET
+
+informe_ranking_usuario_trafico_denegado_mostrar:
+    path:	/rankingdenegado
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:usuarioTraficoDenegadoMostrar"}
+    methods: POST
+
+informe_ranking_protocolo_generar:
+    path:	/rankingprotocolo
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:protocoloGenerar"}
+    methods: GET
+
+informe_ranking_protocolo_mostrar:
+    path:	/rankingprotocolo
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Ranking:protocoloMostrar"}
+    methods: POST
