@@ -11,8 +11,8 @@
     <div class="page-header">
         <h3>Generar Informe</h3>
     </div>
-	
-	<div style="margin-bottom:30px">
+
+	<div class="clearfix" style="margin-bottom:30px">
 		<div class="btn-group pull-left" data-toggle="buttons">
 			<label class="btn btn-primary"><input type="radio" name="filtro1" value="plantillas" onchange="mostrarPlantilla()">Usar Plantillas</label>
 			<label class="btn btn-primary"><input type="radio" name="filtro1" value="filtros" onchange="mostrarFiltros()">Elegir Filtros</label>
@@ -21,7 +21,7 @@
 			<a href="{{ path('informe_home') }}" class="btn btn-default">Cancelar</a>
 		</div>
 	</div>
-	<div id="div_plantillas" style='display:none;'>{# oficina #}
+	<div id="div_plantillas" style="display: none;">{# oficina #}
 		<table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -41,20 +41,20 @@
 				</td>
 			</tr>
 			{% endfor %}
-			
+
 		</tbody>
 	    </table>
             <p>
 				<a href="{{ path('informe_home') }}" class="btn btn-primary">Cancelar</a>
             </p>
-       
+
 	</div>
-	
-	<div id="div_filtros" style='display:none;'>{# filtros #}
-	    
+
+	<div id="div_filtros" style="display: none;">{# filtros #}
+
 		<form class="form-horizontal"  action= "{{path('informe_mostrarfiltros')}}" method="POST">
-		
-	
+
+
 			<div class="form-group" >{# fecha desde #}
 				<label class="col-lg-3 control-label">Fecha Desde</label>
 				<div class="col-lg-7 row">
@@ -107,10 +107,10 @@
 
 				</div>
 			</div>
-		
-			
-			
-			<div class="form-group" id="div_oficina" style='display:none;'>{# oficina #}
+
+
+
+			<div class="form-group" id="div_oficina" style="display: none;">{# oficina #}
 				<label class="col-lg-3 control-label">Oficina</label>
 				<div class="col-lg-7">
 					<select class="form-control" name="Oficina">
@@ -122,8 +122,8 @@
 				</div>
 
 			</div>
-			
-			<div class="form-group" id="div_usuario" style='display:none;'>{# usuario #}
+
+			<div class="form-group" id="div_usuario" style="display: none;">{# usuario #}
 			<label class="col-lg-3 control-label">Usuario</label>
 			<div class="col-lg-7">
 				<select class="form-control" name="usuario">
@@ -134,7 +134,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="form-group" id="div_ip" style='display:none;'>{# ip #}
+		<div class="form-group" id="div_ip" style="display: none;">{# ip #}
 			<label class="col-lg-3 control-label">IP</label>
 			<div class="col-lg-7 row">
 				<div class="col-xs-3"> <input type="number" class="form-control" name="ip[0]" min="0" max="255" step="1" /></div>
@@ -143,9 +143,9 @@
 				<div class="col-xs-3"> <input type="number" class="form-control" name="ip[3]" min="0" max="255" step="1" /> </div>
 			</div>
 		</div>
-			
-		
-			<div id="div_rango" style='display:none;'>
+
+
+			<div id="div_rango" style="display: none;">
 				<div class="form-group" >{# ip desde #}
 					<label class="col-lg-3 control-label">IP Desde</label>
 					<div class="col-lg-7 row">
@@ -165,8 +165,8 @@
 					</div>
 				</div>
 			</div>
-			
-			<div class="form-group" id="div_grupo" style='display:none;'>{# grupo sitios #}
+
+			<div class="form-group" id="div_grupo" style="display: none;">{# grupo sitios #}
 				<label class="col-lg-3 control-label">Grupo</label>
 				<div class="col-lg-7">
 					<select class="form-control" name="grupo">
@@ -177,8 +177,8 @@
 					</select>
 				</div>
 			</div>
-			
-		<div class="form-group" id="div_sitio" style='display:none;'>{# sitios #}
+
+		<div class="form-group" id="div_sitio" style="display: none;">{# sitios #}
 			<label class="col-lg-3 control-label">Sitio</label>
 			<div class="col-lg-7">
 				<select class="form-control" name="sitio">
@@ -205,5 +205,5 @@
 
 		</form>
 	</div>
- 
+
 {% endblock %}
