@@ -1,13 +1,6 @@
-de lo que tenemos:
-	-editar y agregar doble caja
+﻿de los casos de uso
 
-
-de los casos de uso
-	-abm de usuario del sistema
-		- falta la creación/modificación de contraseña
-	-modificar datos personales
-
-	-falta modificacion
+	-actualizar contraseña-> ver campo lastlogin
 
 	-Generar Informe
 	-Exportar informe
@@ -18,7 +11,12 @@ de los casos de uso
 	-Top N de mas visitados
 
 
-	-Alta de Informacion del log
+	-Alta de Informacion del log(logica while)
 	-Mantenimiento de la base de datos
+	-enviar mail
 
-	-usuario de sistema estandar
+
+-editar y agregar doble caja(ultimo)
+-usuario estandar(generar informe, top, informepredefinido, plantillas)
+-formato de campos usuario sistema
+

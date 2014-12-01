@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Grupo3TallerUNLP\GrupoBundle\Entity\Grupo;
 use Grupo3TallerUNLP\GrupoBundle\Form\GrupoType;
-
+use Grupo3TallerUNLP\ConfiguracionBundle\Entity\Configuracion;
 /**
  * Grupo controller.
  *
@@ -24,9 +24,10 @@ class GrupoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->createQueryBuilder('u');
-
+		$pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+		$num = $pag->getPaginacion();
 		$paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
 
         return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:index.html.twig', array(
             'pagination' => $pagination,

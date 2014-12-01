@@ -20,6 +20,7 @@ Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido:
         plantilla:
             targetEntity: Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla
             inversedBy: informepredefinido
+            nullable: false
             joinColumn:
                 name: plantilla
                 referencedColumnName: id

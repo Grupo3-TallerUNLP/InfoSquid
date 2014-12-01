@@ -66,6 +66,7 @@ class InformePredefinidoController extends Controller
         $form = $this->createForm(new InformePredefinidoType(), $entity, array(
             'action' => $this->generateUrl('informepredefinido_create'),
             'method' => 'POST',
+			'required' => true,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Guardar'));
@@ -161,6 +162,7 @@ class InformePredefinidoController extends Controller
         $form = $this->createForm(new InformePredefinidoType(), $entity, array(
             'action' => $this->generateUrl('informepredefinido_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+			'required' => false,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Guardar'));

@@ -5,6 +5,7 @@ namespace Grupo3TallerUNLP\InformePredefinidoBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Grupo3TallerUNLP\PlantillaBundle\Entity\PlantillaRepository;
 
 class InformePredefinidoType extends AbstractType
 {
@@ -17,9 +18,22 @@ class InformePredefinidoType extends AbstractType
         $builder
             ->add('nombre')
             ->add('frecuenciaTiempo')
-			->add('plantilla')
-			->add('proximoEnvio' ,null, array( 'widget' => 'single_text', 'format' => 'dd-MM-yyyy'))
+			->add('proximoEnvio' , 'date' , array( 'widget' => 'single_text', 'format' => 'dd-MM-yyyy'))
         ;
+		if ($options['required']) {
+            $builder->add('plantilla', 'entity', array(
+                'class' => 'Grupo3TallerUNLPPlantillaBundle:Plantilla',
+				'query_builder' => function(PlantillaRepository $er){
+					return $er->createQueryBuilder('ur')
+							  ->leftJoin('ur.informepredefinido', 'us')
+							  ->where('us.id IS NULL')
+							  ->addOrderBy('ur.nombre', 'ASC')
+							  ->addOrderBy('ur.descripcion', 'ASC');
+				},
+                'label' => 'Plantilla',
+            ));
+        }
+		
     }
     
     /**

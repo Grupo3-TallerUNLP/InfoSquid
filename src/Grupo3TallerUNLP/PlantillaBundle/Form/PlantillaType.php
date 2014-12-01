@@ -32,13 +32,8 @@ class PlantillaType extends AbstractType
         $builder
             ->add('nombre')
             ->add('descripcion', 'text', array('required'=>false))
-			->add('usuariosistema', null, array('required' => true))
-			//add('filtro', 'choice', array('mapped'=>false, 'choices' =>$this-> buildChoicesFiltro()))
-			// ->add('filtros', $options['datos']['filtros'])
-			// ->add('grupos', $options['datos']['grupos'])
-			// ->add('sitios', $options['datos']['sitios'])
-			// ->add('oficinas', $options['datos']['oficinas'])
-			// ->add('usuarios', $options['datos']['usuarios'])
+	    ->add('usuariosistema', null, array('required' => true))
+		
         ;
     }
     

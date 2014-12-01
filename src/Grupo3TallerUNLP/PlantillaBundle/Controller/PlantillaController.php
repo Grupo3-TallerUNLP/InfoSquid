@@ -83,18 +83,23 @@ class PlantillaController extends Controller
 	private function listOficinas()
 	{
 		$choices = array();
-		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
-
+		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->createQueryBuilder('o')
+							  ->innerJoin('o.hosts', 'h')
+							  ->addOrderBy('o.nombre', 'ASC');
+							  
+		$table = $table->getQuery()->getResult();
 		foreach($table as $t) {
 			$choices[$t->getId()] = $t;
 		}
 		return $choices;
 	}
+	
 
 	private function listUsuarios()
 	{
 		$choices = array();
 		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->createQueryBuilder('u')
+							  ->innerJoin('u.hosts', 'h')
 							  ->join('u.oficina', 'o')
 							  ->addOrderBy('o.nombre', 'ASC')
 							  ->addOrderBy('u.nombre', 'ASC');
@@ -476,22 +481,28 @@ class PlantillaController extends Controller
 				&& (is_int($filtros[6][3]) && $filtros[6][3] >= 0 && $filtros[6][3] <= 255)
 			) {
 				return 'La IP debe estar compuesta de cuatro campos de 0 a 255 cada uno';
-			} elseif (
-				in_array(7, $validos)
-				&& (is_int($filtros[7][0]) && $filtros[7][0] >= 0 && $filtros[7][0] <= 255)
-				&& (is_int($filtros[7][1]) && $filtros[7][1] >= 0 && $filtros[7][1] <= 255)
-				&& (is_int($filtros[7][2]) && $filtros[7][2] >= 0 && $filtros[7][2] <= 255)
-				&& (is_int($filtros[7][3]) && $filtros[7][3] >= 0 && $filtros[7][3] <= 255)
-			) {
-				return 'La IP desde debe estar compuesta de cuatro campos de 0 a 255 cada uno';
-			} elseif (
-				in_array(8, $validos)
-				&& (is_int($filtros[8][0]) && $filtros[8][0] >= 0 && $filtros[8][0] <= 255)
-				&& (is_int($filtros[8][1]) && $filtros[8][1] >= 0 && $filtros[8][1] <= 255)
-				&& (is_int($filtros[8][2]) && $filtros[8][2] >= 0 && $filtros[8][2] <= 255)
-				&& (is_int($filtros[8][3]) && $filtros[8][3] >= 0 && $filtros[8][3] <= 255)
-			) {
-				return 'La IP hasta debe estar compuesta de cuatro campos de 0 a 255 cada uno';
+			} elseif (in_array(7, $validos) || in_array(8, $validos)) {
+				if (in_array(7, $validos)
+					&& (is_int($filtros[7][0]) && $filtros[7][0] >= 0 && $filtros[7][0] <= 255)
+					&& (is_int($filtros[7][1]) && $filtros[7][1] >= 0 && $filtros[7][1] <= 255)
+					&& (is_int($filtros[7][2]) && $filtros[7][2] >= 0 && $filtros[7][2] <= 255)
+					&& (is_int($filtros[7][3]) && $filtros[7][3] >= 0 && $filtros[7][3] <= 255)
+				) {
+					return 'La IP desde debe estar compuesta de cuatro campos de 0 a 255 cada uno';
+				}
+				if (in_array(8, $validos)
+					&& (is_int($filtros[8][0]) && $filtros[8][0] >= 0 && $filtros[8][0] <= 255)
+					&& (is_int($filtros[8][1]) && $filtros[8][1] >= 0 && $filtros[8][1] <= 255)
+					&& (is_int($filtros[8][2]) && $filtros[8][2] >= 0 && $filtros[8][2] <= 255)
+					&& (is_int($filtros[8][3]) && $filtros[8][3] >= 0 && $filtros[8][3] <= 255)
+				) {
+					return 'La IP hasta debe estar compuesta de cuatro campos de 0 a 255 cada uno';
+				}
+				if (in_array(7, $validos) && in_array(8, $validos)) {
+					if (implode('.', $filtros[7]) >= implode('.', $filtros[8])) {
+						return 'La IP hasta debe ser mayor que la IP desde';
+					}
+				}
 			} else {
 				return null;
 			}
