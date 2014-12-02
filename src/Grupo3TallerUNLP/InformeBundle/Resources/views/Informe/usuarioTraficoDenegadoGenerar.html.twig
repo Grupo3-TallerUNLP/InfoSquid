@@ -14,127 +14,103 @@
 	
     <form class="form-horizontal"  action= "{{path('informe_ranking_usuario_trafico_denegado_mostrar')}}" method="POST">
 	
-		<div class="form-group">
+	<div class="form-group">
 			<label class="col-lg-3 control-label">Cantidad</label>
 			<div class="col-lg-7 row">
 				<div class="col-xs-4">
-					<input type="number" class="form-control" min="2" max="15" step="1" required="required" name="cantidad" />
+					<input type="number" class="form-control" min="2" max="15" step="1" required="required" name="filtros[cantidad]" />
 				</div>
 			</div>
 		</div>
 		
 		<div class="form-group" >{# fecha desde #}
-			<label class="col-lg-3 control-label">Fecha Desde</label>
-			<div class="col-lg-7 row">
-				<div class="col-xs-4">
-					<input class="form-control" type="date" name="fecha_desde" />
-					<span class="help-block">Formato dd-mm-aaaa</span>
-				</div>
-				<label class="col-xs-3 control-label">Fecha Hasta</label>
-				<div class="col-xs-4">
-					<input class="form-control" type="date" name="fecha_hasta" />
-					<span class="help-block">Formato dd-mm-aaaa</span>
+				<label class="col-lg-3 control-label">Fecha Desde</label>
+				<div class="col-lg-7 row">
+					<div class="col-xs-4">
+						<input class="form-control" type="date" name="filtros[fecha_desde]" />
+						<span class="help-block">Formato dd-mm-aaaa</span>
+					</div>
+					<label class="col-xs-3 control-label">Fecha Hasta</label>
+					<div class="col-xs-4">
+						<input class="form-control" type="date" name="filtros[fecha_hasta]" />
+						<span class="help-block">Formato dd-mm-aaaa</span>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="form-group">{# hora desde/ hora hasta #}
-			<label class="col-lg-3 control-label">Hora Desde</label>
-			<div class="col-lg-7 row">
-				<div class="col-xs-4">
-					<input class="form-control" type="time" name="hora_desde" />
-					<span class="help-block">Formato hh:mm</span>
-				</div>
-				<label class="col-xs-3 control-label">Hora Hasta</label>
-				<div class="col-xs-4">
-					<input class="form-control" type="time" name="hora_hasta" />
-					<span class="help-block">Formato hh:mm</span>
-				</div>
+			<div class="form-group">{# hora desde/ hora hasta #}
+				<label class="col-lg-3 control-label">Hora Desde</label>
+				<div class="col-lg-7 row">
+					<div class="col-xs-4">
+						<input class="form-control" type="time" name="filtros[hora_desde]" />
+						<span class="help-block">Formato hh:mm</span>
+					</div>
+					<label class="col-xs-3 control-label">Hora Hasta</label>
+					<div class="col-xs-4">
+						<input class="form-control" type="time" name="filtros[hora_hasta]" />
+						<span class="help-block">Formato hh:mm</span>
+					</div>
 
+				</div>
 			</div>
-		</div>
-
 		<div class="form-group">
 			<label class="col-lg-3 control-label">Filtrar por</label>
 			<div class="col-lg-7 row">
 				<div class="col-lg-8">
 					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="4" onchange="mostrarOficina()">Oficina</label>
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="7" onchange="mostrarrangoip()">Rango IP</label>
+						<label class="btn btn-default"><input type="radio" name="filtro1" value="oficina" onchange="mostrarOficina()">Oficina</label>
+						<label class="btn btn-default"><input type="radio" name="filtro1" value="ip_desde" onchange="mostrarrangoip()">Rango IP</label>
 						<label class="btn btn-default active"><input type="radio" name="filtro1" value="0" onchange="ocultarfiltro1()" checked="checked">{{ icon('remove') }}</label>
 					</div>
 				</div>
-				<div class="col-lg-4">
-					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default"><input type="radio" name="filtro2" value="9" onchange="mostrargrupo()">Grupo</label>
-						<label class="btn btn-default active"><input type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()" checked="checked">{{ icon('remove') }}</label>
+				
+			</div>
+		</div>
+
+			<div class="form-group" id="div_oficina" style="display: none;">{# oficina #}
+				<label class="col-lg-3 control-label">Oficina</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[oficina]">
+						<option value=""></option>
+						{% for f in oficinas %}
+						<option value="{{f.id}}">{{ f }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+			</div>
+
+			<div id="div_rango" style="display: none;">
+				<div class="form-group" >{# ip desde #}
+					<label class="col-lg-3 control-label">IP Desde</label>
+					<div class="col-lg-7 row">
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][0]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][1]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][2]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][3]" min="0" max="255" step="1" /> </div>
 					</div>
 				</div>
-
-
-			</div>
-		</div>
-		
-		
-		<div class="form-group" id="div_oficina" style='display:none;'>{# oficina #}
-			<label class="col-lg-3 control-label">Oficina</label>
-			<div class="col-lg-7">
-				<select class="form-control" name="Oficina">
-					<option value=""></option>
-					{% for f in oficinas %}
-					<option value="{{f.id}}">{{ f }}</option>
-					{% endfor %}
-				</select>
-			</div>
-
-		</div>
-	
-		<div id="div_rango" style='display:none;'>
-			<div class="form-group" >{# ip desde #}
-				<label class="col-lg-3 control-label">IP Desde</label>
-				<div class="col-lg-7 row">
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_desde_1" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_desde_2" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_desde_3" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_desde_4" min="0" max="255" step="1" /> </div>
+				<div class="form-group">{# ip hasta #}
+					<label class="col-lg-3 control-label">IP Hasta</label>
+					<div class="col-lg-7 row">
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][0]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][1]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][2]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][3]" min="0" max="255" step="1" /> </div>
+					</div>
 				</div>
 			</div>
-			<div class="form-group">{# ip hasta #}
-				<label class="col-lg-3 control-label">IP Hasta</label>
-				<div class="col-lg-7 row">
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_desde_1" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_hasta_2" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_hasta_3" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="ip_hasta_4" min="0" max="255" step="1" /> </div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="form-group" id="div_grupo" style='display:none;'>{# grupo sitios #}
-			<label class="col-lg-3 control-label">Grupo</label>
-			<div class="col-lg-7">
-				<select class="form-control" name="grupo">
-					<option value=""></option>
-					{% for g in grupos %}
-					<option value="{{g.id}}">{{ g }}</option>
-					{% endfor %}
-				</select>
-			</div>
-		</div>
-		
-		<div class="form-group" id="div_usuario" style='display:none;'>
-		</div>
-		
+
+
 		<div class="form-group" id="div_ip" style='display:none;'>
 		</div>
-		
-        <div class="col-lg-offset-3 col-lg-7">
-            <p>
-                <button type="submit"class="btn btn-primary">Generar</button>
-				<a href="{{ path('informe_home') }}" class="btn btn-default">Cancelar</a>
-            </p>
-			
-			
-        </div>
+
+
+			<div class="col-lg-offset-3 col-lg-7">
+				<p>
+					<button type="submit"class="btn btn-primary">Generar</button>
+					<a href="{{ path('informe_home') }}" class="btn btn-default">Cancelar</a>
+				</p>
+			</div>
 
 	</form>
 {% endblock %}

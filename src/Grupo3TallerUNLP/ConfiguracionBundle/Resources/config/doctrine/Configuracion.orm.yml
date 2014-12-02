@@ -13,10 +13,10 @@ Grupo3TallerUNLP\ConfiguracionBundle\Entity\Configuracion:
             type: integer
         directorioLogsAntiguos:
             type: string
-            length: 255
+            length: 50
         archivoDeLog:
             type: string
-            length: 255
+            length: 50
         tiempoMantenimiento:
             type: integer
     lifecycleCallbacks: {  }

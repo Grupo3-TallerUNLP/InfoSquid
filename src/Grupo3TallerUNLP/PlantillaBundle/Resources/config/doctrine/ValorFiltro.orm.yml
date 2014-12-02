@@ -11,7 +11,7 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\ValorFiltro:
     fields:
         valor:
             type: string
-            length: 255
+            length: 50
         filtroId:
             type: integer
             column: filtro_id

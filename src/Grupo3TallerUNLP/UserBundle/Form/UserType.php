@@ -22,7 +22,6 @@ class UserType extends AbstractType
                 ->add('plainPassword', null, array('label'=>'Contraseña'))
                 ;
         }
-
         $builder->add('email');
 
 

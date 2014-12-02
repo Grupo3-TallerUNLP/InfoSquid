@@ -11,10 +11,10 @@ Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla:
     fields:
         nombre:
             type: string
-            length: 255
+            length: 50
         descripcion:
             type: string
-            length: 255
+            length: 70
             nullable: true
     oneToOne:
         informepredefinido:

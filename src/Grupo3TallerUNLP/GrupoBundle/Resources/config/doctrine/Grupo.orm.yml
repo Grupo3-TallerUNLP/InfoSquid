@@ -11,11 +11,11 @@ Grupo3TallerUNLP\GrupoBundle\Entity\Grupo:
     fields:
         nombre:
             type: string
-            length: 255
+            length: 50
             unique: true
         descripcion:
             type: string
-            length: 255
+            length: 50
             nullable: true;
     #relaciones
     oneToMany:

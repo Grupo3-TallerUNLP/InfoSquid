@@ -11,7 +11,7 @@ Grupo3TallerUNLP\SitioBundle\Entity\GradoAceptacion:
     fields:
         grado:
             type: string
-            length: '20'
+            length: 20
     oneToMany:
         sitios:
             targetEntity: Sitio

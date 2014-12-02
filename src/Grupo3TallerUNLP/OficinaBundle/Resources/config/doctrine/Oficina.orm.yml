@@ -11,19 +11,19 @@ Grupo3TallerUNLP\OficinaBundle\Entity\Oficina:
     fields:
         nombre:
             type: string
-            length: 255
+            length: 50
             unique: true
         descripcion:
             type: string
-            length: 255
+            length: 70
             nullable: true
         ubicacion:
             type: string
-            length: 255
+            length: 50
             nullable: true
         director:
             type: string
-            length: 255
+            length: 50
             nullable: true
     oneToMany:
         hosts:

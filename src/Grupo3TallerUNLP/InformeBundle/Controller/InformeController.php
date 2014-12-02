@@ -153,18 +153,21 @@ class InformeController extends Controller
 				$query->setParameter('ip_hasta', $filtros[8]);
 			}
 		}elseif(array_key_exists(4, $filtros)){
-			$informe[] ='Oficina: ' . $filtros[4];
+			$of = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Plantilla')->find($filtros[4]);
+			$informe[] ='Oficina: ' . $of->getNombre() ;
 			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 			$query->$where('h.office= :oficina')->setParameter('oficina', $filtros[4]);
 			$where='andWhere';					
 		}elseif(array_key_exists(5, $filtros)){
-			$informe[] ='Usuario: ' . $filtros[5];
+			$us = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros[5]);
+			$informe[] ='Usuario: ' . $us->getNombre();
 			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
 			$query->$where('u.id= :usuario')->setParameter('usuario', $filtros[5]);
 			$where='andWhere';
 		}
 		if(array_key_exists(9, $filtros)){
-			$informe[] ='Grupo: ' . $filtros[9];
+			$gr = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros[9]);
+			$informe[] ='Grupo: ' . $gr->getNombre();
 			$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros[9]);
 			$like = array();
 			foreach ($sitios as $sitio) {
@@ -178,7 +181,7 @@ class InformeController extends Controller
 				$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$sitio->getUrl().'%');
 				$where = 'andWhere';
 			}
-			$informe[] ='Sitio: ' . $filtros[10];
+			$informe[] ='Sitio: ' . $sitio->getNombre();
 		}
 		if(array_key_exists(11, $filtros)){
 			$query->$where('r.denegado = True');
@@ -207,7 +210,7 @@ class InformeController extends Controller
 		else {
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
-			$informe = [];
+			$informe = array();
 			if(in_array('fecha_desde', $validos) && in_array('fecha_hasta', $validos)){
 				$query->$where('r.fecha >= :fecha_desde')->setParameter('fecha_desde', $filtros['fecha_desde']);
 				$where = 'andWhere';
@@ -285,18 +288,21 @@ class InformeController extends Controller
 					$query->setParameter('ip_hasta', implode('.', $filtros['ip_hasta']));
 				}
 			}elseif(in_array('oficina', $validos)){
-				$informe[] ='Oficina: ' . $filtros['oficina'];
+				$of = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros['oficina']);
+				$informe[] ='Oficina: ' . $of->getNombre() ;
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
 				$where='andWhere';
 			}elseif(in_array('usuario', $validos)){
-				$informe[] ='Usuario: ' . $filtros['usuario'];
+				$us = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros['usuario']);
+				$informe[] ='Usuario: ' . $us->getNombre();
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
 				$query->$where('u.id= :usuario')->setParameter('usuario', $filtros['usuario']);
 				$where='andWhere';	
 			}
 			if(in_array('grupo', $validos)){
-				$informe[] ='Grupo: ' . $filtros['grupo'];
+				$gr = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
+				$informe[] ='Grupo: ' . $gr->getNombre();
 				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
 				$like = array();
 				foreach ($sitios as $sitio) {
@@ -310,7 +316,7 @@ class InformeController extends Controller
 					$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$sitio->getUrl().'%');
 					$where = 'andWhere';
 				}
-				$informe[] ='Sitio: ' . $filtros['sitio'];
+				$informe[] ='Sitio: ' . $sitio->getNombre();
 			}
 			if(in_array('traficodenegado', $validos)){
 				$query->$where('r.denegado = True');

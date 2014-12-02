@@ -80,8 +80,6 @@
 						<label class="btn btn-default active"><input id ="filtro2_0" type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()">{{ icon('remove') }}</label>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 4)  %}
@@ -259,7 +257,7 @@
 			</div>
 		</div>
 		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 10)  %}
-			<div class="form-group" id="div_oficina" style='display:block;'>{# oficina #}
+			<div class="form-group" id="div_sitio" style='display:block;'>{# oficina #}
 			<script>
 				function filtro_2(){
 					$('#filtro2_10').attr('checked', 'checked').parent().addClass('active');
@@ -312,7 +310,6 @@
         </div>
 <script>
 	window.onload = function(){
-		console.log(filtro_1);
 		if (filtro_1 !== undefined) {
 			filtro_1();
 		}
