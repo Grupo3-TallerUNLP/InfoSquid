@@ -70,61 +70,131 @@ class InformeController extends Controller
 	
 	public function mostrarPlantillaAction($id)
 	{
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getDoctrine()->getManager();
 		$user = $this->get('security.context')->getToken()->getUser();
-		$valorfiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:ValorFiltro')->findByPlantilla($id);
+		$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
+		$valorfiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:ValorFiltro')->findByPlantilla($plantilla);
+		$filtros = array();
+		foreach($valorfiltro as $valor){
+			$filtros[$valor->getFiltro()->getId()] = $valor->getValor();
+		}
 		
 		//acomodar los if a valorfiltro, pero deberiamos seguir con la misma estructura
 		
 		$where = 'where';
 		$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
-		if(in_array(1, $valorfiltro) ){
-			$result = $today - $valorfiltro[1]['valor']; //ver
-			$query->$where('fecha >= :fecha_desde')->setParameter('fecha_desde', $result);
+		if(array_key_exists(1, $filtros)){
+			$fecha = date('Y-m-d',time() - 86400*$filtros[1]); //ver
+			$query->$where('r.fecha >= :fecha_desde')->setParameter('fecha_desde', $fecha);
 			$where = 'andWhere';
-			$query->$where('fecha <= :fecha_hasta')->setParameter('fecha_hasta', $valorfiltro[1]['valor']);
-		if (in_array(2, $valorfiltro) && in_array(3, $valorfiltro)) {
-			$query->$where('hora >= :hora_desde')->setParameter('hora_desde', $valorfiltro[2]['valor']);
-			$where = 'andWhere';
-			$query->$where('hora <= :hora_hasta')->setParameter('hora_hasta', $valorfiltro[3]['valor']);
-		}elseif(in_array(2, $valorfiltro)){
-			$query->$where('hora >= :hora_desde')->setParameter('hora_desde', $valorfiltro[2]['valor']);
-			$where = 'andWhere';
-		}elseif(in_array(3, $valorfiltro)){
-			$query->$where('hora <= :hora_hasta')->setParameter('hora_hasta', $valorfiltro[3]['valor']);
-			$where = 'andWhere';
+			$fecha = date('d-m-Y',time() - 86400*$filtros[1]);
+			$informe[] ='Fecha Desde: ' . $fecha;
 		}
-		if(in_array(6, $valorfilto)){
-			$query->$where('ip <= :id_ip')->setParameter('id_ip', $valorfiltro[6]['valor']);
+		if (array_key_exists(2, $filtros) && array_key_exists(3, $filtros)) {
+			$query->$where('r.hora >= :hora_desde')->setParameter('hora_desde', $filtros[2]);
 			$where = 'andWhere';
-		}elseif(in_array('ip_desde', $validos) && in_array('ip_hasta', $validos)){
-			//buscar las ip 
-		}elseif(in_array('oficina', $validos)){
-				//buscar las ip de esa oficina y consultar por ese rango.
-					
-		}elseif(in_array('usuario', $validos)){
-				//falta aca
-		}
-		if(in_array('grupo', $validos)){
-					//falta aca
-		}elseif(in_array('sitio', $validos)){
-				//falta aca
-		}
-		if(in_array('traficodenegado', $validos)){
-			$query->$where('denegado = :denegado')->setParameter('denegado', 'true');
+			$query->$where('r.hora <= :hora_hasta')->setParameter('hora_hasta', $valorfiltro[3]);
+			$informe[] ='Hora Desde: ' . $filtros[2];
+			$informe[] ='Hora Hasta: ' . $filtros[3];
+		}elseif(array_key_exists(2, $filtros)){
+			$query->$where('r.hora >= :hora_desde')->setParameter('hora_desde', $filtros[2]);
 			$where = 'andWhere';
-		}		
-	
+			$informe[] ='Hora Desde: ' . $filtros[2];
+		}elseif(array_key_exists(3, $filtros)){
+			$query->$where('r.hora <= :hora_hasta')->setParameter('hora_hasta', $filtros[3]);
+			$where = 'andWhere';
+			$informe[] ='Hora Hasta: ' . $filtros[3];
 		}
-	
-		return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarPlantilla.html.twig',array(
+		if(array_key_exists(6, $filtros)){
+			$dirIp = explode('.', $filtros[6]);
+			$ip = $em->getRepository('Grupo3TallerUNLPHostBundle:IPAddress')->findOneBy(array('field1'=>$dirIp[0], 'field2'=>$dirIp[1], 'field3'=>$dirIp[2], 'field4'=>$dirIp[3]));
+			$query->innerJoin('r.ip', 'i');
+			$query->$where('i = :ip')->setParameter('ip', $ip);
+			$informe[] ='IP: ' . $filtros[6];
+			$where = 'andWhere';
+		}elseif(array_key_exists(7, $filtros) || array_key_exists(8, $filtros)){
+			if(array_key_exists(7, $filtros)){
+				$informe[] ='IP Desde: ' . $filtros[7];
+				$query->innerJoin('r.ip', 'i');
+				$query->$where($query->expr()->gte(
+						$query->expr()->concat('i.field1',
+							$query->expr()->concat($query->expr()->literal('.'),
+								$query->expr()->concat('i.field2',
+									$query->expr()->concat($query->expr()->literal('.'),
+										$query->expr()->concat('i.field3',
+											$query->expr()->concat($query->expr()->literal('.'), 'i.field4')
+										)
+									)
+								)
+							)
+						)
+					, ':ip_desde'));
+				$query->setParameter('ip_desde', $filtros[7]);
+				$where = 'andWhere';
+			}
+			if(array_key_exists(8, $filtros)){
+				$informe[] ='IP Hasta: ' . $filtros[8];
+				if(!array_key_exists(7, $filtros)){
+					$query->innerJoin('r.ip', 'i');
+				}
+				$query->$where($query->expr()->lte(
+						$query->expr()->concat('i.field1',
+							$query->expr()->concat($query->expr()->literal('.'),
+								$query->expr()->concat('i.field2',
+									$query->expr()->concat($query->expr()->literal('.'),
+										$query->expr()->concat('i.field3',
+											$query->expr()->concat($query->expr()->literal('.'), 'i.field4')
+										)
+									)
+								)
+							)
+						)
+					, ':ip_hasta'));
+				$query->setParameter('ip_hasta', $filtros[8]);
+			}
+		}elseif(array_key_exists(4, $filtros)){
+			$informe[] ='Oficina: ' . $filtros[4];
+			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
+			$query->$where('h.office= :oficina')->setParameter('oficina', $filtros[4]);
+			$where='andWhere';					
+		}elseif(array_key_exists(5, $filtros)){
+			$informe[] ='Usuario: ' . $filtros[5];
+			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
+			$query->$where('u.id= :usuario')->setParameter('usuario', $filtros[5]);
+			$where='andWhere';
+		}
+		if(array_key_exists(9, $filtros)){
+			$informe[] ='Grupo: ' . $filtros[9];
+			$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros[9]);
+			$like = array();
+			foreach ($sitios as $sitio) {
+				$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+			}
+			$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
+			$where = 'andWhere';
+		}elseif(array_key_exists(10, $filtros)){
+			$sitio = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($filtros[10]);
+			if($sitio){
+				$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$sitio->getUrl().'%');
+				$where = 'andWhere';
+			}
+			$informe[] ='Sitio: ' . $filtros[10];
+		}
+		if(array_key_exists(11, $filtros)){
+			$query->$where('r.denegado = True');
+			$informe[] ='Trafico Denegado: ' . 'Si';
+		}
+		$resultados = $query->orderBy('r.dateTime', 'DESC')->getQuery()->getResult();
+			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',array(
 			'resultados' => $resultados,
-		));
+			'filtros' => $informe,
+			'plantilla' => $plantilla->getNombre(),
+			));
 	}
 	
 	public function mostrarFiltroAction(Request $request)
 	{
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getDoctrine()->getManager();
 		$user = $this->get('security.context')->getToken()->getUser();
 		$filtro1 = $request->request->get('filtro1');
         $filtro2 = $request->request->get('filtro2');
@@ -137,58 +207,123 @@ class InformeController extends Controller
 		else {
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
+			$informe = [];
 			if(in_array('fecha_desde', $validos) && in_array('fecha_hasta', $validos)){
-				$query->$where('fecha >= :fecha_desde')->setParameter('fecha_desde', $validos['fecha_desde']);
+				$query->$where('r.fecha >= :fecha_desde')->setParameter('fecha_desde', $filtros['fecha_desde']);
 				$where = 'andWhere';
-				$query->$where('fecha <= :fecha_hasta')->setParameter('fecha_hasta', $validos['fecha_hasta']);
+				$query->$where('r.fecha <= :fecha_hasta')->setParameter('fecha_hasta', $filtros['fecha_hasta']);
+				$informe[] ='Fecha Desde: ' . $filtros['fecha_desde'];
+				$informe[] ='Fecha Hasta: ' . $filtros['fecha_hasta'];
 			}elseif (in_array('fecha_desde', $validos)){
-				$query->$where('fecha >= :fecha_desde')->setParameter('fecha_desde', $validos['fecha_desde']);
+				$query->$where('r.fecha >= :fecha_desde')->setParameter('fecha_desde', $filtros['fecha_desde']);
 				$where = 'andWhere';
-			}elseif (in_array('fecha_hasta', $validos)) {
-				$query->$where('fecha <= :fecha_hasta')->setParameter('fecha_hasta', $validos['fecha_hasta']);
+				$informe[] ='Fecha Desde: ' . $validos['fecha_desde'];
+			}elseif (in_array('r.fecha_hasta', $validos)) {
+				$query->$where('fecha <= :fecha_hasta')->setParameter('fecha_hasta', $filtros['fecha_hasta']);
 				$where = 'andWhere';
+				$informe[] ='Fecha Hasta: ' . $filtros['fecha_hasta'];
 			}
 			if (in_array('hora_desde', $validos) && in_array('hora_hasta', $validos)) {
-				$query->$where('hora >= :hora_desde')->setParameter('hora_desde', $validos['hora_desde']);
+				$query->$where('r.hora >= :hora_desde')->setParameter('hora_desde', $filtros['hora_desde']);
 				$where = 'andWhere';
-				$query->$where('hora <= :hora_hasta')->setParameter('hora_hasta', $validos['hora_hasta']);
+				$query->$where('r.hora <= :hora_hasta')->setParameter('hora_hasta', $filtros['hora_hasta']);
+				$informe[] ='Hora Desde: ' . $filtros['hora_desde'];
+				$informe[] ='Hora Hasta: ' . $filtros['hora_hasta'];
 			}elseif(in_array('hora_desde', $validos)){
-				$query->$where('hora >= :hora_desde')->setParameter('hora_desde', $validos['hora_desde']);
+				$query->$where('r.hora >= :hora_desde')->setParameter('hora_desde', $filtros['hora_desde']);
 				$where = 'andWhere';
+				$informe[] ='Hora Desde: ' . $filtros['hora_desde'];
 			}elseif(in_array('hora_hasta', $validos)){
-				$query->$where('hora <= :hora_hasta')->setParameter('hora_hasta', $validos['hora_hasta']);
+				$query->$where('r.hora <= :hora_hasta')->setParameter('hora_hasta', $filtros['hora_hasta']);
 				$where = 'andWhere';
+				$informe[] ='Hora Desde: ' . $filtros['hora_desde'];
 			}
 			if(in_array('ip', $validos)){
-				$id_ip = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPHostBundle:IPAddress')->findBy(array ('field1' => $validos['ip'][0], 'field2' => $validos['ip'][1], 'field2' => $validos['ip'][2], 'field3' => $validos['ip'][3]));
-				$query->$where('ip <= :id_ip')->setParameter('id_ip', $validos['ip']);
+				$ip = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPHostBundle:IPAddress')->findOneBy(array ('field1' => $filtros['ip'][0], 'field2' => $filtros['ip'][1], 'field3' => $filtros['ip'][2], 'field4' => $filtros['ip'][3]));
+				$query->innerJoin('r.ip', 'i');
+				$query->$where('i = :ip')->setParameter('ip', $ip);
 				$where = 'andWhere';
-			}elseif(in_array('ip_desde', $validos) && in_array('ip_hasta', $validos)){
-				
+				$informe[] ='IP: ' . implode('.', $filtros['ip']);
+			}elseif(in_array('ip_desde', $validos) || in_array('ip_hasta', $validos)){
+				if(in_array('ip_desde', $validos)){
+					$informe[] ='IP Desde: ' . implode('.', $filtros['ip_desde']);
+					$query->innerJoin('r.ip', 'i');
+					$query->$where($query->expr()->gte(
+							$query->expr()->concat('i.field1',
+								$query->expr()->concat($query->expr()->literal('.'),
+									$query->expr()->concat('i.field2',
+										$query->expr()->concat($query->expr()->literal('.'),
+											$query->expr()->concat('i.field3',
+												$query->expr()->concat($query->expr()->literal('.'), 'i.field4')
+											)
+										)
+									)
+								)
+							)
+						, ':ip_desde'));
+					$query->setParameter('ip_desde', implode('.', $filtros['ip_desde']));
+					$where = 'andWhere';
+				}
+				if(in_array('ip_hasta', $validos)){
+					$informe[] ='IP Hasta: ' . implode('.', $filtros['ip_hasta']);
+					if(!in_array('ip_desde', $validos)){
+						$query->innerJoin('r.ip', 'i');
+					}
+					$query->$where($query->expr()->lte(
+							$query->expr()->concat('i.field1',
+								$query->expr()->concat($query->expr()->literal('.'),
+									$query->expr()->concat('i.field2',
+										$query->expr()->concat($query->expr()->literal('.'),
+											$query->expr()->concat('i.field3',
+												$query->expr()->concat($query->expr()->literal('.'), 'i.field4')
+											)
+										)
+									)
+								)
+							)
+						, ':ip_hasta'));
+					$query->setParameter('ip_hasta', implode('.', $filtros['ip_hasta']));
+				}
 			}elseif(in_array('oficina', $validos)){
-					//buscar las ip de esa oficina y consultar por ese rango.
-						
+				$informe[] ='Oficina: ' . $filtros['oficina'];
+				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
+				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
+				$where='andWhere';
 			}elseif(in_array('usuario', $validos)){
-					//falta aca
+				$informe[] ='Usuario: ' . $filtros['usuario'];
+				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
+				$query->$where('u.id= :usuario')->setParameter('usuario', $filtros['usuario']);
+				$where='andWhere';	
 			}
 			if(in_array('grupo', $validos)){
-						//falta aca
+				$informe[] ='Grupo: ' . $filtros['grupo'];
+				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
+				$like = array();
+				foreach ($sitios as $sitio) {
+					$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+				}
+				$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
+				$where = 'andWhere';
 			}elseif(in_array('sitio', $validos)){
-					//falta aca
+				$sitio = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($filtros['sitio']);
+				if($sitio){
+					$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$sitio->getUrl().'%');
+					$where = 'andWhere';
+				}
+				$informe[] ='Sitio: ' . $filtros['sitio'];
 			}
 			if(in_array('traficodenegado', $validos)){
-				$query->$where('denegado = :denegado')->setParameter('denegado', 'true');
+				$query->$where('r.denegado = True');
 				$where = 'andWhere';
+				$informe[] ='Trafico Denegado: ' . 'Si';
 			}
-			
-			
-			
-		
-		}
-  	
-		return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarFiltro.html.twig',array(
+			$resultados = $query->orderBy('r.dateTime', 'DESC')->getQuery()->getResult();
+			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',array(
 			'resultados' => $resultados,
-		));
+			'filtros' => $informe,
+			));
+		}
+		return $this->redirect($this->generateUrl('informe_generar'));
 	}
 	
 	private function validarFiltros($filtros, $filtro1, $filtro2, &$validos)
@@ -211,13 +346,13 @@ class InformeController extends Controller
             }
 		}
 		if ($ok) {
-			if (in_array('fecha_desde', $validos) && !preg_match('/^\d\d\-\d\d\-\d\d\d\d$/', $filtros['fecha_desde'])) {
+			if (in_array('fecha_desde', $validos) && !preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $filtros['fecha_desde'])) {
 				return 'La fecha desde debe tener un formato dd-mm-aaaa';
-			} elseif (in_array('fecha_hasta', $validos) && !preg_match('/^\d\d\-\d\d\-\d\d\d\d$/', $filtros['fecha_hasta'])) {
+			} elseif (in_array('fecha_hasta', $validos) && !preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $filtros['fecha_hasta'])) {
 				return 'La fecha hasta debe tener un formato dd-mm-aaaa';
-			} elseif (in_array('hora_desde', $validos) && !preg_match('/^\d\d\:\d\d$/', $filtros['hora_desde'])) {
+			} elseif (in_array('hora_desde', $validos) && !preg_match('/^\d{2}\:\d{2}$/', $filtros['hora_desde'])) {
 				return 'La hora desde debe tener el formato hh:mm';
-			} elseif (in_array('hora_hasta', $validos) && !preg_match('/^\d\d\:\d\d$/', $filtros['hora_hasta'])) {
+			} elseif (in_array('hora_hasta', $validos) && !preg_match('/^\d{2}\:\d{2}$/', $filtros['hora_hasta'])) {
 				return 'La hora hasta debe tener el formato hh:mm';
 			} elseif (
 				in_array('ip', $validos)
