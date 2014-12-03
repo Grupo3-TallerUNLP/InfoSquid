@@ -8,6 +8,7 @@ use Grupo3TallerUNLP\UsuarioRedBundle\Entity\UsuarioRed;
 use Grupo3TallerUNLP\OficinaBundle\Entity\Oficina;
 use Grupo3TallerUNLP\GrupoBundle\Entity\Grupo;
 use Grupo3TallerUNLP\SitioBundle\Entity\Sitio;
+use Ob\HighchartsBundle\Highcharts\Highchart;
 
 class RankingController extends Controller
 {
@@ -23,6 +24,53 @@ class RankingController extends Controller
 			'oficinas'	=> $oficinas,
 			'grupos'	=> $grupos,
 		));
+	}
+	
+	public function chart($resultados, $titulo, $subtitulo)
+	{
+		// Chart
+		$data = array();
+		
+			foreach ($resultados as $resultado){
+				$data[] = array(($resultado['field1']. '.' .$resultado['field2'].'.' .$resultado['field3'].'.'.$resultado['field4']), (int)$resultado['cant']);
+			}
+		
+		$series = array(
+			array("type" => "column", "name"=>"Cantidad", "data" => $data)
+		);
+
+		$ob = new Highchart();
+		$ob->chart->renderTo('linechart');  // The #id of the div where to render the chart
+		$ob->title->text($titulo);
+		$ob->xAxis->title(array('text'  => $subtitulo));
+		$ob->yAxis->title(array('text'  => "Cantidad"));
+		//$ob->yAxis->categories: []
+		$ob->series($series);
+
+		return $ob;
+	}
+	
+	public function chartPie($resultados, $titulo, $subtitulo)
+	{
+		// Chart
+		$data = array();
+		
+			foreach ($resultados as $resultado){
+				$data[] = array($resultado['protocolo'], (int)$resultado['cant']);
+			}
+		
+		$series = array(
+			array("type" => "pie", "name"=> "Protocolos" ,"data" => $data)
+		);
+
+		$ob = new Highchart();
+		$ob->chart->renderTo('linechart');  // The #id of the div where to render the chart
+		$ob->title->text($titulo);
+		$ob->xAxis->title(array('text'  => $subtitulo));
+		$ob->yAxis->title(array('text'  => "Cantidad"));
+		$ob->series($series);
+
+		return $ob;
 	}
 	
 	public function sitiosMostrarAction(Request $request)
@@ -258,15 +306,15 @@ class RankingController extends Controller
 				$where = 'andWhere';
 			}
 			if($ok){
-				$resultados = $query->select('i.id, COUNT(r.id) AS cant')->addOrderBy('cant', 'DESC')->groupBy('i.id')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
+				$resultados = $query->select('i.field1, i.field2, i.field3, i.field4, COUNT(r.id) AS cant')->addOrderBy('cant', 'DESC')->groupBy('i.id')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
 			}else{
-				$resultados = $query->select('i.id, COUNT(r.id) AS cant')->innerJoin('r.ip', 'i')->addOrderBy('cant', 'DESC')->groupBy('i.id')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
-				$resultados = $query->select('i.id, COUNT(r.id) AS cant')->innerJoin('r.ip', 'i')->addOrderBy('cant', 'DESC')->groupBy('i.id')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
+				$resultados = $query->select('i.field1, i.field2, i.field3, i.field4, COUNT(r.id) AS cant')->innerJoin('r.ip', 'i')->addOrderBy('cant', 'DESC')->groupBy('i.id')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
+	
 			}
-			var_dump($resultados);
-			die();
+		
+			$graficos = $this->chart($resultados, 'Top N de usuarios con mas trafico', 'Usuarios');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoMostrar.html.twig',array(
-			'resultados' => $resultados,
+			'chart' => $graficos,
 			'filtros' => $informe,
 			));
 		}
@@ -392,10 +440,9 @@ class RankingController extends Controller
 			}else{
 				$resultados = $query->select('i.id, COUNT(r.id) AS cant')->innerJoin('r.ip', 'i')->addOrderBy('cant', 'DESC')->groupBy('i.id')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
 			}
-			var_dump($resultados);
-			die();
-			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoMostrar.html.twig',array(
-			'resultados' => $resultados,
+			$graficos = $this->chart($resultados, 'Top N de usuarios con mas trafico denegado', 'Usuarios');
+			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoDenegadoMostrar.html.twig',array(
+			'chart' => $graficos,
 			'filtros' => $informe,
 			));
 		}
@@ -520,12 +567,13 @@ class RankingController extends Controller
 			}
 			
 			$resultados = $query->select('r.protocolo, COUNT(r.id) AS cant')->addOrderBy('cant', 'DESC')->groupBy('r.protocolo')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
+			$graficos = $this->chartPie($resultados, 'Top N de protocolos', 'Usuarios');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:protocoloMostrar.html.twig',array(
-			'resultados' => $resultados,
+			'chart' => $graficos,
 			'filtros' => $informe,
 			));
 		}
-		return $this->redirect($this->generateUrl('informe_generar'));
+		
 	}
 	
 	private function validarFiltros($filtros, $filtro1, $filtro2, &$validos)

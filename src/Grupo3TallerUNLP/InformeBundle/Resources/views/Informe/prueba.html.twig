@@ -1,0 +1,8 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block content %}
+    
+	<form class="form-horizontal"  action= "{{ path('informe_graficos') }}" method="POST">
+		<button type="submit"class="btn btn-primary">Generar</button>
+	</form>
+{% endblock content %}

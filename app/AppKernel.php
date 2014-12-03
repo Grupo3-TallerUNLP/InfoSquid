@@ -31,6 +31,7 @@ class AppKernel extends Kernel
             new Grupo3TallerUNLP\InformePredefinidoBundle\Grupo3TallerUNLPInformePredefinidoBundle(),
             new Grupo3TallerUNLP\ConfiguracionBundle\Grupo3TallerUNLPConfiguracionBundle(),
             new Grupo3TallerUNLP\InformeBundle\Grupo3TallerUNLPInformeBundle(),
+			new Ob\HighchartsBundle\ObHighchartsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
