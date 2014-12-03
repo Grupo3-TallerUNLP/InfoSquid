@@ -25,8 +25,10 @@ class OficinaController extends Controller
 
         $query = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->createQueryBuilder('u');
 
+		$pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+		$num = $pag->getPaginacion();
 		$paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
 
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:index.html.twig', array(
             'pagination' => $pagination,
@@ -111,14 +113,16 @@ class OficinaController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Oficina entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro la oficina buscada');
+			return $this->redirect($this->generateUrl('oficina'));
         }
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 4')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+			'plantilla' => $Plantilla,
         ));
     }
 	
@@ -129,11 +133,13 @@ class OficinaController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Oficina entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro la oficina buscada');
+			return $this->redirect($this->generateUrl('oficina'));
         }
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 4')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         return $this->render('Grupo3TallerUNLPOficinaBundle:Oficina:show.html.twig', array(
             'entity'      => $entity,
+			'plantilla' => $Plantilla,
         ));
     }
 
@@ -148,7 +154,8 @@ class OficinaController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Oficina entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro la oficina buscada');
+			return $this->redirect($this->generateUrl('oficina'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -190,7 +197,8 @@ class OficinaController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Oficina entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro la oficina buscada');
+			return $this->redirect($this->generateUrl('oficina'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -232,27 +240,35 @@ class OficinaController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findOneById($id);
-			// $user = $entity->getUsuariosdered()->getNombre();
-			// $hosts = $entity->getHosts();
 			$user = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->findOneByoficina($id);
 			$hosts = $em->getRepository('Grupo3TallerUNLPHostBundle:Host')->findOneByoffice($id);
+			$valorFiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Filtro')->createQueryBuilder('f')->innerJoin('f.valorfiltro','v')->where('f.id = 4')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
+			
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Oficina entity.');
+                $this->get('session')->getFlashBag()->add('error', 'No se encontro la oficina buscada');
+				return $this->redirect($this->generateUrl('oficina'));
             }
-			elseif (($user) or ($hosts)) {
-                $this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, la oficina tiene usuario de red o host asociados');
+			elseif(($user) or ($hosts) or ($valorFiltro)){
+				if ($user) {
+					$this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, la oficina tiene usuarios de red asociados');
+				}
+				if ($hosts) {
+                $this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, la oficina tiene host asociados');
+				}
+			    if($valorFiltro)  {
+					$this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, la oficina tiene plantillas asociadas');
+				}
 				return $this->redirect($this->generateUrl('oficina'));
 			}
-			else{
-
-				$em->remove($entity);
-				$em->flush();
-				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-				return $this->redirect($this->generateUrl('oficina'));
-			}
-			}
+			$em->remove($entity);
+			$em->flush();
+			$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+			return $this->redirect($this->generateUrl('oficina'));
+			
+			
         }
+	}
 
 
 

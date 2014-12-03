@@ -18,6 +18,14 @@
 
 			    <dt>Grupo</dt>
 			    <dd>{{entity.grupo}}</dd>
+				
+				{% if plantilla %}
+					<dt>Plantillas</dt>
+					{% for p in plantilla %}
+						<dd>{{ p}}</dd>
+					{% endfor %}
+				{% endif %}
+				
     </dl>
 
 

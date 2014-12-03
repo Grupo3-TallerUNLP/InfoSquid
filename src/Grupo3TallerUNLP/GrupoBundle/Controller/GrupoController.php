@@ -114,12 +114,13 @@ class GrupoController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Grupo entity.');
         }
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 9')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+			'plantilla' => $Plantilla,
         ));
     }
 	
@@ -130,11 +131,13 @@ class GrupoController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Group entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el grupo buscado');
+			return $this->redirect($this->generateUrl('grupo'));
         }
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 9')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         return $this->render('Grupo3TallerUNLPGrupoBundle:Grupo:show.html.twig', array(
             'entity'      => $entity,
+			'plantilla' => $Plantilla,
         ));
     }
 
@@ -149,7 +152,8 @@ class GrupoController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Grupo entity.');
+           $this->get('session')->getFlashBag()->add('error', 'No se encontro el grupo buscado');
+			return $this->redirect($this->generateUrl('grupo'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -191,7 +195,8 @@ class GrupoController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Grupo entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el grupo buscado');
+				return $this->redirect($this->generateUrl('grupo'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -235,8 +240,12 @@ class GrupoController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Grupo entity.');
             }
-
-            $em->remove($entity);
+			$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 9')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
+			if($Plantilla){
+				$this->get('session')->getFlashBag()->add('error', 'La operacion no puede realizarse ya que tiene plantillas asociadas');
+				return $this->redirect($this->generateUrl('grupo'));
+			}
+		   $em->remove($entity);
             $em->flush();
         }
         $this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');

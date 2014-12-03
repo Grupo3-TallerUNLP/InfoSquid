@@ -25,8 +25,10 @@ class SitioController extends Controller
 
         $query = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->createQueryBuilder('u');
 
+		$pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+		$num = $pag->getPaginacion();
 		$paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
 
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:index.html.twig', array(
             'pagination' => $pagination,
@@ -113,11 +115,13 @@ class SitioController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Sitio entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el sitio buscado');
+			return $this->redirect($this->generateUrl('sitio'));
         }
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 10')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:show.html.twig', array(
             'entity'      => $entity,
+			'plantilla' => $Plantilla,
         ));
     }
 
@@ -128,18 +132,17 @@ class SitioController extends Controller
     public function showDeleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id);
-
+		$deleteForm = $this->createDeleteForm($id);
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Sitio entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el sitio buscado');
+			return $this->redirect($this->generateUrl('sitio'));
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 10')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         return $this->render('Grupo3TallerUNLPSitioBundle:Sitio:delete.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+			'plantilla' => $Plantilla,
         ));
     }
 
@@ -154,7 +157,8 @@ class SitioController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Sitio entity.');
+             $this->get('session')->getFlashBag()->add('error', 'No se encontro el sitio buscado');
+			return $this->redirect($this->generateUrl('sitio'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -196,7 +200,8 @@ class SitioController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Sitio entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el sitio buscado');
+			return $this->redirect($this->generateUrl('sitio'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -234,20 +239,30 @@ class SitioController extends Controller
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
-
+		
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Sitio entity.');
+               $this->get('session')->getFlashBag()->add('error', 'No se encontro el sitio buscado');
+				return $this->redirect($this->generateUrl('sitio'));
             }
-
-            $em->remove($entity);
-            $em->flush();
+			$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 10')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
+         
+			if ($Plantilla){
+				$this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, el sitio tiene plantillas asociadas');
+				return $this->redirect($this->generateUrl('sitio'));	
+			}
+			else{
+				$em->remove($entity);
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
+				return $this->redirect($this->generateUrl('sitio'));
+			}
+		
         }
-		$this->get('session')->getFlashBag()->add('success', 'La operacion se realizo con exito');
-        return $this->redirect($this->generateUrl('sitio'));
+		
     }
 
     /**

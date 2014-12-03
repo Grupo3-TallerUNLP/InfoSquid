@@ -19,39 +19,17 @@ class PlantillaType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-	private function listFiltros()
-	{
-		#$filtro= $this->getDoctrine()->getRepository('Grupo3TallerUNLPPlantillaBundle:Filtro')->findAll();
-        //$entities = $filtro->findAll();
-
-		#return $entities;
-	}
 	 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('nombre')
             ->add('descripcion', 'text', array('required'=>false))
-	    ->add('usuariosistema', null, array('required' => true))
+			->add('usuariosistema', null, array('required' => true))
 		
         ;
     }
-    
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-	 
-	/**protected function buildChoicesFiltro(){
-		$choices = [];
-		$table = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPPlantillaBundle:FiltroRed')->findAll();
-		
-		foreach($table as $t) {
-			$choices[$t->getId()] = $t->__toString();
-		}
-		return $choices;
-	}
-	**/
-	
+    	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

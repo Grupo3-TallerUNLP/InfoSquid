@@ -28,14 +28,24 @@ class PlantillaController extends Controller
      */
     public function indexAction()
     {
+		
         $em = $this->getDoctrine()->getManager();
-
-        $query = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->findAll();
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$query = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->findAll();
+			
+		}
+		else {
+			$user = $this->get('security.context')->getToken()->getUser()->getId();
+			$query = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->where('p.usuariosistema = :user')->setParameter('user', $user);
+			}
+		$pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+		$num = $pag->getPaginacion();
 		$paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
 
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:index.html.twig', array(
             'pagination' => $pagination,
+			
         ));
     }
     /**
@@ -142,6 +152,12 @@ class PlantillaController extends Controller
 			if (!is_null($error)) {
 				$this->get('session')->getFlashBag()->add('error', $error);
 			} else {
+				if($this->get('security.context')->isGranted('ROLE_USER')) {
+					$em = $this->getDoctrine()->getManager();
+					$conect = $this->get('security.context')->getToken()->getUser()->getId();
+					$user= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->find($conect);
+					$entity->setUsuariosistema($user);
+				}
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($entity);
 				foreach ($validos as $valido){
@@ -185,7 +201,6 @@ class PlantillaController extends Controller
             'action' => $this->generateUrl('plantilla_create'),
             'method' => 'POST',
         ));
-
         $form->add('submit', 'submit', array('label' => 'Guardar'));
 
         return $form;
@@ -199,11 +214,17 @@ class PlantillaController extends Controller
     {
         $entity = new Plantilla();
         $form   = $this->createCreateForm($entity);
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$user = false;
+		}else{
+			$user = true;
+		}
 		//$filtro= $this->lists();
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
 			'datos'  => $this->lists(),
+			'user' => $user,
         ));
     }
 
@@ -214,10 +235,9 @@ class PlantillaController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
 
-
+		$deleteForm = $this->createDeleteForm($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
@@ -240,8 +260,8 @@ class PlantillaController extends Controller
 				$sitio = 	$em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($id)->getNombre();
 			}
 		}
-
-        $deleteForm = $this->createDeleteForm($id);
+		
+        
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:delete.html.twig', array(
             'entity'      => $entity,
 			'oficina'	  => $oficina,
@@ -251,10 +271,9 @@ class PlantillaController extends Controller
         ));
     }
 
-	public function mostarAction($id)
+	public function mostrarAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
 
 
@@ -303,15 +322,19 @@ class PlantillaController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
-
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$user = false;
+		}else{
+			$user = true;
+		}
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+       
 
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
 			'datos'  => $this->lists(),
+			'user' => $user,
 			));
     }
 
@@ -347,7 +370,7 @@ class PlantillaController extends Controller
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+       
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
@@ -408,7 +431,6 @@ class PlantillaController extends Controller
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
@@ -416,13 +438,19 @@ class PlantillaController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Plantilla entity.');
             }
-
-            $em->remove($entity);
-            $em->flush();
+			$informe = $em->getRepository('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido')->findByPlantilla($id);
+			if($informe){
+				$this->get('session')->getFlashBag()->add('error', 'La plantilla no puede eliminarse ya que tiene informe predefinido asociado');
+				return $this->redirect($this->generateUrl('plantilla'));
+			} else{
+				$em->remove($entity);
+				$em->flush();
+				$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+				return $this->redirect($this->generateUrl('plantilla'));
+			}
         }
 
-		$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-        return $this->redirect($this->generateUrl('plantilla'));
+		
     }
 
     /**

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Grupo3TallerUNLP\InformePredefinidoBundle\Entity\InformePredefinido;
+use Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla;
 use Grupo3TallerUNLP\InformePredefinidoBundle\Form\InformePredefinidoType;
 
 /**
@@ -23,11 +24,18 @@ class InformePredefinidoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->getRepository('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido')->createQueryBuilder('u');
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$query = $em->getRepository('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido')->createQueryBuilder('u');
+		}
+		else {
+			$user = $this->get('security.context')->getToken()->getUser()->getId();
+			$query = $em->getRepository('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido')->createQueryBuilder('i')->innerJoin('i.plantilla', 'p')->where('p.usuariosistema = :user')->setParameter('user', $user);			
+		}
+		$pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+		$num = $pag->getPaginacion();
 		$paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
-
-        return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:index.html.twig', array('pagination' => $pagination));
+		$pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
+		return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:index.html.twig', array('pagination' => $pagination));
     }
     /**
      * Creates a new InformePredefinido entity.
@@ -40,6 +48,13 @@ class InformePredefinidoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+			if (! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+				$em = $this->getDoctrine()->getManager();
+				$id = $request->request->get('plantilla');
+				$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
+				$entity->setPlantilla($plantilla);
+			}
+			
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -82,10 +97,21 @@ class InformePredefinidoController extends Controller
     {
         $entity = new InformePredefinido();
         $form   = $this->createCreateForm($entity);
-
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$user = false;
+			$plantilla = '';
+		}else{
+			$user = true;
+			$user = $this->get('security.context')->getToken()->getUser()->getId();
+			$em = $this->getDoctrine()->getManager();
+			$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->leftJoin('p.informepredefinido', 'i')->where('i.id IS NULL')->andWhere('p.usuariosistema = :user')->setParameter('user', $user)->getQuery()->getResult();;		
+		
+		}
         return $this->render('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+			'user' => $user,
+			'plantilla' => $plantilla,
         ));
     }
 
@@ -135,11 +161,20 @@ class InformePredefinidoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('Grupo3TallerUNLPInformePredefinidoBundle:InformePredefinido')->find($id);
-
+		
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find InformePredefinido entity.');
         }
-
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$user = false;
+			$plantilla = '';
+		}else{
+			$user = true;
+			$user = $this->get('security.context')->getToken()->getUser()->getId();
+			$em = $this->getDoctrine()->getManager();
+			$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->leftJoin('p.informepredefinido', 'i')->where('i.id IS NULL')->andWhere('p.usuariosistema = :user')->setParameter('user', $user)->getQuery()->getResult();;		
+		
+		}
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -147,6 +182,8 @@ class InformePredefinidoController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+			'plantilla' => $plantilla,
+			'user' => $user,
         ));
     }
 

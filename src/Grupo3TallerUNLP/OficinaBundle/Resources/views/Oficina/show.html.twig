@@ -32,6 +32,12 @@
 		{% endfor %}
 		{% endif %}
             
+		{% if plantilla %}
+			<dt>Plantillas</dt>
+			{% for p in plantilla %}
+				<dd>{{ p}}</dd>
+			{% endfor %}
+		{% endif %}
     </dl>
    
    <div class="col-md-offset-1">

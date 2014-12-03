@@ -17,9 +17,13 @@
 
 		{{ form_row(form.nombre) }}
 		{{ form_row(form.descripcion) }}
-		{{ form_row(form.usuariosistema) }}
-
-
+		{% if (user) %}
+			<div class ="hidden">
+				{{ form_row(form.usuariosistema) }}
+			</div>
+		{% else %}
+			{{ form_row(form.usuariosistema) }}
+		{% endif %}
 		<div class="form-group" >{# rango días #}
 			<label class="col-lg-3 control-label">{{ datos.filtros[1].nombre }}</label>
 			<div class="col-lg-7"><input class="form-control" type="number" min="1" step="1" name="filtros[{{ datos.filtros[1].id }}]" /></div>

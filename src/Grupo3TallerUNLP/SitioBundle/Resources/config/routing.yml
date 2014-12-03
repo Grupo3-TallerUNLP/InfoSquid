@@ -10,6 +10,7 @@ sitio_show:
 
 sitio_show_delete:
     path:     /{id}/delete
+    methods: GET
     defaults: { _controller: "Grupo3TallerUNLPSitioBundle:Sitio:showDelete" }
     requirements:
         id: \d+

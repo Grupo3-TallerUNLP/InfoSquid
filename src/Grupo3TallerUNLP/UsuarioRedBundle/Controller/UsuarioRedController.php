@@ -25,8 +25,10 @@ class UsuarioRedController extends Controller
 
         $query = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->createQueryBuilder('u');
 
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+       	$pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+		$num = $pag->getPaginacion();
+		$paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
 
         return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:index.html.twig', array(
             'pagination' => $pagination,
@@ -102,11 +104,13 @@ class UsuarioRedController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UsuarioRed entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el usuario buscado');
+			return $this->redirect($this->generateUrl('usuariored'));
         }
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 5')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:show.html.twig', array(
             'entity'      => $entity,
+			'plantilla' => $Plantilla,
         ));
     }
 
@@ -121,13 +125,15 @@ class UsuarioRedController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UsuarioRed entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el usuario buscado');
+				return $this->redirect($this->generateUrl('usuariored'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
-
+		$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 5')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
         return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:delete.html.twig', array(
             'entity'      => $entity,
+			'plantilla' => $Plantilla,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -143,7 +149,8 @@ class UsuarioRedController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UsuarioRed entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el usuario buscado');
+				return $this->redirect($this->generateUrl('usuariored'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -185,7 +192,8 @@ class UsuarioRedController extends Controller
         $entity = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UsuarioRed entity.');
+            $this->get('session')->getFlashBag()->add('error', 'No se encontro el usuario buscado');
+				return $this->redirect($this->generateUrl('usuariored'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -217,8 +225,15 @@ class UsuarioRedController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($id);
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find UsuarioRed entity.');
-            }
+               
+				$this->get('session')->getFlashBag()->add('error', 'No se encontro el usuario buscado');
+				return $this->redirect($this->generateUrl('usuariored'));
+	        }
+			$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 5')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
+			if($Plantilla){
+				$this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, el usuario tiene plantillas asociadas');
+				return $this->redirect($this->generateUrl('oficina'));
+			}
             $em->remove($entity);
             $em->flush();
         }
