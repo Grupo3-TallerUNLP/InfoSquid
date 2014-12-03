@@ -1,0 +1,33 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/dashboard.min.css') }}" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block body %}
+ {{  render (controller('Grupo3TallerUNLPMenuBundle:Menu:navbar'))}}
+<div class="container-fluid">
+    <div class="row">
+        {{  render (controller('Grupo3TallerUNLPMenuBundle:Menu:sidebar'))}}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
+</div>
+{% endblock body %}
