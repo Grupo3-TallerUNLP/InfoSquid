@@ -220,7 +220,7 @@ class InformeController extends Controller
 			}elseif (in_array('fecha_desde', $validos)){
 				$query->$where('r.fecha >= :fecha_desde')->setParameter('fecha_desde', $filtros['fecha_desde']);
 				$where = 'andWhere';
-				$informe[] ='Fecha Desde: ' . $validos['fecha_desde'];
+				$informe[] ='Fecha Desde: ' . $filtros['fecha_desde'];
 			}elseif (in_array('r.fecha_hasta', $validos)) {
 				$query->$where('fecha <= :fecha_hasta')->setParameter('fecha_hasta', $filtros['fecha_hasta']);
 				$where = 'andWhere';
@@ -289,13 +289,13 @@ class InformeController extends Controller
 				}
 			}elseif(in_array('oficina', $validos)){
 				$of = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros['oficina']);
-				$informe[] ='Oficina: ' . $of->getNombre() ;
+				$informe[] ='Oficina: ' . $of->__toString() ;
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
 				$where='andWhere';
 			}elseif(in_array('usuario', $validos)){
 				$us = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros['usuario']);
-				$informe[] ='Usuario: ' . $us->getNombre();
+				$informe[] ='Usuario: ' . $us->__toString();
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
 				$query->$where('u.id= :usuario')->setParameter('usuario', $filtros['usuario']);
 				$where='andWhere';	
