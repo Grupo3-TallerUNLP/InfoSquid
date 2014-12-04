@@ -1,0 +1,12 @@
+Grupo3TallerUNLP\InformeBundle\Entity\HistorialRequest:
+    type: entity
+    table: null
+    repositoryClass: Grupo3TallerUNLP\InformeBundle\Entity\RequestRepository
+    manyToOne:
+        ipH:
+            targetEntity: Grupo3TallerUNLP\HostBundle\Entity\IPAddress
+            inversedBy: historialrequest
+            joinColumn:
+                name: ip
+                referencedColumnName: id
+    lifecycleCallbacks: {  }
