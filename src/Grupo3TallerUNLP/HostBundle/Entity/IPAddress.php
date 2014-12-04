@@ -59,6 +59,10 @@ class IPAddress
      */
     protected $request;
 
+	/**
+     * @ORM\OneToMany(targetEntity="Grupo3TallerUNLP\InformeBundle\Entity\HistorialRequest", mappedBy="ipH")
+     */
+    protected $historialrequest;
 
     /**
      * Get id
@@ -231,5 +235,38 @@ class IPAddress
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * Add historialrequest
+     *
+     * @param \Grupo3TallerUNLP\InformeBundle\Entity\HistorialRequest $historialrequest
+     * @return IPAddress
+     */
+    public function addHistorialrequest(\Grupo3TallerUNLP\InformeBundle\Entity\HistorialRequest $historialrequest)
+    {
+        $this->historialrequest[] = $historialrequest;
+
+        return $this;
+    }
+
+    /**
+     * Remove historialrequest
+     *
+     * @param \Grupo3TallerUNLP\InformeBundle\Entity\HistorialRequest $historialrequest
+     */
+    public function removeHistorialrequest(\Grupo3TallerUNLP\InformeBundle\Entity\HistorialRequest $historialrequest)
+    {
+        $this->historialrequest->removeElement($historialrequest);
+    }
+
+    /**
+     * Get historialrequest
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getHistorialrequest()
+    {
+        return $this->historialrequest;
     }
 }

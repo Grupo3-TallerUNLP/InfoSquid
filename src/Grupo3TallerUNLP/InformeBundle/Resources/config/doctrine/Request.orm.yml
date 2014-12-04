@@ -26,6 +26,9 @@ Grupo3TallerUNLP\InformeBundle\Entity\Request:
             type: time
         fecha:
             type: date
+        fechaAlta:
+            type: string
+            length: '20'
     manyToOne:
         ip:
             targetEntity: Grupo3TallerUNLP\HostBundle\Entity\IPAddress

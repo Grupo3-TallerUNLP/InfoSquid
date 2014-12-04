@@ -44,6 +44,7 @@ class Request
      */
     private $fecha;
 
+	private $fechaAlta;
 
     /**
      * Get id
@@ -220,4 +221,20 @@ class Request
     {
         return $this->ip;
     }
+	
+	 public function getFechaAlta()
+    {
+        return $this->fechaAlta;
+    }
+	
+	public function setFechaAlta($fechaAlta)
+    {
+        $this->fechaAlta = $fechaAlta;
+
+        return $this;
+    }
+	
+	public function __construct(){
+		$this->fechaAlta = date('Y-m-d H:i:s', time());
+	}
 }
