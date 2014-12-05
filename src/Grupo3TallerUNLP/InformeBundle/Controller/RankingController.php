@@ -15,7 +15,7 @@ class RankingController extends Controller
 	
 	public function sitiosGenerarAction()
 	{
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getDoctrine()->getManager();
 		$user = $this->get('security.context')->getToken()->getUser();
 		$oficinas = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
@@ -56,7 +56,11 @@ class RankingController extends Controller
 		$data = array();
 		
 			foreach ($resultados as $resultado){
-				$data[] = array($resultado['protocolo'], (int)$resultado['cant']);
+				if ($resultado['protocolo']){
+					$data[] = array($resultado['protocolo'], (int)$resultado['cant']);
+				}else{
+					$data[] = array('Otros', (int)$resultado['cant']);
+				}
 			}
 		
 		$series = array(
@@ -225,7 +229,7 @@ class RankingController extends Controller
 	
 	public function usuarioTraficoGenerarAction()
 	{
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getDoctrine()->getManager();
 		$user = $this->get('security.context')->getToken()->getUser();
 		$oficinas = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
@@ -381,7 +385,7 @@ class RankingController extends Controller
 	
 	public function usuarioTraficoDenegadoGenerarAction()
 	{
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getDoctrine()->getManager();
 		$user = $this->get('security.context')->getToken()->getUser();
 		$oficinas = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
@@ -529,7 +533,7 @@ class RankingController extends Controller
 	
 	public function protocoloGenerarAction()
 	{
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getDoctrine()->getManager();
 		$user = $this->get('security.context')->getToken()->getUser();
 		$oficinas = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->findAll();
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
@@ -646,7 +650,7 @@ class RankingController extends Controller
 			}
 			
 			$resultados = $query->select('r.protocolo, COUNT(r.id) AS cant')->addOrderBy('cant', 'DESC')->groupBy('r.protocolo')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
-			$graficos = $this->chartPie($resultados, 'Top N de protocolos', 'Usuarios');
+			$graficos = $this->chartPie($resultados, 'Top N de Protocolos', 'Protocolos');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:protocoloMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,

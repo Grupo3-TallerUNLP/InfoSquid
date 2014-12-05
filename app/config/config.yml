@@ -13,7 +13,7 @@ framework:
     csrf_protection: ~
     validation:      { enable_annotations: true }
     templating:
-        engines: ['twig']
+        engines: ['twig', 'php']
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
@@ -85,3 +85,12 @@ braincrafted_bootstrap:
         assetic: true
         twig: true
         knp_menu: true
+
+# Knp Snappy
+knp_snappy:
+    pdf:
+        enabled: true
+        binary: C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe
+        options: []
+    image:
+        enabled: false

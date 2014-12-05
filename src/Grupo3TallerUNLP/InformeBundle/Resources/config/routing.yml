@@ -8,6 +8,13 @@ informe_generar:
     defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:generar"}
     methods: GET
 
+informe_exportar:
+    path:	/informe/{type}
+    defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:exportar", type: html}
+    methods: POST
+    requirements:
+        type: csv|pdf|html
+
 informe_mostrarplantilla:
     path:	/informeplantilla/{id}
     defaults: {_controller: "Grupo3TallerUNLPInformeBundle:Informe:mostrarPlantilla"}

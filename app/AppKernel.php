@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Grupo3TallerUNLP\ConfiguracionBundle\Grupo3TallerUNLPConfiguracionBundle(),
             new Grupo3TallerUNLP\InformeBundle\Grupo3TallerUNLPInformeBundle(),
 			new Ob\HighchartsBundle\ObHighchartsBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
 			
         );
 

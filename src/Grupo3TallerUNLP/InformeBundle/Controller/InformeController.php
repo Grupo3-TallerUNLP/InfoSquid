@@ -2,6 +2,7 @@
 
 namespace Grupo3TallerUNLP\InformeBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Grupo3TallerUNLP\PlantillaBundle\Entity\Plantilla;
@@ -66,6 +67,84 @@ class InformeController extends Controller
 			'grupos'	=> $grupos,
 			'sitios'	=> $sitios,
 		));
+	}
+	
+	public function exportarAction(Request $request, $type){
+		$ids = $request->request->get('request');
+		$requests = explode('-', $ids);
+		$datos = array();
+		$em = $this->getDoctrine()->getManager();
+		foreach($requests as $request){
+			$dato=$em->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r')
+											->innerJoin('r.ip', 'ip')
+											->innerJoin('ip.host', 'h')
+											->innerJoin('h.networkUsers', 'u')
+											->innerJoin('h.office', 'f')
+											->where ('r.id = :id')
+											->setParameter('id', $request)
+											->getQuery()->getOneOrNullResult();
+			if (!is_null($dato)) {
+				$datos[] = $dato;
+			}
+		}
+		if($type == 'csv'){
+			$csv_sep = ",";  
+			$csv_file = "informe.csv";  
+			$csv=""; 
+			foreach ($datos as $dato){
+				$csv.=$dato->getFecha()->format('d-m-Y').$csv_sep;
+				$csv.=$dato->getHora()->format('H:i').$csv_sep;
+				if($dato->getDenegado()){
+					$csv.='SI'.$csv_sep;
+				}else{
+					$csv.='NO'.$csv_sep;
+				}
+				$csv.=$dato->getIP()->__toString() .$csv_sep;
+				if($dato->getIP()->getHost()){
+					$csv.=$dato->getIP()->getHost()->getDevice().$csv_sep;
+					if($dato->getIP()->getHost()->getNetworkUsers()){
+						$usuarios=$dato->getIP()->getHost()->getNetworkUsers();
+						foreach ($usuarios as $usuario){
+							$csv.=$usuario->getNombre().'-';
+						}
+						$csv = substr($csv, 0, -1);
+						$csv.=$csv_sep;
+					}else{
+						$csv.= " ".$csv_sep;
+					}
+					if($dato->getIP()->getHost()->getOffice()){
+						$csv.=$dato->getIP()->getHost()->getOffice()->getNombre().$csv_sep;
+					}else{
+						$csv.= " ".$csv_sep;
+					}
+				}
+				else{
+					$csv.= " ".$csv_sep;
+					$csv.= " ".$csv_sep;
+					$csv.= " ".$csv_sep;
+				}
+				$csv.= $dato->getUrl();
+				$csv.= PHP_EOL;
+			}
+			
+			return new Response($csv, 200, array(
+				'Content-Type' => 'application/vnd.ms-excel',
+				'Content-Disposition' => 'attachment; filename=Informe.csv',
+			));
+		}elseif($type == 'pdf'){
+			$html = $this->renderView('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.pdf.twig', array(
+				'resultados' => $datos,
+			));
+			
+			return new Response(
+				$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+				200,
+				array(
+					'Content-Type' => 'application/pdf',
+					'Content-Disposition' => 'attachment; filename=Informe.pdf',
+				)
+			);
+		}
 	}
 	
 	public function mostrarPlantillaAction($id)
@@ -153,7 +232,7 @@ class InformeController extends Controller
 				$query->setParameter('ip_hasta', $filtros[8]);
 			}
 		}elseif(array_key_exists(4, $filtros)){
-			$of = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Plantilla')->find($filtros[4]);
+			$of = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros[4]);
 			$informe[] ='Oficina: ' . $of->getNombre() ;
 			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 			$query->$where('h.office= :oficina')->setParameter('oficina', $filtros[4]);
