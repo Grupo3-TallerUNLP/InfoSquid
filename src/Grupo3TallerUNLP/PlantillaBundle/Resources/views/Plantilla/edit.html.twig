@@ -17,14 +17,9 @@
 
 		{{ form_row(edit_form.nombre) }}
 		{{ form_row(edit_form.descripcion) }}
-			{% if (user) %}
-			<div class ="hidden">
-				{{ form_row(edit_form.usuariosistema) }}
-			</div>
-		{% else %}
-			{{ form_row(edit_form.usuariosistema) }}
+		{% if is_granted('ROLE_ADMIN') %}
+			{{ form_row(form.usuariosistema) }}
 		{% endif %}
-
 		{% set i=0 %}
 		<div class="form-group">{# rango días #}
 			<label class="col-lg-3 control-label">{{ datos.filtros[1].nombre }}</label>
@@ -65,235 +60,336 @@
 			{% endif %}
 			</div>
 		</div>
-
-		<div class="form-group">
-			<label class="col-lg-3 control-label">Filtrar por</label>
-			<div class="col-lg-7 row">
-				<div class="col-lg-8">
-					<div class="btn-group" data-toggle="buttons">
-						
-						<label class="btn btn-default"><input id ="filtro1_4" type="radio"  name="filtro1" value="4" onchange="mostrarOficina()">Oficina</label>
-						<label class="btn btn-default"><input id ="filtro1_5" type="radio" name="filtro1" value="5" onchange="mostrarusuarioespecifico()">Usuario</label>
-						<label class="btn btn-default"><input id ="filtro1_6" type="radio" name="filtro1" value="6" onchange="mostrarip()">IP</label>
-						<label class="btn btn-default"><input id ="filtro1_7" type="radio" name="filtro1" value="7" onchange="mostrarrangoip()">Rango IP</label>
-						<label class="btn btn-default active" ><input id ="filtro1_0" type="radio" name="filtro1" value="0" checked="checked" onchange="ocultarfiltro1()">{{ icon('remove') }}</label>
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="form-group">
+				<label class="col-lg-3 control-label">Filtrar por</label>
+				<div class="col-lg-7 row">
+					<div class="col-lg-8">
+						<div class="btn-group" data-toggle="buttons">
+							
+							<label class="btn btn-default"><input id ="filtro1_4" type="radio"  name="filtro1" value="4" onchange="mostrarOficina()">Oficina</label>
+							<label class="btn btn-default"><input id ="filtro1_5" type="radio" name="filtro1" value="5" onchange="mostrarusuarioespecifico()">Usuario</label>
+							<label class="btn btn-default"><input id ="filtro1_6" type="radio" name="filtro1" value="6" onchange="mostrarip()">IP</label>
+							<label class="btn btn-default"><input id ="filtro1_7" type="radio" name="filtro1" value="7" onchange="mostrarrangoip()">Rango IP</label>
+							<label class="btn btn-default active" ><input id ="filtro1_0" type="radio" name="filtro1" value="0" checked="checked" onchange="ocultarfiltro1()">{{ icon('remove') }}</label>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default"><input id ="filtro2_9" type="radio" name="filtro2" value="9" onchange="mostrargrupo()">Grupo</label>
+							<label class="btn btn-default"><input id ="filtro2_10" type="radio" name="filtro2" value="10" onchange="mostrarsitio()">Sitio</label>
+							<label class="btn btn-default active"><input id ="filtro2_0" type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()">{{ icon('remove') }}</label>
+						</div>
 					</div>
 				</div>
-				<div class="col-lg-4">
-					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default"><input id ="filtro2_9" type="radio" name="filtro2" value="9" onchange="mostrargrupo()">Grupo</label>
-						<label class="btn btn-default"><input id ="filtro2_10" type="radio" name="filtro2" value="10" onchange="mostrarsitio()">Sitio</label>
-						<label class="btn btn-default active"><input id ="filtro2_0" type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()">{{ icon('remove') }}</label>
+			</div>
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 4)  %}
+				<div class="form-group" id="div_oficina" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_1(){
+						$('#filtro1_4').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+					};
+				</script>
+			{%else %}
+				<div class="form-group" id="div_oficina" style='display:none;'>{# oficina #}
+			{% endif %}
+				<label class="col-lg-3 control-label">{{ datos.filtros[4].nombre }}</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[{{ datos.filtros[4].id }}]">
+						<option value=""></option>
+						{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 4)  %}
+							{% for f in datos.oficinas %}
+								{% if entity.valorfiltro[i].valor == f.id %}
+									<option value="{{f.id}}" selected="selected">{{ f }}</option>
+								{% else %}
+									<option value="{{f.id}}" >{{ f }}</option>
+								{% endif %}
+							{% endfor %}
+							{% set i=i+1 %}
+						{% else %}
+							{% for f in datos.oficinas %}
+								<option value="{{f.id}}" >{{ f }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+
+			</div>
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 5)  %}
+				<div class="form-group" id="div_usuario" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_1(){
+						$('#filtro1_5').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+					}
+				</script>
+			{%else %}
+				<div class="form-group" id="div_usuario" style='display:none;'>{# usuario #}
+			{% endif %}
+				<label class="col-lg-3 control-label">{{ datos.filtros[5].nombre }}</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[{{ datos.filtros[5].id }}]">
+						<option value=""></option>
+						{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 5)  %}
+							{% for f in datos.usuarios %}
+								{% if entity.valorfiltro[i].valor == f.id %}
+									<option value="{{f.id}}" selected="selected">{{ f }}</option>
+								{% else %}
+									<option value="{{f.id}}" >{{ f }}</option>
+								{% endif %}
+							{% endfor %}
+							{% set i=i+1 %}
+						{% else %}
+							{% for f in datos.usuarios %}
+								<option value="{{f.id}}" >{{ f }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+			</div>
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 6)  %}
+				<div class="form-group" id="div_ip" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_1(){
+						$('#filtro1_6').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+					}
+				</script>
+			{%else %}
+				<div class="form-group" id="div_ip" style='display:none;'>{# ip #}
+			{% endif %}
+				<label class="col-lg-3 control-label">{{ datos.filtros[6].nombre }}</label>
+				<div class="col-lg-7 row">
+					{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 6)  %}
+						{% set ip=entity.valorfiltro[i].valor|split('.') %}
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][0]" value="{{ ip[0] }}" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][1]" value="{{ ip[1] }}" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][2]" value="{{ ip[2] }}" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][3]" value="{{ ip[3] }}" min="0" max="255" step="1" /> </div>
+						{% set i=i+1 %}
+					{% else %}
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][0]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][1]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][2]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][3]" min="0" max="255" step="1" /> </div>
+					{% endif %}
+				</div>
+			</div>
+			
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 7)  %}
+				<div class="form-group" id="div_rango" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_1(){
+						$('#filtro1_7').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
+					}
+				</script>
+			{%else %}
+				<div id="div_rango" style='display:none;'>
+			{% endif %}
+				<div class="form-group" >{# ip desde #}
+					<label class="col-lg-3 control-label">{{ datos.filtros[7].nombre }}</label>
+					<div class="col-lg-7 row">
+						{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 7)  %}
+							{% set ip=entity.valorfiltro[i].valor|split('.') %}
+							{% set i=i+1 %}
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][0]" value="{{ ip[0] }}" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][1]" value="{{ ip[1] }}" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][2]" value="{{ ip[2] }}" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][3]" value="{{ ip[3] }}" min="0" max="255" step="1" /> </div>
+						{% else %}
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][0]" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][1]" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][2]" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][3]" min="0" max="255" step="1" /> </div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="form-group">{# ip hasta #}
+					<label class="col-lg-3 control-label">{{ datos.filtros[8].nombre }}</label>
+					<div class="col-lg-7 row">
+						{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 8)  %}
+							{% set ip=entity.valorfiltro[i].valor|split('.') %}
+							{% set i=i+1 %}
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][0]" value="{{ ip[0] }}" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][1]" value="{{ ip[1] }}" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][2]" value="{{ ip[2] }}" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][3]" value="{{ ip[3] }}" min="0" max="255" step="1" /> </div>
+						{% else %}
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][0]" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][1]" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][2]" min="0" max="255" step="1" /></div>
+							<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][3]" min="0" max="255" step="1" /> </div>
+						{% endif %}
 					</div>
 				</div>
 			</div>
-		</div>
-		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 4)  %}
-			<div class="form-group" id="div_oficina" style='display:block;'>{# oficina #}
-			<script>
-				function filtro_1(){
-					$('#filtro1_4').attr('checked', 'checked').parent().addClass('active');
-					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
-				};
-			</script>
-		{%else %}
-			<div class="form-group" id="div_oficina" style='display:none;'>{# oficina #}
-		{% endif %}
-			<label class="col-lg-3 control-label">{{ datos.filtros[4].nombre }}</label>
-			<div class="col-lg-7">
-				<select class="form-control" name="filtros[{{ datos.filtros[4].id }}]">
-					<option value=""></option>
-					{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 4)  %}
-						{% for f in datos.oficinas %}
-							{% if entity.valorfiltro[i].valor == f.id %}
-								<option value="{{f.id}}" selected="selected">{{ f }}</option>
-							{% else %}
-								<option value="{{f.id}}" >{{ f }}</option>
-							{% endif %}
-						{% endfor %}
-						{% set i=i+1 %}
-					{% else %}
-						{% for f in datos.oficinas %}
-							<option value="{{f.id}}" >{{ f }}</option>
-						{% endfor %}
-					{% endif %}
-				</select>
-			</div>
-
-		</div>
-		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 5)  %}
-			<div class="form-group" id="div_usuario" style='display:block;'>{# oficina #}
-			<script>
-				function filtro_1(){
-					$('#filtro1_5').attr('checked', 'checked').parent().addClass('active');
-					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
-				}
-			</script>
-		{%else %}
-			<div class="form-group" id="div_usuario" style='display:none;'>{# usuario #}
-		{% endif %}
-			<label class="col-lg-3 control-label">{{ datos.filtros[5].nombre }}</label>
-			<div class="col-lg-7">
-				<select class="form-control" name="filtros[{{ datos.filtros[5].id }}]">
-					<option value=""></option>
-					{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 5)  %}
-						{% for f in datos.usuarios %}
-							{% if entity.valorfiltro[i].valor == f.id %}
-								<option value="{{f.id}}" selected="selected">{{ f }}</option>
-							{% else %}
-								<option value="{{f.id}}" >{{ f }}</option>
-							{% endif %}
-						{% endfor %}
-						{% set i=i+1 %}
-					{% else %}
-						{% for f in datos.usuarios %}
-							<option value="{{f.id}}" >{{ f }}</option>
-						{% endfor %}
-					{% endif %}
-				</select>
-			</div>
-		</div>
-		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 6)  %}
-			<div class="form-group" id="div_ip" style='display:block;'>{# oficina #}
-			<script>
-				function filtro_1(){
-					$('#filtro1_6').attr('checked', 'checked').parent().addClass('active');
-					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
-				}
-			</script>
-		{%else %}
-			<div class="form-group" id="div_ip" style='display:none;'>{# ip #}
-		{% endif %}
-			<label class="col-lg-3 control-label">{{ datos.filtros[6].nombre }}</label>
-			<div class="col-lg-7 row">
-				{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 6)  %}
-					{% set ip=entity.valorfiltro[i].valor|split('.') %}
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][0]" value="{{ ip[0] }}" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][1]" value="{{ ip[1] }}" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][2]" value="{{ ip[2] }}" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][3]" value="{{ ip[3] }}" min="0" max="255" step="1" /> </div>
-					{% set i=i+1 %}
-				{% else %}
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][0]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][1]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][2]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[6].id }}][3]" min="0" max="255" step="1" /> </div>
-				{% endif %}
-			</div>
-		</div>
-		
-		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 7)  %}
-			<div class="form-group" id="div_rango" style='display:block;'>{# oficina #}
-			<script>
-				function filtro_1(){
-					$('#filtro1_7').attr('checked', 'checked').parent().addClass('active');
-					$('#filtro1_0').removeAttr('checked').parent().removeClass('active');
-				}
-			</script>
-		{%else %}
-			<div id="div_rango" style='display:none;'>
-		{% endif %}
-			<div class="form-group" >{# ip desde #}
-				<label class="col-lg-3 control-label">{{ datos.filtros[7].nombre }}</label>
-				<div class="col-lg-7 row">
-					{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 7)  %}
-						{% set ip=entity.valorfiltro[i].valor|split('.') %}
-						{% set i=i+1 %}
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][0]" value="{{ ip[0] }}" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][1]" value="{{ ip[1] }}" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][2]" value="{{ ip[2] }}" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][3]" value="{{ ip[3] }}" min="0" max="255" step="1" /> </div>
-					{% else %}
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][0]" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][1]" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][2]" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[7].id }}][3]" min="0" max="255" step="1" /> </div>
-					{% endif %}
-				</div>
-			</div>
-			<div class="form-group">{# ip hasta #}
-				<label class="col-lg-3 control-label">{{ datos.filtros[8].nombre }}</label>
-				<div class="col-lg-7 row">
-					{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 8)  %}
-						{% set ip=entity.valorfiltro[i].valor|split('.') %}
-						{% set i=i+1 %}
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][0]" value="{{ ip[0] }}" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][1]" value="{{ ip[1] }}" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][2]" value="{{ ip[2] }}" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][3]" value="{{ ip[3] }}" min="0" max="255" step="1" /> </div>
-					{% else %}
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][0]" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][1]" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][2]" min="0" max="255" step="1" /></div>
-						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[{{ datos.filtros[8].id }}][3]" min="0" max="255" step="1" /> </div>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 9)  %}
-			<div class="form-group" id="div_grupo" style='display:block;'>{# oficina #}
-			<script>
-				function filtro_2(){
-					$('#filtro2_9').attr('checked', 'checked').parent().addClass('active');
-					$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
-				}
-			</script>
-		{%else %}
-			<div class="form-group" id="div_grupo" style='display:none;'>{# grupo sitios #}
-		{% endif %}
-			<label class="col-lg-3 control-label">{{ datos.filtros[9].nombre }}</label>
-			<div class="col-lg-7">
-				<select class="form-control" name="filtros[{{ datos.filtros[9].id }}]">
-					<option value=""></option>
-					{% if (entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id==9) %}
-						{% for g in datos.grupos %}
-							{% if entity.valorfiltro[i].valor == g.id %}
-								<option value="{{g.id}}" selected="selected">{{ g }}</option>
-							{% else %}
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 9)  %}
+				<div class="form-group" id="div_grupo" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_2(){
+						$('#filtro2_9').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
+					}
+				</script>
+			{%else %}
+				<div class="form-group" id="div_grupo" style='display:none;'>{# grupo sitios #}
+			{% endif %}
+				<label class="col-lg-3 control-label">{{ datos.filtros[9].nombre }}</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[{{ datos.filtros[9].id }}]">
+						<option value=""></option>
+						{% if (entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id==9) %}
+							{% for g in datos.grupos %}
+								{% if entity.valorfiltro[i].valor == g.id %}
+									<option value="{{g.id}}" selected="selected">{{ g }}</option>
+								{% else %}
+									<option value="{{g.id}}">{{ g }}</option>
+								{% endif %}
+							{% endfor %}
+							{% set i=i+1 %}
+						{% else %}
+							{% for g in datos.grupos %}
 								<option value="{{g.id}}">{{ g }}</option>
-							{% endif %}
-						{% endfor %}
-						{% set i=i+1 %}
-					{% else %}
-						{% for g in datos.grupos %}
-							<option value="{{g.id}}">{{ g }}</option>
-						{% endfor %}
-					{% endif %}
-				</select>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
 			</div>
-		</div>
-		{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 10)  %}
-			<div class="form-group" id="div_sitio" style='display:block;'>{# oficina #}
-			<script>
-				function filtro_2(){
-					$('#filtro2_10').attr('checked', 'checked').parent().addClass('active');
-					$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
-				}
-			</script>
-		{%else %}
-			<div class="form-group" id="div_sitio" style='display:none;'>{# sitios #}
-		{% endif %}
-			<label class="col-lg-3 control-label">{{ datos.filtros[10].nombre }}</label>
-			<div class="col-lg-7">
-				<select class="form-control" name="filtros[{{ datos.filtros[10].id }}]">
-					<option value=""></option>
-					{% if (entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id==10)%}
-						{% for s in datos.sitios %}
-							{% if entity.valorfiltro[i].valor == s.id %}
-								<option value="{{s.id}}" selected="selected">{{ s }}</option>
-							{% else %}
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 10)  %}
+				<div class="form-group" id="div_sitio" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_2(){
+						$('#filtro2_10').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
+					}
+				</script>
+			{%else %}
+				<div class="form-group" id="div_sitio" style='display:none;'>{# sitios #}
+			{% endif %}
+				<label class="col-lg-3 control-label">{{ datos.filtros[10].nombre }}</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[{{ datos.filtros[10].id }}]">
+						<option value=""></option>
+						{% if (entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id==10)%}
+							{% for s in datos.sitios %}
+								{% if entity.valorfiltro[i].valor == s.id %}
+									<option value="{{s.id}}" selected="selected">{{ s }}</option>
+								{% else %}
+									<option value="{{s.id}}">{{ s }}</option>
+								{% endif %}
+							{% endfor %}
+							{% set i=i+1 %}
+						{% else %}
+							{% for s in datos.sitios %}
 								<option value="{{s.id}}">{{ s }}</option>
-							{% endif %}
-						{% endfor %}
-						{% set i=i+1 %}
-					{% else %}
-						{% for s in datos.sitios %}
-							<option value="{{s.id}}">{{ s }}</option>
-						{% endfor %}
-					{% endif %}
-				</select>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
 			</div>
-		</div>
+		{% else %}
+			<div class="form-group">
+				<label class="col-lg-3 control-label">Usuario</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[5]">
+						<option value=""></option>
+						{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 5)  %}
+							{% for f in usuarios %}
+								{% if entity.valorfiltro[i].valor == f.id %}
+									<option value="{{f.id}}" selected="selected">{{ f }}</option>
+								{% else %}
+									<option value="{{f.id}}" >{{ f }}</option>
+								{% endif %}
+							{% endfor %}
+							{% set i=i+1 %}
+						{% else %}
+							{% for f in usuarios %}
+								<option value="{{f.id}}" >{{ f }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-3 control-label">Filtrar por</label>
+				<div class="col-lg-7 row">
+					<div class="col-lg-4">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default"><input id ="filtro2_9" type="radio" name="filtro2" value="9" onchange="mostrargrupo()">Grupo</label>
+							<label class="btn btn-default"><input id ="filtro2_10" type="radio" name="filtro2" value="10" onchange="mostrarsitio()">Sitio</label>
+							<label class="btn btn-default active"><input id ="filtro2_0" type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()">{{ icon('remove') }}</label>
+						</div>
+					</div>
+				</div>
+			</div>
+				
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 9)  %}
+				<div class="form-group" id="div_grupo" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_2(){
+						$('#filtro2_9').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
+					}
+				</script>
+			{%else %}
+				<div class="form-group" id="div_grupo" style='display:none;'>{# grupo sitios #}
+			{% endif %}
+				<label class="col-lg-3 control-label">{{ datos.filtros[9].nombre }}</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[{{ datos.filtros[9].id }}]">
+						<option value=""></option>
+						{% if (entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id==9) %}
+							{% for g in datos.grupos %}
+								{% if entity.valorfiltro[i].valor == g.id %}
+									<option value="{{g.id}}" selected="selected">{{ g }}</option>
+								{% else %}
+									<option value="{{g.id}}">{{ g }}</option>
+								{% endif %}
+							{% endfor %}
+							{% set i=i+1 %}
+						{% else %}
+							{% for g in datos.grupos %}
+								<option value="{{g.id}}">{{ g }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+			</div>
+			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 10)  %}
+				<div class="form-group" id="div_sitio" style='display:block;'>{# oficina #}
+				<script>
+					function filtro_2(){
+						$('#filtro2_10').attr('checked', 'checked').parent().addClass('active');
+						$('#filtro2_0').removeAttr('checked').parent().removeClass('active');
+					}
+				</script>
+			{%else %}
+				<div class="form-group" id="div_sitio" style='display:none;'>{# sitios #}
+			{% endif %}
+				<label class="col-lg-3 control-label">{{ datos.filtros[10].nombre }}</label>
+				<div class="col-lg-7">
+					<select class="form-control" name="filtros[{{ datos.filtros[10].id }}]">
+						<option value=""></option>
+						{% if (entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id==10)%}
+							{% for s in datos.sitios %}
+								{% if entity.valorfiltro[i].valor == s.id %}
+									<option value="{{s.id}}" selected="selected">{{ s }}</option>
+								{% else %}
+									<option value="{{s.id}}">{{ s }}</option>
+								{% endif %}
+							{% endfor %}
+							{% set i=i+1 %}
+						{% else %}
+							{% for s in datos.sitios %}
+								<option value="{{s.id}}">{{ s }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+			</div>
+		{% endif %}
 		<div class="form-group">{# trafico denegado #}
 			<div class="col-lg-offset-3 col-lg-7">
 				<div class="checkbox">
@@ -305,7 +401,7 @@
 				</div>
 			</div>
 		</div>
-
+		
 
 
         <div class="col-lg-offset-3 col-lg-7">

@@ -60,6 +60,16 @@ class InformeController extends Controller
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
 		$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
 		
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$conect = $this->get('security.context')->getToken()->getUser()->getId();
+			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
+										->innerJoin('u.usuarioRed', 'r')
+										->innerJoin('r.oficina', 'o')
+										->where('u.id = :id')->setParameter('id', $conect)
+										->getQuery()->getResult();
+		}
+		
 		return $this->render('Grupo3TallerUNLPInformeBundle:Informe:generarInforme.html.twig',array(
 			'plantillas' => $plantillas,
 			'oficinas'	=> $oficinas,
@@ -154,6 +164,14 @@ class InformeController extends Controller
 		$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
 		$valorfiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:ValorFiltro')->findByPlantilla($plantilla);
 		$filtros = array();
+		
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$conect = $this->get('security.context')->getToken()->getUser();
+			$usuario= $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($conect);
+			$oficina = $usuario->getOficina();
+			$filtros[4] = $oficina->getId();
+		}
 		foreach($valorfiltro as $valor){
 			$filtros[$valor->getFiltro()->getId()] = $valor->getValor();
 		}
@@ -172,7 +190,7 @@ class InformeController extends Controller
 		if (array_key_exists(2, $filtros) && array_key_exists(3, $filtros)) {
 			$query->$where('r.hora >= :hora_desde')->setParameter('hora_desde', $filtros[2]);
 			$where = 'andWhere';
-			$query->$where('r.hora <= :hora_hasta')->setParameter('hora_hasta', $valorfiltro[3]);
+			$query->$where('r.hora <= :hora_hasta')->setParameter('hora_hasta', $filtros[3]);
 			$informe[] ='Hora Desde: ' . $filtros[2];
 			$informe[] ='Hora Hasta: ' . $filtros[3];
 		}elseif(array_key_exists(2, $filtros)){
@@ -231,13 +249,14 @@ class InformeController extends Controller
 					, ':ip_hasta'));
 				$query->setParameter('ip_hasta', $filtros[8]);
 			}
-		}elseif(array_key_exists(4, $filtros)){
+		}elseif(array_key_exists(4, $filtros)){		
 			$of = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros[4]);
 			$informe[] ='Oficina: ' . $of->getNombre() ;
 			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 			$query->$where('h.office= :oficina')->setParameter('oficina', $filtros[4]);
 			$where='andWhere';					
-		}elseif(array_key_exists(5, $filtros)){
+		}
+		elseif(array_key_exists(5, $filtros)){
 			$us = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros[5]);
 			$informe[] ='Usuario: ' . $us->getNombre();
 			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
@@ -286,7 +305,16 @@ class InformeController extends Controller
 		if (!is_null($error)) {
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
-		else {
+		else {	
+			if($this->get('security.context')->isGranted('ROLE_USER')) {
+				$em = $this->getDoctrine()->getManager();
+				$conect = $this->get('security.context')->getToken()->getUser();
+				$usuario= $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($conect);
+				$oficina = $usuario->getOficina();
+				$validos['oficina'] = 'oficina';
+				$filtros['oficina'] = $oficina;
+			}
+		
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
 			$informe = array();

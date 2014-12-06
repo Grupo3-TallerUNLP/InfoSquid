@@ -9,7 +9,13 @@
 		{{ form_errors(edit_form) }}
 
         {{ form_row(edit_form.nombre) }}
-        {{ form_row(edit_form.url) }}
+		<div class="form-group" >
+			{{ form_label(edit_form.url) }}
+			<div class="col-lg-7">
+				{{ form_widget(edit_form.url)}}
+				<span class="help-block"> Ingrese la URL sin www y .com. Ejemplo: Para http://www.facebook.com ingrese <em>facebook </em></span>
+			</div>
+        </div>
         {{ form_row(edit_form.grupo) }}
         {{ form_row(edit_form.gradoAceptacion) }}
 

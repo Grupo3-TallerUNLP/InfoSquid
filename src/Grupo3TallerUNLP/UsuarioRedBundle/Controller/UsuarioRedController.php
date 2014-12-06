@@ -45,6 +45,13 @@ class UsuarioRedController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+			if(! is_numeric($entity->getDNI()) || ($entity->getDNI()<999999)) {
+				$this->get('session')->getFlashBag()->add('error', 'El DNI debe ser un valor numerico y mayor a 999999');
+				return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:new.html.twig', array(
+					'entity' => $entity,
+					'form'   => $form->createView(),
+				));
+			}		
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -200,7 +207,12 @@ class UsuarioRedController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($editForm->isValid()) {		
+			if(! is_numeric($entity->getDNI()) || ($entity->getDNI()<999999)) {
+				$this->get('session')->getFlashBag()->add('error', 'El DNI debe ser un valor numerico y mayor a 999999');
+				return $this->redirect($this->generateUrl('usuariored_edit', array('id' => $id)));
+			}
+		
             $em->flush();
             $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
             return $this->redirect($this->generateUrl('usuariored'));
@@ -229,15 +241,19 @@ class UsuarioRedController extends Controller
 				$this->get('session')->getFlashBag()->add('error', 'No se encontro el usuario buscado');
 				return $this->redirect($this->generateUrl('usuariored'));
 	        }
+			$user = $em->getRepository('Grupo3TallerUNLPUserBundle:User')->findOneByUsuarioRed($id);
+			if($user){
+				$this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, el usuario tiene usuario del sistema asociado');
+				return $this->redirect($this->generateUrl('usuariored'));
+			}
 			$Plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->createQueryBuilder('p')->innerJoin('p.valorfiltro','v')->innerJoin('v.filtro','f')->where('f.id = 5')->andWhere('v.valor = :id')->setParameter('id', $id)->getQuery()->getResult();
 			if($Plantilla){
 				$this->get('session')->getFlashBag()->add('error', 'La operacion no pudo realizarse, el usuario tiene plantillas asociadas');
-				return $this->redirect($this->generateUrl('oficina'));
+				return $this->redirect($this->generateUrl('usuariored'));
 			}
             $em->remove($entity);
             $em->flush();
         }
-
         $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
         return $this->redirect($this->generateUrl('usuariored'));
     }

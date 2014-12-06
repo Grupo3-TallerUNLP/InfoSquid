@@ -145,7 +145,11 @@ class PlantillaController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $filtros = $request->request->get('filtros');
-            $filtro1 = $request->request->get('filtro1');
+			if($this->get('security.context')->isGranted('ROLE_USER')) {
+				$filtro1 = 5;
+			}else{
+				$filtro1 = $request->request->get('filtro1');
+			}
 			$filtro2 = $request->request->get('filtro2');
 			$validos = array();
 			$error = $this->validarFiltros($filtros, $filtro1, $filtro2, $validos);
@@ -177,11 +181,21 @@ class PlantillaController extends Controller
 				return $this->redirect($this->generateUrl('plantilla'));
 			}
         }
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$conect = $this->get('security.context')->getToken()->getUser()->getId();
+			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
+										->innerJoin('u.usuarioRed', 'r')
+										->innerJoin('r.oficina', 'o')
+										->where('u.id = :id')->setParameter('id', $conect)
+										->getQuery()->getResult();
+		}
 
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
 			'datos'  => $this->lists(),
+			'usuarios' => $usuarios,
 
 
         ));
@@ -197,9 +211,15 @@ class PlantillaController extends Controller
      */
     private function createCreateForm(Plantilla $entity)
     {
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$requerida = False;
+		}else{
+			$requerida = True;
+		}
         $form = $this->createForm(new PlantillaType(), $entity, array(
             'action' => $this->generateUrl('plantilla_create'),
             'method' => 'POST',
+			'required' => $requerida,
         ));
         $form->add('submit', 'submit', array('label' => 'Guardar'));
 
@@ -214,17 +234,21 @@ class PlantillaController extends Controller
     {
         $entity = new Plantilla();
         $form   = $this->createCreateForm($entity);
-		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			$user = false;
-		}else{
-			$user = true;
+		$usuarios="";
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$conect = $this->get('security.context')->getToken()->getUser()->getId();
+			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
+										->innerJoin('u.usuarioRed', 'r')
+										->innerJoin('r.oficina', 'o')
+										->where('u.id = :id')->setParameter('id', $conect)
+										->getQuery()->getResult();
 		}
-		//$filtro= $this->lists();
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
 			'datos'  => $this->lists(),
-			'user' => $user,
+			'usuarios' => $usuarios,
         ));
     }
 
@@ -322,10 +346,15 @@ class PlantillaController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
-		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			$user = false;
-		}else{
-			$user = true;
+		$usuarios = "";
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$conect = $this->get('security.context')->getToken()->getUser()->getId();
+			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
+										->innerJoin('u.usuarioRed', 'r')
+										->innerJoin('r.oficina', 'o')
+										->where('u.id = :id')->setParameter('id', $conect)
+										->getQuery()->getResult();
 		}
         $editForm = $this->createEditForm($entity);
        
@@ -334,7 +363,7 @@ class PlantillaController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
 			'datos'  => $this->lists(),
-			'user' => $user,
+			'usuarios' => $usuarios,
 			));
     }
 
@@ -347,9 +376,16 @@ class PlantillaController extends Controller
     */
     private function createEditForm(Plantilla $entity)
     {
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$requerido = False;
+		}
+		else{
+			$requerido = True;
+		}
         $form = $this->createForm(new PlantillaType(), $entity, array(
             'action' => $this->generateUrl('plantilla_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+			'required' => $requerido,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Guardar'));
@@ -417,10 +453,20 @@ class PlantillaController extends Controller
 				return $this->redirect($this->generateUrl('plantilla'));
 			}
 		}
+		if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$conect = $this->get('security.context')->getToken()->getUser()->getId();
+			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
+										->innerJoin('u.usuarioRed', 'r')
+										->innerJoin('r.oficina', 'o')
+										->where('u.id = :id')->setParameter('id', $conect)
+										->getQuery()->getResult();
+		}
         return $this->render('Grupo3TallerUNLPPlantillaBundle:Plantilla:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
 			'datos'  => $this->lists(),
+			'usuarios' => $usuarios,
         ));
 	}
     /**

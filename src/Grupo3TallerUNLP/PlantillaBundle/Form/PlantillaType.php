@@ -24,10 +24,12 @@ class PlantillaType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('descripcion', 'text', array('required'=>false))
-			->add('usuariosistema', null, array('required' => true))
-		
+            ->add('descripcion', 'text', array('required'=>false))			
         ;
+		
+		if($options['required']){
+			$builder->add('usuariosistema', null, array('required' => true));
+		}
     }
     	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
