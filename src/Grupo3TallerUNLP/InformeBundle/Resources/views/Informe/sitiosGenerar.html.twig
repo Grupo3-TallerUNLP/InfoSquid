@@ -52,7 +52,7 @@
 
 			</div>
 		</div>
-
+	{% if is_granted('ROLE_ADMIN') %}
 		<div class="form-group">
 			<label class="col-lg-3 control-label">Filtrar por</label>
 			<div class="col-lg-7 row">
@@ -126,6 +126,23 @@
 		
 		<div class="form-group" id="div_ip" style='display:none;'>
 		</div>
+		{% else %}
+		
+			<div class="form-group" id="div_grupo">{# grupo sitios #}
+					<label class="col-lg-3 control-label">Grupo</label>
+					<div class="col-lg-7">
+						<select class="form-control" name="filtros[grupo]">
+							<option value=""></option>
+							{% for g in grupos %}
+							<option value="{{g.id}}">{{ g }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+		
+		{% endif %}
+		
+		
 		
         <div class="col-lg-offset-3 col-lg-7">
             <p>

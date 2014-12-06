@@ -3,8 +3,9 @@
 namespace Grupo3TallerUNLP\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\UserBundle\Controller\SecurityController as BaseController;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     public function indexAction($name)
     {

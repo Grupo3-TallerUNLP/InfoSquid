@@ -58,27 +58,38 @@ class UserController extends Controller
 
             // username unico
 			$user = $repo->findOneByUsername($entity->getUsername());
-			if (!$user) {
-				// email unico
-				$user = $repo->findOneByEmail($entity->getEmail());
 				if (!$user) {
-					// usuario red unico
-					$user = $repo->findOneByUsuarioRed($entity->getUsuarioRed());
-					if (!$user) {
-						$em->persist($entity);
-						$em->flush();
+					$username=$entity->getUsername();
+					if((strlen($username) >= 5) && (( preg_match('/^[\-\._A-Za-z0-9]+$/', $username)) && ( preg_match('/[A-Za-z]/', $username)))){
+						// email unico
+						$user = $repo->findOneByEmail($entity->getEmail());
+						if (!$user) {
+							// usuario red unico
+							$user = $repo->findOneByUsuarioRed($entity->getUsuarioRed());
+							if (!$user) {
+								$pass = $entity->getPlainPassword();
+								if(strlen($pass) <5){
+									$this->get('session')->getFlashBag()->add('error', 'La contraseña debe contener como minimo 5 caracteres');
+								}
+								else{
+								$em->persist($entity);
+								$em->flush();
 
-						$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
-						return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
-					} else {
-						$this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario de sistema para ese usuario de red');
-					}
+								$this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
+								return $this->redirect($this->generateUrl('grupo3_taller_unlp_user'));
+								}
+							} else {
+								$this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario de sistema para ese usuario de red');
+							}
+						} else {
+							$this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese email');
+						}
+					}else {
+						$this->get('session')->getFlashBag()->add('error', 'El username debe tener como minimo 5 caracteres y al menos una letra');
+						}
 				} else {
-					$this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese email');
+					$this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese nombre de usuario');
 				}
-			} else {
-				$this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese nombre de usuario');
-			}
 		}
         
 

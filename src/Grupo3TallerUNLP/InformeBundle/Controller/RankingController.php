@@ -112,6 +112,13 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
+			if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+			$oficina = $usuario->getOficina();
+			$filtros['oficina'] = $oficina->getId();
+			$validos['oficina'] = 'oficina';
+			}
 			$where = 'where';
 			$ok=false;
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
@@ -189,8 +196,8 @@ class RankingController extends Controller
 				}
 			}elseif(in_array('oficina', $validos)){
 				$informe[] ='Oficina: ' . $filtros['oficina'];
-				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
-				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
+				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.office', 'o');
+				$query->$where('o.id= :oficina')->setParameter('oficina', $filtros['oficina']);
 				$where='andWhere';
 			}
 			if(in_array('grupo', $validos)){
@@ -254,6 +261,13 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
+			if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+			$oficina = $usuario->getOficina();
+			$filtros['oficina'] = $oficina->getId();
+			$validos['oficina'] = 'oficina';
+			}
 			$ok=false;
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
@@ -331,7 +345,7 @@ class RankingController extends Controller
 					$query->setParameter('ip_hasta', implode('.', $filtros['ip_hasta']));
 				}
 			}elseif(in_array('oficina', $validos)){
-				$ok = true;
+				$ok=true;
 				$informe[] ='Oficina: ' . $filtros['oficina'];
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
@@ -410,6 +424,13 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
+			if($this->get('security.context')->isGranted('ROLE_USER')) {
+			$em = $this->getDoctrine()->getManager();
+			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+			$oficina = $usuario->getOficina();
+			$filtros['oficina'] = $oficina->getId();
+			$validos['oficina'] = 'oficina';
+			}
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
 			$informe = [];
@@ -558,6 +579,14 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
+			if($this->get('security.context')->isGranted('ROLE_USER')) {
+				$em = $this->getDoctrine()->getManager();
+				$conect = $this->get('security.context')->getToken()->getUser();
+				$usuario= $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($conect);
+				$oficina = $usuario->getOficina();
+				$filtros['oficina'] = $oficina->getId();
+				$validos['oficina'] = 'oficina';
+			}
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
 			$informe = [];
@@ -633,6 +662,7 @@ class RankingController extends Controller
 					$query->setParameter('ip_hasta', implode('.', $filtros['ip_hasta']));
 				}
 			}elseif(in_array('oficina', $validos)){
+				$ok=true;
 				$informe[] ='Oficina: ' . $filtros['oficina'];
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);

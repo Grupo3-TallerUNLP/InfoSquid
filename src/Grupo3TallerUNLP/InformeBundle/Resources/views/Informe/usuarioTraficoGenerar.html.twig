@@ -52,85 +52,100 @@
 
 				</div>
 			</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">Filtrar por</label>
-			<div class="col-lg-7 row">
-				<div class="col-lg-8">
-					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="oficina" onchange="mostrarOficina()">Oficina</label>
-						<label class="btn btn-default"><input type="radio" name="filtro1" value="ip_desde" onchange="mostrarrangoip()">Rango IP</label>
-						<label class="btn btn-default active"><input type="radio" name="filtro1" value="0" onchange="ocultarfiltro1()" checked="checked">{{ icon('remove') }}</label>
+			{% if is_granted('ROLE_ADMIN') %}
+			<div class="form-group">
+				<label class="col-lg-3 control-label">Filtrar por</label>
+				<div class="col-lg-7 row">
+					<div class="col-lg-8">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default"><input type="radio" name="filtro1" value="oficina" onchange="mostrarOficina()">Oficina</label>
+							<label class="btn btn-default"><input type="radio" name="filtro1" value="ip_desde" onchange="mostrarrangoip()">Rango IP</label>
+							<label class="btn btn-default active"><input type="radio" name="filtro1" value="0" onchange="ocultarfiltro1()" checked="checked">{{ icon('remove') }}</label>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default"><input type="radio" name="filtro2" value="grupo" onchange="mostrargrupo()">Grupo</label>
+							<label class="btn btn-default active"><input type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()" checked="checked">{{ icon('remove') }}</label>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+				<div class="form-group" id="div_oficina" style="display: none;">{# oficina #}
+					<label class="col-lg-3 control-label">Oficina</label>
+					<div class="col-lg-7">
+						<select class="form-control" name="filtros[oficina]">
+							<option value=""></option>
+							{% for f in oficinas %}
+							<option value="{{f.id}}">{{ f }}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+				</div>
+
+
+			<div id="div_rango" style="display: none;">
+				<div class="form-group" >{# ip desde #}
+					<label class="col-lg-3 control-label">IP Desde</label>
+					<div class="col-lg-7 row">
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][0]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][1]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][2]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][3]" min="0" max="255" step="1" /> </div>
 					</div>
 				</div>
-				<div class="col-lg-4">
-					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default"><input type="radio" name="filtro2" value="grupo" onchange="mostrargrupo()">Grupo</label>
-						<label class="btn btn-default active"><input type="radio" name="filtro2" value="0" onchange="ocultarfiltro2()" checked="checked">{{ icon('remove') }}</label>
+				<div class="form-group">{# ip hasta #}
+					<label class="col-lg-3 control-label">IP Hasta</label>
+					<div class="col-lg-7 row">
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][0]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][1]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][2]" min="0" max="255" step="1" /></div>
+						<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][3]" min="0" max="255" step="1" /> </div>
+					</div>
+				</div>
+			</div>
+
+				<div class="form-group" id="div_grupo" style="display: none;">{# grupo sitios #}
+					<label class="col-lg-3 control-label">Grupo</label>
+					<div class="col-lg-7">
+						<select class="form-control" name="filtros[grupo]">
+							<option value=""></option>
+							{% for g in grupos %}
+							<option value="{{g.id}}">{{ g }}</option>
+							{% endfor %}
+						</select>
 					</div>
 				</div>
 
-
-			</div>
-		</div>
-
-			<div class="form-group" id="div_oficina" style="display: none;">{# oficina #}
-				<label class="col-lg-3 control-label">Oficina</label>
-				<div class="col-lg-7">
-					<select class="form-control" name="filtros[oficina]">
-						<option value=""></option>
-						{% for f in oficinas %}
-						<option value="{{f.id}}">{{ f }}</option>
-						{% endfor %}
-					</select>
-				</div>
-
-			</div>
-
-
-		<div id="div_rango" style="display: none;">
-			<div class="form-group" >{# ip desde #}
-				<label class="col-lg-3 control-label">IP Desde</label>
-				<div class="col-lg-7 row">
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][0]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][1]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][2]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_desde][3]" min="0" max="255" step="1" /> </div>
-				</div>
-			</div>
-			<div class="form-group">{# ip hasta #}
-				<label class="col-lg-3 control-label">IP Hasta</label>
-				<div class="col-lg-7 row">
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][0]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][1]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][2]" min="0" max="255" step="1" /></div>
-					<div class="col-xs-3"> <input type="number" class="form-control" name="filtros[ip_hasta][3]" min="0" max="255" step="1" /> </div>
-				</div>
-			</div>
-		</div>
-
-			<div class="form-group" id="div_grupo" style="display: none;">{# grupo sitios #}
-				<label class="col-lg-3 control-label">Grupo</label>
-				<div class="col-lg-7">
-					<select class="form-control" name="filtros[grupo]">
-						<option value=""></option>
-						{% for g in grupos %}
-						<option value="{{g.id}}">{{ g }}</option>
-						{% endfor %}
-					</select>
-				</div>
-			</div>
-
-		
-		<div class="form-group" id="div_usuario" style='display:none;'>
-		</div>
-		
-		<div class="form-group" id="div_sitios" style='display:none;'>
-		</div>
-		
-		<div class="form-group" id="div_ip" style='display:none;'>
-		</div>	
 			
-	
+			<div class="form-group" id="div_usuario" style='display:none;'>
+			</div>
+			
+			<div class="form-group" id="div_sitios" style='display:none;'>
+			</div>
+			
+			<div class="form-group" id="div_ip" style='display:none;'>
+			</div>	
+				
+		{% else %}
+		
+			<div class="form-group" id="div_grupo">{# grupo sitios #}
+					<label class="col-lg-3 control-label">Grupo</label>
+					<div class="col-lg-7">
+						<select class="form-control" name="filtros[grupo]">
+							<option value=""></option>
+							{% for g in grupos %}
+							<option value="{{g.id}}">{{ g }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+		
+		{% endif %}
 			<div class="col-lg-offset-3 col-lg-7">
 				<p>
 					<button type="submit"class="btn btn-primary">Generar</button>

@@ -167,8 +167,7 @@ class InformeController extends Controller
 		
 		if($this->get('security.context')->isGranted('ROLE_USER')) {
 			$em = $this->getDoctrine()->getManager();
-			$conect = $this->get('security.context')->getToken()->getUser();
-			$usuario= $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($conect);
+			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
 			$oficina = $usuario->getOficina();
 			$filtros[4] = $oficina->getId();
 		}
@@ -307,14 +306,12 @@ class InformeController extends Controller
 		}
 		else {	
 			if($this->get('security.context')->isGranted('ROLE_USER')) {
-				$em = $this->getDoctrine()->getManager();
-				$conect = $this->get('security.context')->getToken()->getUser();
-				$usuario= $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($conect);
-				$oficina = $usuario->getOficina();
-				$validos['oficina'] = 'oficina';
-				$filtros['oficina'] = $oficina;
-			}
-		
+			$em = $this->getDoctrine()->getManager();
+			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+			$oficina = $usuario->getOficina();
+			$filtros[4] = $oficina->getId();
+			$valido['oficina']='oficina';
+		}
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
 			$informe = array();
