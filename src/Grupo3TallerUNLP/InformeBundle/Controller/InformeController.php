@@ -18,7 +18,7 @@ class InformeController extends Controller
     {
         return $this->render('Grupo3TallerUNLPInformeBundle:Informe:index.html.twig');
     }
-	
+
 	private function listUsuarios()
 	{
 		$choices = array();
@@ -27,7 +27,7 @@ class InformeController extends Controller
 							  ->join('u.oficina', 'o')
 							  ->addOrderBy('o.nombre', 'ASC')
 							  ->addOrderBy('u.nombre', 'ASC');
-				
+
 		$table = $table->getQuery()->getResult();
 
 		foreach($table as $t) {
@@ -48,7 +48,7 @@ class InformeController extends Controller
 		}
 		return $choices;
 	}
-	
+
 	public function generarAction()
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -59,7 +59,7 @@ class InformeController extends Controller
 		$usuarios = $this->listUsuarios();
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
 		$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
-		
+
 		if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$em = $this->getDoctrine()->getManager();
 			$conect = $this->get('security.context')->getToken()->getUser()->getId();
@@ -69,7 +69,7 @@ class InformeController extends Controller
 										->where('u.id = :id')->setParameter('id', $conect)
 										->getQuery()->getResult();
 		}
-		
+
 		return $this->render('Grupo3TallerUNLPInformeBundle:Informe:generarInforme.html.twig',array(
 			'plantillas' => $plantillas,
 			'oficinas'	=> $oficinas,
@@ -78,7 +78,7 @@ class InformeController extends Controller
 			'sitios'	=> $sitios,
 		));
 	}
-	
+
 	public function exportarAction(Request $request, $type){
 		$ids = $request->request->get('request');
 		$requests = explode('-', $ids);
@@ -87,9 +87,9 @@ class InformeController extends Controller
 		foreach($requests as $request){
 			$dato=$em->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r')
 											->innerJoin('r.ip', 'ip')
-											->innerJoin('ip.host', 'h')
-											->innerJoin('h.networkUsers', 'u')
-											->innerJoin('h.office', 'f')
+											->leftJoin('ip.host', 'h')
+											->leftJoin('h.networkUsers', 'u')
+											->leftJoin('h.office', 'f')
 											->where ('r.id = :id')
 											->setParameter('id', $request)
 											->getQuery()->getOneOrNullResult();
@@ -98,9 +98,9 @@ class InformeController extends Controller
 			}
 		}
 		if($type == 'csv'){
-			$csv_sep = ",";  
-			$csv_file = "informe.csv";  
-			$csv=""; 
+			$csv_sep = ",";
+			$csv_file = "informe.csv";
+			$csv="";
 			foreach ($datos as $dato){
 				$csv.=$dato->getFecha()->format('d-m-Y').$csv_sep;
 				$csv.=$dato->getHora()->format('H:i').$csv_sep;
@@ -136,7 +136,7 @@ class InformeController extends Controller
 				$csv.= $dato->getUrl();
 				$csv.= PHP_EOL;
 			}
-			
+
 			return new Response($csv, 200, array(
 				'Content-Type' => 'application/vnd.ms-excel',
 				'Content-Disposition' => 'attachment; filename=Informe.csv',
@@ -145,7 +145,7 @@ class InformeController extends Controller
 			$html = $this->renderView('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.pdf.twig', array(
 				'resultados' => $datos,
 			));
-			
+
 			return new Response(
 				$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
 				200,
@@ -156,7 +156,7 @@ class InformeController extends Controller
 			);
 		}
 	}
-	
+
 	public function mostrarPlantillaAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -164,7 +164,7 @@ class InformeController extends Controller
 		$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
 		$valorfiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:ValorFiltro')->findByPlantilla($plantilla);
 		$filtros = array();
-		
+
 		if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$em = $this->getDoctrine()->getManager();
 			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
@@ -174,9 +174,9 @@ class InformeController extends Controller
 		foreach($valorfiltro as $valor){
 			$filtros[$valor->getFiltro()->getId()] = $valor->getValor();
 		}
-		
+
 		//acomodar los if a valorfiltro, pero deberiamos seguir con la misma estructura
-		
+
 		$where = 'where';
 		$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
 		if(array_key_exists(1, $filtros)){
@@ -248,12 +248,12 @@ class InformeController extends Controller
 					, ':ip_hasta'));
 				$query->setParameter('ip_hasta', $filtros[8]);
 			}
-		}elseif(array_key_exists(4, $filtros)){		
+		}elseif(array_key_exists(4, $filtros)){
 			$of = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros[4]);
 			$informe[] ='Oficina: ' . $of->getNombre() ;
 			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 			$query->$where('h.office= :oficina')->setParameter('oficina', $filtros[4]);
-			$where='andWhere';					
+			$where='andWhere';
 		}
 		elseif(array_key_exists(5, $filtros)){
 			$us = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros[5]);
@@ -284,14 +284,23 @@ class InformeController extends Controller
 			$query->$where('r.denegado = True');
 			$informe[] ='Trafico Denegado: ' . 'Si';
 		}
+
 		$resultados = $query->orderBy('r.dateTime', 'DESC')->getQuery()->getResult();
-			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',array(
+
+		$requests = array();
+		foreach ($resultados as $request) {
+			$requests[] = $request->getId();
+		}
+		$requests = implode('-', $requests);
+
+		return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',array(
 			'resultados' => $resultados,
-			'filtros' => $informe,
-			'plantilla' => $plantilla->getNombre(),
-			));
+			'requests'   => $requests,
+			'filtros'    => $informe,
+			'plantilla'  => $plantilla->getNombre(),
+		));
 	}
-	
+
 	public function mostrarFiltroAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -304,7 +313,7 @@ class InformeController extends Controller
 		if (!is_null($error)) {
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
-		else {	
+		else {
 			if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$em = $this->getDoctrine()->getManager();
 			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
@@ -402,7 +411,7 @@ class InformeController extends Controller
 				$informe[] ='Usuario: ' . $us->__toString();
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
 				$query->$where('u.id= :usuario')->setParameter('usuario', $filtros['usuario']);
-				$where='andWhere';	
+				$where='andWhere';
 			}
 			if(in_array('grupo', $validos)){
 				$gr = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
@@ -427,15 +436,24 @@ class InformeController extends Controller
 				$where = 'andWhere';
 				$informe[] ='Trafico Denegado: ' . 'Si';
 			}
+
 			$resultados = $query->orderBy('r.dateTime', 'DESC')->getQuery()->getResult();
+
+			$requests = array();
+			foreach ($resultados as $request) {
+				$requests[] = $request->getId();
+			}
+			$requests = implode('-', $requests);
+
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',array(
-			'resultados' => $resultados,
-			'filtros' => $informe,
+				'resultados' => $resultados,
+				'requests'   => $requests,
+				'filtros'    => $informe,
 			));
 		}
 		return $this->redirect($this->generateUrl('informe_generar'));
 	}
-	
+
 	private function validarFiltros($filtros, $filtro1, $filtro2, &$validos)
 	{
 		$ok = false;
@@ -499,9 +517,4 @@ class InformeController extends Controller
 			}
 		}
 	}
-	
-	
-	
-	
-	
 }
