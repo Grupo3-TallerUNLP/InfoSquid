@@ -60,7 +60,7 @@ class InformeController extends Controller
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
 		$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
 		
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
+		if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$em = $this->getDoctrine()->getManager();
 			$conect = $this->get('security.context')->getToken()->getUser()->getId();
 			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
@@ -165,7 +165,7 @@ class InformeController extends Controller
 		$valorfiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:ValorFiltro')->findByPlantilla($plantilla);
 		$filtros = array();
 		
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
+		if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$em = $this->getDoctrine()->getManager();
 			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
 			$oficina = $usuario->getOficina();
@@ -305,7 +305,7 @@ class InformeController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {	
-			if($this->get('security.context')->isGranted('ROLE_USER')) {
+			if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$em = $this->getDoctrine()->getManager();
 			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
 			$oficina = $usuario->getOficina();
