@@ -3,7 +3,6 @@
 namespace Grupo3TallerUNLP\InformePredefinidoBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,7 +33,7 @@ class EnviarCommand extends ContainerAwareCommand
 
         $this->verbose('Buscando los informes predefinidos a enviar... ', false);
         $informesPredefinidos = $this->getInformesPredefinidos();
-        $this->verbose('Listo.', false);
+        $this->verbose('Listo');
 
         if (!$informesPredefinidos) {
             $this->write('NO se encontraron informes predefinidos para enviar hoy.');
@@ -43,21 +42,48 @@ class EnviarCommand extends ContainerAwareCommand
 
         $this->write('Se encontraron '. count($informesPredefinidos) .' informes predefinidos para enviar hoy.');
 
+        $this->debug('Obteniendo el controlador InformeController... ', false);
+        $informeController = $this->getContainer()->get('infosquid.informe.informe_controller');
+        $this->debug('Listo');
+
+        $enviados = 0;
+        $enviadosErrores = 0;
         foreach ($informesPredefinidos as $informePredefinido) {
             $plantilla = $informePredefinido->getPlantilla();
             $usuarioSistema = $plantilla->getUsuariosistema();
             $usuarioRed = $usuarioSistema->getUsuarioRed();
             $this->verbose('Se enviará el informe de la plantilla "'. $plantilla->getNombre() .'" del usuario '. $usuarioRed->__toString() .' <'. $usuarioSistema->getEmail() .'>');
 
-            if ($this->enviarInforme($usuarioSistema->getEmail(), 'path_to_file')) {
-                $this->write('Se envió el mensaje');
+            $this->debug('Obteniendo los requests de la plantilla... ', false);
+
+            $datos = $informeController->datosPlantilla($plantilla->getId(), $this->getEntityManager(), $usuarioSistema);
+            $this->debug('Listo');
+
+            $this->debug('Generando el PDF... ', false);
+            $html = $this->getContainer()->get('templating')
+                ->render(
+                    'Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.pdf.twig',
+                    $datos
+                );
+            $pdf = $this->getContainer()->get('knp_snappy.pdf')->getOutputFromHtml($html);
+            $this->debug('Listo');
+
+            if ($this->enviarInforme($usuarioSistema->getEmail(), $pdf)) {
+                $enviados++;
+                $this->verbose('Se envió el mensaje');
             } else {
-                $this->write('NO se pudo enviar el mensaje');
+                $enviadosErrores++;
+                $this->verbose('NO se pudo enviar el mensaje');
             }
 
             $this->debug('Programando próximo envio del informe... ', false);
             $this->programarSiguienteEnvioInforme($informePredefinido);
             $this->debug('Listo');
+        }
+
+        $this->write('Se enviaron '. $enviados .' emails');
+        if ($enviadosErrores) {
+            $this->write('No se pudieron enviar '. $enviadosErrores .' emails');
         }
     }
 
@@ -85,21 +111,23 @@ class EnviarCommand extends ContainerAwareCommand
         }
     }
 
-    private function enviarInforme($direccionEmail, $pathInforme)
+    private function enviarInforme($direccionEmail, $informe)
     {
         $this->debug('Creando mensaje... ', false);
 
+        $attachment = \Swift_Attachment::newInstance($informe, 'Informe.pdf', 'application/pdf');
+
         $message = \Swift_Message::newInstance()
-            ->setSubject('prueba')
+            ->setSubject('InfoSquid - Informe')
             ->setFrom('info@infosquid.com')
             ->setTo($direccionEmail)
-            ->setBody('hola que tal')
-            // ->attach(\Swift_Attachment::fromPath($pathInforme))
+            ->setBody('Se adjunta el informe generado el '. strftime('%e-%m-%Y a las %H:%M hs'))
+            ->attach($attachment)
             ;
 
         $this
             ->debug('Listo')
-            ->write('Enviando mensaje... ', false)
+            ->verbose('Enviando mensaje... ', false)
             ;
 
         return $this->getContainer()->get('mailer')->send($message);
@@ -113,7 +141,7 @@ class EnviarCommand extends ContainerAwareCommand
             ;
         $dias = $informePredefinido->getFrecuenciaTiempo();
 
-        $this->debug('El informe se enviará en '. $dias .' días', false);
+        $this->debug('El informe se enviará en '. $dias .' días a partir del '. $informePredefinido->getProximoEnvio()->format('d-m-Y'), false);
 
         $intervalo = new \DateInterval('P'. $dias .'D');
         $envio = $informePredefinido->getProximoEnvio();

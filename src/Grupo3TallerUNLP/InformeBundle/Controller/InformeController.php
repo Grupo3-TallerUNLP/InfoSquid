@@ -157,17 +157,21 @@ class InformeController extends Controller
 		}
 	}
 
-	public function mostrarPlantillaAction($id)
+	public function datosPlantilla($id, $em = null, $usuarioSistema = null)
 	{
-		$em = $this->getDoctrine()->getManager();
-		$user = $this->get('security.context')->getToken()->getUser();
+		if (is_null($em)) {
+			$em = $this->getDoctrine()->getManager();
+		}
+		if (is_null($usuarioSistema)) {
+			$usuarioSistema = $this->get('security.context')->getToken()->getUser();
+		}
+
 		$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
 		$valorfiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:ValorFiltro')->findByPlantilla($plantilla);
 		$filtros = array();
 
-		if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			$em = $this->getDoctrine()->getManager();
-			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+		if(!$usuarioSistema->hasRole('ROLE_ADMIN')) {
+			$usuario = $usuarioSistema->getUsuarioRed();
 			$oficina = $usuario->getOficina();
 			$filtros[4] = $oficina->getId();
 		}
@@ -178,7 +182,7 @@ class InformeController extends Controller
 		//acomodar los if a valorfiltro, pero deberiamos seguir con la misma estructura
 
 		$where = 'where';
-		$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
+		$query = $em->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
 		if(array_key_exists(1, $filtros)){
 			$fecha = date('Y-m-d',time() - 86400*$filtros[1]); //ver
 			$query->$where('r.fecha >= :fecha_desde')->setParameter('fecha_desde', $fecha);
@@ -293,12 +297,20 @@ class InformeController extends Controller
 		}
 		$requests = implode('-', $requests);
 
-		return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',array(
+		return array(
 			'resultados' => $resultados,
 			'requests'   => $requests,
 			'filtros'    => $informe,
 			'plantilla'  => $plantilla->getNombre(),
-		));
+		);
+	}
+
+	public function mostrarPlantillaAction($id)
+	{
+		return $this->render(
+			'Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',
+			$this->datosPlantilla($id)
+		);
 	}
 
 	public function mostrarFiltroAction(Request $request)
