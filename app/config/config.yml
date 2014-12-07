@@ -21,6 +21,10 @@ framework:
     fragments:       ~
     http_method_override: true
 
+services:
+    infosquid.informe.informe_controller:
+        class: Grupo3TallerUNLP\InformeBundle\Controller\InformeController
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
@@ -90,7 +94,7 @@ braincrafted_bootstrap:
 knp_snappy:
     pdf:
         enabled: true
-        binary: C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe
+        binary: "%wkhtmltopdf%"
         options: []
     image:
         enabled: false

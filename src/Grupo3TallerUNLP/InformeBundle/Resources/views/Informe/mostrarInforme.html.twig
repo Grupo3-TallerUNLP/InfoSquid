@@ -25,16 +25,15 @@
 			<label>No se encontraron resultados para la busqueda requerida</label>
 		</div>
 	{% else %}
-		{% set request="" %}
 		<div class="clearfix" style="margin-bottom: 20px;">
 			<div class="pull-right">
 				<form action="{{ path('informe_exportar', {'type': 'csv'})}}" method="POST" style="display: inline;">
 					<button type="submit" class="btn btn-default"><span class="text-success">{{ icon('file') }}</span> Exportar a CSV</button>
-					<input type="hidden" name="request" value="{{ request }}"></input>
+					<input type="hidden" name="request" value="{{ requests }}" />
 				</form>
 				<form action="{{ path('informe_exportar', {'type': 'pdf'})}}" method="POST" style="display: inline;">
 					<button type="submit" class="btn btn-default"><span class="text-danger">{{ icon('file') }}</span> Exportar a PDF</button>
-					<input type="hidden" name="request" value="{{ request }}"></input>
+					<input type="hidden" name="request" value="{{ requests }}" />
 				</form>
 			</div>
 		</div>
@@ -54,7 +53,6 @@
 			<tbody>
 			{% for entity in resultados %}
 				<tr>
-					{% set request = request~entity.id~'-' %}
 					<td class="col-xs-2">{{ entity.fecha|date('d-m-Y') }} </td>
 					<td class="col-xs-1">{{ entity.hora|date('H:i') }}</td>
 					{% if(entity.denegado) %}
@@ -78,13 +76,13 @@
 							{{entity.ip.host.office}}
 						{% endif %}
 					</td>
-					<td class="col-xs-2 url" title="{{entity.url}}">{{ entity.url }} </td> 
+					<td class="col-xs-2 url" title="{{entity.url}}">{{ entity.url }} </td>
 				</tr>
 			{% endfor %}
 			</tbody>
 		</table>
 	{% endif %}
-		
+
 <style>
 .table {
   table-layout:fixed;
