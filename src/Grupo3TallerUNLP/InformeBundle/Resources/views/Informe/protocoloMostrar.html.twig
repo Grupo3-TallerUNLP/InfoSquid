@@ -29,7 +29,9 @@
 	<script type="text/javascript">
 		{{ chart(chart) }}
 	</script>
-
-	<div id="linechart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-
+	{% if 	resultados	%}
+		<div id="linechart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+	{% else %}
+		<label class="col-lg-7"> No se encontraron resultados </label>
+	{% endif %}
 {% endblock %}

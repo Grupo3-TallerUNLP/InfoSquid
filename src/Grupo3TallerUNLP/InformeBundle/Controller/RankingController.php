@@ -112,13 +112,13 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
-			if($this->get('security.context')->isGranted('ROLE_USER')) {
-			$em = $this->getDoctrine()->getManager();
-			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
-			$oficina = $usuario->getOficina();
-			$filtros['oficina'] = $oficina->getId();
-			$validos['oficina'] = 'oficina';
-			}
+			if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+				$em = $this->getDoctrine()->getManager();
+				$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+				$oficina = $usuario->getOficina();
+				$filtros['oficina'] = $oficina->getId();
+				$validos['oficina'] = 'oficina';
+				}
 			$where = 'where';
 			$ok=false;
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
@@ -195,14 +195,15 @@ class RankingController extends Controller
 					$query->setParameter('ip_hasta', implode('.', $filtros['ip_hasta']));
 				}
 			}elseif(in_array('oficina', $validos)){
-				$informe[] ='Oficina: ' . $filtros['oficina'];
+				$Oficina = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros['oficina']);
+				$informe[] ='Oficina: ' . $Oficina->getNombre();
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.office', 'o');
 				$query->$where('o.id= :oficina')->setParameter('oficina', $filtros['oficina']);
 				$where='andWhere';
 			}
 			if(in_array('grupo', $validos)){
-				
-				$informe[] ='Grupo: ' . $filtros['grupo'];
+				$grupo = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
+				$informe[] ='Grupo: ' . $grupo->getNombre();
 				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
 			}
 			if (!isset ($sitios)){
@@ -225,10 +226,15 @@ class RankingController extends Controller
 				return ($item1['cantidad']<$item2['cantidad'])?-1:1;
 			});
 			$datos = array_slice($datos, 0, $filtros['cantidad']);
+			$info = false;
+			if($datos){	
+				$info = true;
+			}
 			$graficos = $this->chartPieSitios($datos, 'Top N de sitios mas visitados', 'Sitios');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:sitiosMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
+			'resultados' => $info,
 			));
 			
 		}
@@ -261,12 +267,12 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
-			if($this->get('security.context')->isGranted('ROLE_USER')) {
-			$em = $this->getDoctrine()->getManager();
-			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
-			$oficina = $usuario->getOficina();
-			$filtros['oficina'] = $oficina->getId();
-			$validos['oficina'] = 'oficina';
+			if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+				$em = $this->getDoctrine()->getManager();
+				$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+				$oficina = $usuario->getOficina();
+				$filtros['oficina'] = $oficina->getId();
+				$validos['oficina'] = 'oficina';
 			}
 			$ok=false;
 			$where = 'where';
@@ -346,13 +352,15 @@ class RankingController extends Controller
 				}
 			}elseif(in_array('oficina', $validos)){
 				$ok=true;
-				$informe[] ='Oficina: ' . $filtros['oficina'];
+				$oficina = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros['oficina']);
+				$informe[] ='Oficina: ' . $oficina->getNombre();
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
 				$where='andWhere';
 			}
 			if(in_array('grupo', $validos)){
-				$informe[] ='Grupo: ' . $filtros['grupo'];
+				$grupo = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
+				$informe[] ='Grupo: ' . $grupo->getNombre();
 				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
 				$like = array();
 				foreach ($sitios as $sitio) {
@@ -388,10 +396,15 @@ class RankingController extends Controller
 				}
 				
 			}
+			$info = false;
+			if($datos){	
+				$info = true;
+			}
 			$graficos = $this->chart($datos, 'Top N de usuarios con mas trafico', 'Usuarios');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
+			'resultados' =>$info,
 			));
 		}
 	}
@@ -424,12 +437,12 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
-			if($this->get('security.context')->isGranted('ROLE_USER')) {
-			$em = $this->getDoctrine()->getManager();
-			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
-			$oficina = $usuario->getOficina();
-			$filtros['oficina'] = $oficina->getId();
-			$validos['oficina'] = 'oficina';
+			if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+				$em = $this->getDoctrine()->getManager();
+				$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+				$oficina = $usuario->getOficina();
+				$filtros['oficina'] = $oficina->getId();
+				$validos['oficina'] = 'oficina';
 			}
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
@@ -509,7 +522,8 @@ class RankingController extends Controller
 				}
 			}elseif(in_array('oficina', $validos)){
 				$ok=true;
-				$informe[] ='Oficina: ' . $filtros['oficina'];
+				$grupo = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros['oficina']);
+				$informe[] ='Oficina: ' . $oficina->getNombre();
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
 				$where='andWhere';
@@ -544,10 +558,15 @@ class RankingController extends Controller
 				}
 				
 			}
+			$info = false;
+			if($datos){	
+				$info = true;
+			}
 			$graficos = $this->chart($datos, 'Top N de usuarios con mas trafico', 'Usuarios');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoDenegadoMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
+			'resultados' =>$info,
 			));
 		}
 	}
@@ -579,10 +598,10 @@ class RankingController extends Controller
 			$this->get('session')->getFlashBag()->add('error', $error);
 		}
 		else {
-			if($this->get('security.context')->isGranted('ROLE_USER')) {
+			if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 				$em = $this->getDoctrine()->getManager();
 				$conect = $this->get('security.context')->getToken()->getUser();
-				$usuario= $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($conect);
+				$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
 				$oficina = $usuario->getOficina();
 				$filtros['oficina'] = $oficina->getId();
 				$validos['oficina'] = 'oficina';
@@ -663,13 +682,15 @@ class RankingController extends Controller
 				}
 			}elseif(in_array('oficina', $validos)){
 				$ok=true;
-				$informe[] ='Oficina: ' . $filtros['oficina'];
+				$oficina = $em->getRepository('Grupo3TallerUNLPOficinaBundle:Oficina')->find($filtros['oficina']);
+				$informe[] ='Oficina: ' . $oficina->getNombre();
 				$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h');
 				$query->$where('h.office= :oficina')->setParameter('oficina', $filtros['oficina']);
 				$where='andWhere';
 			}
 			if(in_array('grupo', $validos)){
-				$informe[] ='Grupo: ' . $filtros['grupo'];
+				$grupo = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
+				$informe[] ='Grupo: ' . $grupo->getNombre();
 				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
 				$like = array();
 				foreach ($sitios as $sitio) {
@@ -680,10 +701,15 @@ class RankingController extends Controller
 			}
 			
 			$resultados = $query->select('r.protocolo, COUNT(r.id) AS cant')->addOrderBy('cant', 'DESC')->groupBy('r.protocolo')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
+			$info = false;
+			if($resultados){	
+				$info = true;
+			}
 			$graficos = $this->chartPie($resultados, 'Top N de Protocolos', 'Protocolos');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:protocoloMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
+			'resultados' => $info,
 			));
 		}
 		
