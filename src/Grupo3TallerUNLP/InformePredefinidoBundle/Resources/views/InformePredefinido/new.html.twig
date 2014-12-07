@@ -10,22 +10,22 @@
 
         {{ form_row(form.nombre) }}
         {{ form_row(form.frecuenciaTiempo) }}
-		{% if (user )%}
-			<div class="form-group">{# oficina #}
-				<label class="col-lg-3 control-label">Plantillas</label>
-				<div class="col-lg-7">
-					<select class="form-control" name="plantilla">
-						{% for p in plantilla %}
-						<option value="{{p.id}}">{{ p.nombre }}</option>
-						{% endfor %}
-					</select>
-				</div>
-			</div>		
-			<div class ="hidden">
-			 {{ form_row(form.plantilla) }}
-			</div>
-		{% else %}
-			 {{ form_row(form.plantilla) }}
+        {% if (is_granted('ROLE_ADMIN'))%}
+			{{ form_row(form.plantilla) }}
+        {% else %}
+            <div class="form-group">{# oficina #}
+                <label class="col-lg-3 control-label">Plantillas</label>
+                <div class="col-lg-7">
+                    <select class="form-control" name="plantilla">
+                        {% for p in plantilla %}
+                        <option value="{{p.id}}">{{ p.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class ="hidden">
+             {{ form_row(form.plantilla) }}
+            </div>
 		{% endif %}
         {{ form_row(form.proximoEnvio) }}
 		<div class="col-lg-offset-3 col-lg-7">
