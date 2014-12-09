@@ -98,7 +98,7 @@ class InformeController extends Controller
 			}
 		}
 		if($type == 'csv'){
-			$csv_sep = ",";
+			$csv_sep = ";";
 			$csv_file = "informe.csv";
 			$csv="";
 			foreach ($datos as $dato){
@@ -115,7 +115,7 @@ class InformeController extends Controller
 					if($dato->getIP()->getHost()->getNetworkUsers()){
 						$usuarios=$dato->getIP()->getHost()->getNetworkUsers();
 						foreach ($usuarios as $usuario){
-							$csv.=$usuario->getNombre().'-';
+							$csv.=$usuario->__toString().'-';
 						}
 						$csv = substr($csv, 0, -1);
 						$csv.=$csv_sep;
@@ -307,10 +307,20 @@ class InformeController extends Controller
 
 	public function mostrarPlantillaAction($id)
 	{
-		return $this->render(
-			'Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig',
-			$this->datosPlantilla($id)
-		);
+		$em = $this->getDoctrine()->getManager();
+		$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
+		if($plantilla){
+			$usuarioSistema = $this->get('security.context')->getToken()->getUser();
+			if($plantilla->getUsuariosistema() == $usuarioSistema){
+				return $this->render('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.html.twig', $this->datosPlantilla($id));
+			}else{
+				$this->get('session')->getFlashBag()->add('error', 'La plantilla buscada no existe');
+				return $this->redirect($this->generateUrl('informe_generar'));
+			}
+		}else{
+			$this->get('session')->getFlashBag()->add('error', 'La plantilla buscada no existe');
+			return $this->redirect($this->generateUrl('informe_generar'));
+		}
 	}
 
 	public function mostrarFiltroAction(Request $request)
@@ -327,11 +337,11 @@ class InformeController extends Controller
 		}
 		else {
 			if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			$em = $this->getDoctrine()->getManager();
-			$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
-			$oficina = $usuario->getOficina();
-			$filtros[4] = $oficina->getId();
-			$valido['oficina']='oficina';
+				$em = $this->getDoctrine()->getManager();
+				$usuario = $this->get('security.context')->getToken()->getUser()->getUsuarioRed();
+				$oficina = $usuario->getOficina();
+				$filtros['oficina'] = $oficina->getId();
+				$validos['oficina']='oficina';
 		}
 			$where = 'where';
 			$query = $this->getDoctrine()->getManager()->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
@@ -486,6 +496,14 @@ class InformeController extends Controller
             }
 		}
 		if ($ok) {
+			if (in_array('fecha_desde', $validos) && preg_match('/^\d{2}\-\d{2}\-\d{4}$/', $filtros['fecha_desde'])) {
+				$fecha = explode('-', $filtros['fecha_desde']);
+				$filtros['fecha_desde'] = "$fecha[2]-$fecha[1]-$fecha[0]";
+			}
+			if (in_array('fecha_hasta', $validos) && preg_match('/^\d{2}\-\d{2}\-\d{4}$/', $filtros['fecha_hasta'])) {
+				$fecha = explode('-', $filtros['fecha_hasta']);
+				$filtros['fecha_hasta'] = "$fecha[2]-$fecha[1]-$fecha[0]";
+			}
 			if (in_array('fecha_desde', $validos) && !preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $filtros['fecha_desde'])) {
 				return 'La fecha desde debe tener un formato dd-mm-aaaa';
 			} elseif (in_array('fecha_hasta', $validos) && !preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $filtros['fecha_hasta'])) {

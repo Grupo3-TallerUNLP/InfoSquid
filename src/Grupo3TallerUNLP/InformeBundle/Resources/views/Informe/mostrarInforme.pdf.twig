@@ -40,7 +40,7 @@
                     </td>
                     <td class="nowrap">
                         {% if entity.ip.host is not empty %}
-                            {% for usuario in entity.ip.host.networkUsers %} {{usuario.nombre}} <br>  {% endfor %}
+                            {% for usuario in entity.ip.host.networkUsers %} {{usuario}} <br>  {% endfor %}
                         {% endif %}
                     </td>
                     <td class="nowrap">

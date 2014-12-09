@@ -18,7 +18,7 @@
 		{{ form_row(edit_form.nombre) }}
 		{{ form_row(edit_form.descripcion) }}
 		{% if is_granted('ROLE_ADMIN') %}
-			{{ form_row(form.usuariosistema) }}
+			{{ form_row(edit_form.usuariosistema) }}
 		{% endif %}
 		{% set i=0 %}
 		<div class="form-group">{# rango días #}
@@ -291,7 +291,7 @@
 			</div>
 		{% else %}
 			<div class="form-group">
-				<label class="col-lg-3 control-label">Usuario</label>
+				<label class="col-lg-3 control-label">Filtrar por Usuario</label>
 				<div class="col-lg-7">
 					<select class="form-control" name="filtros[5]">
 						<option value=""></option>
@@ -357,6 +357,12 @@
 					</select>
 				</div>
 			</div>
+			<script>
+					function filtro_1(){
+						
+					}
+				</script>
+			
 			{% if(entity.valorfiltro[i] is defined and entity.valorfiltro[i].filtro.id == 10)  %}
 				<div class="form-group" id="div_sitio" style='display:block;'>{# oficina #}
 				<script>

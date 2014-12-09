@@ -103,8 +103,14 @@ class RankingController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		$user = $this->get('security.context')->getToken()->getUser();
-		$filtro1 = $request->request->get('filtro1');
-        $filtro2 = $request->request->get('filtro2');
+		if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$filtro1 = $request->request->get('filtro1');
+			$filtro2 = $request->request->get('filtro2');
+		}else{
+			$filtro1 = 0;
+			$filtro2 = $request->request->get('grupo');
+			
+		}
 		$filtros = $request->request->get('filtros');
 		$validos = array();
 		$error = $this->validarFiltros($filtros, $filtro1, $filtro2, $validos);
@@ -260,6 +266,14 @@ class RankingController extends Controller
 		$user = $this->get('security.context')->getToken()->getUser();
 		$filtro1 = $request->request->get('filtro1');
         $filtro2 = $request->request->get('filtro2');
+		if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$filtro1 = $request->request->get('filtro1');
+			$filtro2 = $request->request->get('filtro2');
+		}else{
+			$filtro1 = 0;
+			$filtro2 = $request->request->get('grupo');
+			
+		}
 		$filtros = $request->request->get('filtros');
 		$validos = array();
 		$error = $this->validarFiltros($filtros, $filtro1, $filtro2, $validos);
@@ -388,7 +402,7 @@ class RankingController extends Controller
 						if($usuarios = $host->getNetworkUsers()){
 							$datos[$ip->getId()]['ip'] .= 'Usuarios: ';
 							foreach($usuarios as $user){
-								$datos[$ip->getId()]['ip'] .= ' ' .$user->getNombre() .', ';
+								$datos[$ip->getId()]['ip'] .= ' ' .$user->__toString() .', ';
 							}
 							$datos[$ip->getId()]['ip'] = substr($datos[$ip->getId()]['ip'], 0, -2);
 						}
@@ -550,7 +564,7 @@ class RankingController extends Controller
 						if($usuarios = $host->getNetworkUsers()){
 							$datos[$ip->getId()]['ip'] .= 'Usuarios: ';
 							foreach($usuarios as $user){
-								$datos[$ip->getId()]['ip'] .= ' ' .$user->getNombre() .', ';
+								$datos[$ip->getId()]['ip'] .= ' ' .$user->__toString() .', ';
 							}
 							$datos[$ip->getId()]['ip'] = substr($datos[$ip->getId()]['ip'], 0, -2);
 						}
@@ -591,6 +605,13 @@ class RankingController extends Controller
 		$user = $this->get('security.context')->getToken()->getUser();
 		$filtro1 = $request->request->get('filtro1');
         $filtro2 = $request->request->get('filtro2');
+		if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$filtro1 = $request->request->get('filtro1');
+			$filtro2 = $request->request->get('filtro2');
+		}else{
+			$filtro1 = 0;
+			$filtro2 = $request->request->get('grupo');	
+		}
 		$filtros = $request->request->get('filtros');
 		$validos = array();
 		$error = $this->validarFiltros($filtros, $filtro1, $filtro2, $validos);
@@ -735,6 +756,14 @@ class RankingController extends Controller
             }
 		}
 		if ($ok) {
+			if (in_array('fecha_desde', $validos) && preg_match('/^\d{2}\-\d{2}\-\d{4}$/', $filtros['fecha_desde'])) {
+				$fecha = explode('-', $filtros['fecha_desde']);
+				$filtros['fecha_desde'] = "$fecha[2]-$fecha[1]-$fecha[0]";
+			}
+			if (in_array('fecha_hasta', $validos) && preg_match('/^\d{2}\-\d{2}\-\d{4}$/', $filtros['fecha_hasta'])) {
+				$fecha = explode('-', $filtros['fecha_hasta']);
+				$filtros['fecha_hasta'] = "$fecha[2]-$fecha[1]-$fecha[0]";
+			}
 			if (in_array('fecha_desde', $validos) && !preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $filtros['fecha_desde'])) {
 				return 'La fecha desde debe tener un formato dd-mm-aaaa';
 			} elseif (in_array('fecha_hasta', $validos) && !preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $filtros['fecha_hasta'])) {
