@@ -119,7 +119,7 @@ class EnviarCommand extends ContainerAwareCommand
 
         $message = \Swift_Message::newInstance()
             ->setSubject('InfoSquid - Informe')
-            ->setFrom('info@infosquid.com')
+            ->setFrom(array($this->getContainer()->getParameter('email') => $this->getContainer()->getParameter('name')))
             ->setTo($direccionEmail)
             ->setBody('Se adjunta el informe generado el '. strftime('%e-%m-%Y a las %H:%M hs') .' a partir de la plantilla "'. $nombrePlantilla .'"')
             ->attach($attachment)
