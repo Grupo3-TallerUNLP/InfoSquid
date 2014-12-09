@@ -145,7 +145,7 @@ class PlantillaController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $filtros = $request->request->get('filtros');
-			if($this->get('security.context')->isGranted('ROLE_USER')) {
+			if(!($this->get('security.context')->isGranted('ROLE_ADMIN'))) {
 				$filtro1 = 5;
 			}else{
 				$filtro1 = $request->request->get('filtro1');
@@ -156,11 +156,23 @@ class PlantillaController extends Controller
 			if (!is_null($error)) {
 				$this->get('session')->getFlashBag()->add('error', $error);
 			} else {
-				if($this->get('security.context')->isGranted('ROLE_USER')) {
+				if(!($this->get('security.context')->isGranted('ROLE_ADMIN'))) {
 					$em = $this->getDoctrine()->getManager();
-					$conect = $this->get('security.context')->getToken()->getUser()->getId();
-					$user= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->find($conect);
+					$user = $this->get('security.context')->getToken()->getUser();
 					$entity->setUsuariosistema($user);
+				}else{
+					$em = $this->getDoctrine()->getManager();
+					$user = $entity->getUsuariosistema();
+					if(!$user->getAdministrador()){
+						$filtros[4] = $user->getUsuarioRed()->getOficina()->getId();
+						if(in_array(5, $validos)){
+							$userRed = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros[5]);
+							if($userRed && ($userRed->getOficina() != $user->getUsuarioRed()->getOficina())){
+								$this->get('session')->getFlashBag()->add('error', 'El propietario seleccionado tiene perfil estandar no se corresponde con la oficina del filtro usuario');
+								return $this->redirect($this->generateUrl('plantilla_new'));
+							}
+						}
+					}
 				}
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($entity);
@@ -181,7 +193,7 @@ class PlantillaController extends Controller
 				return $this->redirect($this->generateUrl('plantilla'));
 			}
         }
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
+		if(!($this->get('security.context')->isGranted('ROLE_ADMIN'))) {
 			$em = $this->getDoctrine()->getManager();
 			$conect = $this->get('security.context')->getToken()->getUser()->getId();
 			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
@@ -211,10 +223,10 @@ class PlantillaController extends Controller
      */
     private function createCreateForm(Plantilla $entity)
     {
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
-			$requerida = False;
-		}else{
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$requerida = True;
+		}else{
+			$requerida = False;
 		}
         $form = $this->createForm(new PlantillaType(), $entity, array(
             'action' => $this->generateUrl('plantilla_create'),
@@ -235,7 +247,7 @@ class PlantillaController extends Controller
         $entity = new Plantilla();
         $form   = $this->createCreateForm($entity);
 		$usuarios="";
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
+		if(!($this->get('security.context')->isGranted('ROLE_ADMIN'))) {
 			$em = $this->getDoctrine()->getManager();
 			$conect = $this->get('security.context')->getToken()->getUser()->getId();
 			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
@@ -347,7 +359,7 @@ class PlantillaController extends Controller
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
 		$usuarios = "";
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
+		if(!($this->get('security.context')->isGranted('ROLE_ADMIN'))) {
 			$em = $this->getDoctrine()->getManager();
 			$conect = $this->get('security.context')->getToken()->getUser()->getId();
 			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')
@@ -376,11 +388,11 @@ class PlantillaController extends Controller
     */
     private function createEditForm(Plantilla $entity)
     {
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
-			$requerido = False;
+		if($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$requerido = True;
 		}
 		else{
-			$requerido = True;
+			$requerido = False;
 		}
         $form = $this->createForm(new PlantillaType(), $entity, array(
             'action' => $this->generateUrl('plantilla_update', array('id' => $entity->getId())),
@@ -419,6 +431,20 @@ class PlantillaController extends Controller
 			if (!is_null($error)) {
 				$this->get('session')->getFlashBag()->add('error', $error);
 			} else {
+				if($this->get('security.context')->isGranted('ROLE_ADMIN')){
+					$em = $this->getDoctrine()->getManager();
+					$user = $entity->getUsuariosistema();
+					if(!$user->getAdministrador()){
+						$filtros[4] = $user->getUsuarioRed()->getOficina()->getId();
+						if(in_array(5, $validos)){
+							$userRed = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros[5]);
+							if($userRed && ($userRed->getOficina() != $user->getUsuarioRed()->getOficina())){
+								$this->get('session')->getFlashBag()->add('error', 'El propietario seleccionado tiene perfil estandar no se corresponde con la oficina del filtro usuario');
+								return $this->redirect($this->generateUrl('plantilla_edit', array('id' => $id)));
+							}
+						}
+					}
+				}
 				$valorfiltros = $entity->getValorfiltro();
 				foreach ($valorfiltros as $valorfiltro){
 					$idFiltro = $valorfiltro->getFiltro()->getId();
@@ -453,7 +479,7 @@ class PlantillaController extends Controller
 				return $this->redirect($this->generateUrl('plantilla'));
 			}
 		}
-		if($this->get('security.context')->isGranted('ROLE_USER')) {
+		if(!($this->get('security.context')->isGranted('ROLE_ADMIN'))) {
 			$em = $this->getDoctrine()->getManager();
 			$conect = $this->get('security.context')->getToken()->getUser()->getId();
 			$usuarios= $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u')

@@ -16,6 +16,9 @@
             <tr>
                 <th>Nombre</th>
                 <th>Descripcion</th>
+				{% if is_granted('ROLE_ADMIN') %}
+					<th>Propietario</th>
+				{% endif %}
                 <th class="col-xs-2">Acciones</th>				
             </tr>
         </thead>
@@ -24,6 +27,9 @@
             <tr>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.descripcion }}</td>
+				{% if is_granted('ROLE_ADMIN') %}
+					<td>{{ entity.usuariosistema }}</td>
+				{% endif %}
                 <td>
 						<a href="{{ path('plantilla_show', { 'id': entity.id }) }}"title="Ver" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-list text-primary"></span>

@@ -12,6 +12,10 @@
         <dt>Descripcion</dt>
         <dd>{{ entity.descripcion }}</dd>
 	{% endif %}	
+	{% if is_granted('ROLE_ADMIN') %}
+		<dt>Propietario</dt>
+		<dd>{{ entity.usuariosistema }}</dd>
+	{% endif %}
 		
 	{% if entity.informepredefinido|length > 0 %}
 		<dt>Informe Predefinido</dt>

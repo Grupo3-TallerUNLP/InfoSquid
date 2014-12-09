@@ -15,6 +15,7 @@
         <thead>
             <tr>
                 <th>Dirección IP</th>
+				<th>Dispositivo</th>
                 <th>Usuarios de Red</th>
                 <th>Oficina</th>
                 <th class="col-xs-2">Acciones</th>
@@ -24,6 +25,7 @@
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.ipAddress }}</td>
+				<td>{{ entity.device }}</td>
                 <td>
 					{% if entity.networkUsers|length > 0 %}
 					<a href="#" data-toggle="popover" data-content="<ul>{% for user in entity.networkUsers %}<li>{{ user }}</li>{% endfor %}</ul>">Ver</a>

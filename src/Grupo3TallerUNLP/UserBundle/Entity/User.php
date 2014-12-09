@@ -147,4 +147,8 @@ class User extends BaseUser
     {
         return $this->plantilla;
     }
+	
+	public function getFullname(){
+		return $this->getUsuarioRed()->__toString() .' ('. $this->username .' - Usuario '. ($this->hasRole('ROLE_ADMIN') ? 'Administrador' : 'Estándar') .' - Oficina '. $this->getUsuarioRed()->getOficina()->__toString() .')';
+	}
 }

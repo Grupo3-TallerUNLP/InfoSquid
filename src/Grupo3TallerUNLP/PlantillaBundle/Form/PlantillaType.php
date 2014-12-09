@@ -28,7 +28,7 @@ class PlantillaType extends AbstractType
         ;
 		
 		if($options['required']){
-			$builder->add('usuariosistema', null, array('required' => true));
+			$builder->add('usuariosistema', null, array('required' => true, 'label' => 'Propietario', 'property' => 'fullname'));
 		}
     }
     	
