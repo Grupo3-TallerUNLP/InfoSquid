@@ -4,7 +4,7 @@
     <div class="page-header">
         <h3>Informe Predefinido</h3>
     </div>
-	
+
 	<p>
         <a href="{{ path('informepredefinido_new') }}" class="btn btn-primary">
             <span class="glyphicon glyphicon-plus"></span> Agregar Informe Predefinido
@@ -15,17 +15,17 @@
         <thead>
             <tr>
                 <th>Nombre</th>
-                <th>Frecuenciatiempo</th>
+                <th>Frecuencia de Envío</th>
 				<th>Plantilla</th>
 				<th> Proximo Envio </th>
-                <th class="col-xs-2">Actions</th>
+                <th class="col-xs-2">Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.nombre }}</td>
-                <td>{{ entity.frecuenciaTiempo }}</td>
+                <td>{{ entity.frecuenciaTiempo }} días</td>
                 <td>{{ entity.plantilla }}</td>
 				<td>{{ entity.proximoEnvio|date('d-m-Y') }}</td>
 				<td>

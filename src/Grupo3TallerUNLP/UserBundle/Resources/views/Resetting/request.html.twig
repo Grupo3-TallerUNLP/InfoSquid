@@ -6,16 +6,14 @@
 {% endstylesheets %}
 
 <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="form-signin" role="form">
-    <h3 class="form-signin-heading">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</h3>
+    <h3 class="form-signin-heading">Resetear Contraseña</h3>
     {% if invalid_username is defined %}
-        <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</p>
+        <p>El usuario o dirección de email "{{ invalid_username }}" no existe</p>
     {% endif %}
-    <input type="text" name="username" class="form-control" placeholder="{{ 'security.login.username'|trans({}, 'Grupo3TallerUNLPUserBundle') }}" required autofocus />
+    <input type="text" name="username" class="form-control" placeholder="Usuario o email" required autofocus />
     <br />
-    <button class="btn btn-default" type="submit">
-        {{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}
-    </button>
-	<a href="{{ path('fos_user_profile_show') }}" class="btn btn-primary">Cancelar</a>
+    <button class="btn btn-primary" type="submit">Resetear Contraseña</button>
+	<a href="{{ path('fos_user_profile_show') }}" class="btn btn-default">Cancelar</a>
 </form>
 
 {% endblock fos_user_content %}

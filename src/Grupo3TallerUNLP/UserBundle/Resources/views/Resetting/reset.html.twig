@@ -5,13 +5,13 @@
     <link href="{{ asset_url }}" rel="stylesheet" />
 {% endstylesheets %}
 
-<form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="form-horizontal">
-    {{ bootstrap_set_style('horizontal') }}
+<form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="form-signin">
+    <h3 class="form-signin-heading">Resetear Contraseña</h3>
     {{ form_widget(form) }}
     <div class="form-group">
-        <div class="col-lg-offset-2 col-lg-10">
-            <button type="submit" class="btn btn-primary">{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}</button>
-			<a href="{{ path('fos_user_login') }}" class="btn btn-default">Cancelar</a>
+        <div>
+            <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+			<a href="{{ path('fos_user_security_login') }}" class="btn btn-default">Cancelar</a>
         </div>
     </div>
 </form>

@@ -32,7 +32,7 @@
                 <td>{{ entity.apellido }}</td>
                 <td>{{ entity.cargo }} </td>
                 <td>{{ entity.dNI }} </td>
-                <td>{{ entity.usuariosistema }} </td>
+                <td>{% if not (entity.usuariosistema is null) %}{{ entity.usuariosistema.username }}{% endif %}</td>
 				<td>{{ entity.oficina }}</td>
 				<td>
 					{% if entity.hosts|length > 0 %}

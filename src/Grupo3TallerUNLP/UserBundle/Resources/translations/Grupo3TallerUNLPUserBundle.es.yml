@@ -5,6 +5,12 @@ security:
 
 resetting:
     forgot: "¿Olvidaste tu Contraseña?"
+    email:
+        subject: InfoSquid - Resetear contraseña
+        message : |
+            %username%:
+
+            Para resetear tu contraseña por favor visita %confirmationUrl%
 
 profile:
     account: "Mi Cuenta"
@@ -15,3 +21,10 @@ layout:
 
 form:
     role: Rol
+    username: "Nombre de usuario"
+    email: "Email"
+    current_password: "Contraseña actual"
+    password: "Contraseña"
+    password_confirmation: "Repita la contraseña"
+    new_password: "Nueva contraseña"
+    new_password_confirmation: "Repita la contraseña"

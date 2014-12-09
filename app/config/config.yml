@@ -81,6 +81,9 @@ fos_user:
     profile:
         form:
             type: grupo3tallerunlp_profile
+    from_email:
+        address: "%email%"
+        sender_name: "%name%"
 
 # Braincrafted Bootstrap
 braincrafted_bootstrap:

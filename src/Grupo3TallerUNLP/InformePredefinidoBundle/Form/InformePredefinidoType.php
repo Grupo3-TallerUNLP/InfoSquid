@@ -18,8 +18,8 @@ class InformePredefinidoType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('frecuenciaTiempo')
-			->add('proximoEnvio' , 'date' , array( 'widget'=>'single_text', 'format' => 'yyyy-MM-dd'))
+            ->add('frecuenciaTiempo', null, array('label'=>'Frecuencia de Envío'))
+			->add('proximoEnvio' , 'date' , array( 'widget'=>'single_text', 'format' => 'dd-MM-yyyy'))
         ;
 		if ($options['required']) {
 				$builder->add('plantilla', 'entity', array(
@@ -33,11 +33,11 @@ class InformePredefinidoType extends AbstractType
 					},
 					'label' => 'Plantilla',
 				));
-			}	
-			
+			}
+
     }
-    
-    
+
+
     /**
      * @param OptionsResolverInterface $resolver
      */

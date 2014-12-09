@@ -68,7 +68,7 @@ class EnviarCommand extends ContainerAwareCommand
             $pdf = $this->getContainer()->get('knp_snappy.pdf')->getOutputFromHtml($html);
             $this->debug('Listo');
 
-            if ($this->enviarInforme($usuarioSistema->getEmail(), $pdf)) {
+            if ($this->enviarInforme($usuarioSistema->getEmail(), $pdf, $plantilla->getNombre())) {
                 $enviados++;
                 $this->verbose('Se envió el mensaje');
             } else {
@@ -111,7 +111,7 @@ class EnviarCommand extends ContainerAwareCommand
         }
     }
 
-    private function enviarInforme($direccionEmail, $informe)
+    private function enviarInforme($direccionEmail, $informe, $nombrePlantilla)
     {
         $this->debug('Creando mensaje... ', false);
 
@@ -121,7 +121,7 @@ class EnviarCommand extends ContainerAwareCommand
             ->setSubject('InfoSquid - Informe')
             ->setFrom('info@infosquid.com')
             ->setTo($direccionEmail)
-            ->setBody('Se adjunta el informe generado el '. strftime('%e-%m-%Y a las %H:%M hs'))
+            ->setBody('Se adjunta el informe generado el '. strftime('%e-%m-%Y a las %H:%M hs') .' a partir de la plantilla "'. $nombrePlantilla .'"')
             ->attach($attachment)
             ;
 

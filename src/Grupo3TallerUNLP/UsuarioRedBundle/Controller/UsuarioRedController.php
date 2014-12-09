@@ -45,13 +45,15 @@ class UsuarioRedController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-			if(! is_numeric($entity->getDNI()) || ($entity->getDNI()<999999)) {
-				$this->get('session')->getFlashBag()->add('error', 'El DNI debe ser un valor numerico y mayor a 999999');
-				return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:new.html.twig', array(
-					'entity' => $entity,
-					'form'   => $form->createView(),
-				));
-			}		
+            if (strlen($entity->getDNI()) > 0) {
+                if(!is_numeric($entity->getDNI()) || ($entity->getDNI()<999999)) {
+                    $this->get('session')->getFlashBag()->add('error', 'El DNI debe ser un valor numerico y mayor a 999999');
+                    return $this->render('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed:new.html.twig', array(
+                        'entity' => $entity,
+                        'form'   => $form->createView(),
+                    ));
+                }
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -207,12 +209,14 @@ class UsuarioRedController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()) {		
-			if(! is_numeric($entity->getDNI()) || ($entity->getDNI()<999999)) {
-				$this->get('session')->getFlashBag()->add('error', 'El DNI debe ser un valor numerico y mayor a 999999');
-				return $this->redirect($this->generateUrl('usuariored_edit', array('id' => $id)));
-			}
-		
+        if ($editForm->isValid()) {
+            if (strlen($entity->getDNI()) > 0) {
+                if(!is_numeric($entity->getDNI()) || ($entity->getDNI()<999999)) {
+                    $this->get('session')->getFlashBag()->add('error', 'El DNI debe ser un valor numerico y mayor a 999999');
+                    return $this->redirect($this->generateUrl('usuariored_edit', array('id' => $id)));
+                }
+            }
+
             $em->flush();
             $this->get('session')->getFlashBag()->add('success', 'La operación se realizó con éxito');
             return $this->redirect($this->generateUrl('usuariored'));
@@ -237,7 +241,7 @@ class UsuarioRedController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($id);
             if (!$entity) {
-               
+
 				$this->get('session')->getFlashBag()->add('error', 'No se encontro el usuario buscado');
 				return $this->redirect($this->generateUrl('usuariored'));
 	        }

@@ -10,6 +10,10 @@
 
         {{ form_row(form.nombre) }}
         {{ form_row(form.frecuenciaTiempo) }}
+        <div class="col-lg-offset-3 col-lg-7">
+            <span class="help-block">En Días</span>
+        </div>
+
         {% if (is_granted('ROLE_ADMIN'))%}
 			{{ form_row(form.plantilla) }}
         {% else %}
