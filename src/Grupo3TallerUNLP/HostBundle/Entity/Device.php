@@ -36,7 +36,7 @@ class Device
 
     public function __construct()
     {
-        $this->hosts = new Doctrine\Common\Collections\ArrayCollection();
+        $this->hosts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 

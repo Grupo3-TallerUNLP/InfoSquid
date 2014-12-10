@@ -32,8 +32,10 @@ class HostController extends Controller
 
         $query = $em->getRepository('Grupo3TallerUNLPHostBundle:Host')->createQueryBuilder('h');
 
+        $pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+        $num = $pag->getPaginacion();
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
 
         return array(
             'pagination' => $pagination,
@@ -172,7 +174,7 @@ class HostController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-	
+
 	public function mostrarAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -187,7 +189,7 @@ class HostController extends Controller
             'entity'      => $entity,
         ));
     }
-	
+
 
     /**
      * Displays a form to edit an existing Host entity.

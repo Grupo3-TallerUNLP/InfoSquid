@@ -33,7 +33,8 @@ class AppKernel extends Kernel
             new Grupo3TallerUNLP\InformeBundle\Grupo3TallerUNLPInformeBundle(),
 			new Ob\HighchartsBundle\ObHighchartsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-			
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

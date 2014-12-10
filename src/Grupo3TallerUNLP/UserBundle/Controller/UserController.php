@@ -31,8 +31,10 @@ class UserController extends Controller
 
         $query = $em->getRepository('Grupo3TallerUNLPUserBundle:User')->createQueryBuilder('u');
 
+        $pag = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById('1');
+        $num = $pag->getPaginacion();
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 4);
+        $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', 1), $num);
 
         return array(
             'pagination' => $pagination,
@@ -91,7 +93,7 @@ class UserController extends Controller
 					$this->get('session')->getFlashBag()->add('error', 'Ya existe un usuario con ese nombre de usuario');
 				}
 		}
-        
+
 
         return array(
             'entity' => $entity,
