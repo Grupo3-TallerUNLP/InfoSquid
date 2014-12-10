@@ -147,13 +147,12 @@ class EnviarCommand extends ContainerAwareCommand
         $envio = $informePredefinido->getProximoEnvio();
         $envio->add($intervalo);
 
-        $informePredefinido->setProximoEnvio($envio);
-
-        $this->debug(', el día '. $informePredefinido->getProximoEnvio()->format('d-m-Y'));
+        $this->debug(', el día '. $envio->format('d-m-Y'));
 
         $this->debug('Actualizando el informe predefinido... ', false);
 
         $em = $this->getEntityManager();
+		$informePredefinido->setProximoEnvio( new \DateTime( $envio->format('Y-m-d') ) );
         $em->persist($informePredefinido);
         $em->flush();
     }
