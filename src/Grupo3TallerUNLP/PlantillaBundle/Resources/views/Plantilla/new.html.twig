@@ -122,7 +122,9 @@
 					<select class="form-control" name="filtros[{{ datos.filtros[9].id }}]">
 						<option value=""></option>
 						{% for g in datos.grupos %}
-						<option value="{{g.id}}">{{ g }}</option>
+							{% if g.getSitios()|length > 0 %}
+								<option value="{{g.id}}">{{ g }}</option>
+							{% endif %}
 						{% endfor %}
 					</select>
 				</div>

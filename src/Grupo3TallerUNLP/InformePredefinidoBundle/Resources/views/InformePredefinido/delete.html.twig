@@ -9,6 +9,11 @@
     <dl class="dl-horizontal">
             <dt>Nombre</dt>
             <dd>{{ entity.nombre }}</dd>
+			
+			{% if is_granted('ROLE_ADMIN') %}
+				<dt>Propietario</td>
+				<dd>{{ entity.getPlantilla().getUsuarioSistema().getUsuarioRed() }}</dd>
+			{% endif %}
 
             <dt>Frecuencia tiempo</dt>
             <dd>{{ entity.frecuenciaTiempo }}</dd>

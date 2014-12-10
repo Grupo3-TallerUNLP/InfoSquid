@@ -15,6 +15,9 @@
         <thead>
             <tr>
                 <th>Nombre</th>
+				{% if is_granted('ROLE_ADMIN') %}
+					<th>Propietario</th>
+				{% endif %}
                 <th>Frecuencia de Envío</th>
 				<th>Plantilla</th>
 				<th> Proximo Envio </th>
@@ -25,6 +28,9 @@
         {% for entity in pagination %}
             <tr>
                 <td>{{ entity.nombre }}</td>
+				{% if is_granted('ROLE_ADMIN') %}
+					<td>{{ entity.getPlantilla().getUsuarioSistema().getUsuarioRed() }}</td>
+				{% endif %}
                 <td>{{ entity.frecuenciaTiempo }} días</td>
                 <td>{{ entity.plantilla }}</td>
 				<td>{{ entity.proximoEnvio|date('d-m-Y') }}</td>

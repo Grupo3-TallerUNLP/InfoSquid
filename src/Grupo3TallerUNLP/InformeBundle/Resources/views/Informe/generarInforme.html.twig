@@ -172,7 +172,9 @@
 						<select class="form-control" name="filtros[grupo]">
 							<option value=""></option>
 							{% for g in grupos %}
-							<option value="{{g.id}}">{{ g }}</option>
+								{% if g.getSitios()|length > 0 %}
+									<option value="{{g.id}}">{{ g }}</option>
+								{% endif %}
 							{% endfor %}
 						</select>
 					</div>

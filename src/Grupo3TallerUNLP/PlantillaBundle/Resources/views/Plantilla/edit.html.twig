@@ -245,13 +245,17 @@
 								{% if entity.valorfiltro[i].valor == g.id %}
 									<option value="{{g.id}}" selected="selected">{{ g }}</option>
 								{% else %}
-									<option value="{{g.id}}">{{ g }}</option>
+									{% if g.getSitios()|length > 0 %}
+										<option value="{{g.id}}">{{ g }}</option>
+									{%endif%}
 								{% endif %}
 							{% endfor %}
 							{% set i=i+1 %}
 						{% else %}
 							{% for g in datos.grupos %}
-								<option value="{{g.id}}">{{ g }}</option>
+								{% if g.getSitios()|length > 0 %}
+									<option value="{{g.id}}">{{ g }}</option>
+								{% endif %}
 							{% endfor %}
 						{% endif %}
 					</select>

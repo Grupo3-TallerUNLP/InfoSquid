@@ -59,7 +59,6 @@ class InformeController extends Controller
 		$usuarios = $this->listUsuarios();
 		$grupos = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->findAll();
 		$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
-
 		if(! $this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$em = $this->getDoctrine()->getManager();
 			$conect = $this->get('security.context')->getToken()->getUser()->getId();
@@ -268,14 +267,17 @@ class InformeController extends Controller
 		}
 		if(array_key_exists(9, $filtros)){
 			$gr = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros[9]);
-			$informe[] ='Grupo: ' . $gr->getNombre();
+			
 			$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros[9]);
-			$like = array();
-			foreach ($sitios as $sitio) {
-				$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+			if(count($sitios)>0){
+				$informe[] ='Grupo: ' . $gr->getNombre();
+				$like = array();
+				foreach ($sitios as $sitio) {
+					$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+				}
+				$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
+				$where = 'andWhere';
 			}
-			$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
-			$where = 'andWhere';
 		}elseif(array_key_exists(10, $filtros)){
 			$sitio = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($filtros[10]);
 			if($sitio){
@@ -437,14 +439,16 @@ class InformeController extends Controller
 			}
 			if(in_array('grupo', $validos)){
 				$gr = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
-				$informe[] ='Grupo: ' . $gr->getNombre();
 				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
-				$like = array();
-				foreach ($sitios as $sitio) {
-					$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+				if(count($sitios)>0){ 
+					$informe[] ='Grupo: ' . $gr->getNombre();
+					$like = array();
+					foreach ($sitios as $sitio) {
+						$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+					}
+					$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
+					$where = 'andWhere';
 				}
-				$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
-				$where = 'andWhere';
 			}elseif(in_array('sitio', $validos)){
 				$sitio = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($filtros['sitio']);
 				if($sitio){
