@@ -3,18 +3,18 @@
 {% block content %}
 
 	<div class="page-header">
-        <h1>Configuracion</h1>
+        <h3>Configuración</h3>
     </div>
 
     <dl class="dl-horizontal">
 			 {% for entities in entities %}
-			 <dt>Paginacion</dt>
+			 <dt>Paginación</dt>
 			 <dd>{{ entities.paginacion }}</dd>
-			 <dt>Directoriologsantiguos</dt>
+			 <dt>Directorio de logs antiguos</dt>
 			 <dd>{{ entities.directorioLogsAntiguos }}</dd>
-			 <dt>Archivodelog</dt>
+			 <dt>Archivo de log</dt>
 			 <dd>{{ entities.archivoDeLog }}</dd>
-			 <dt>Tiempomantenimiento</dt>
+			 <dt>Tiempo de mantenimiento</dt>
 			 <dd>{{ entities.tiempoMantenimiento }}</dd>
 
 
@@ -28,7 +28,14 @@
 			 {% endfor %}
 
 
-
+    <style>
+    .dl-horizontal dt {
+        width: 200px;
+    }
+    .dl-horizontal dd {
+        margin-left: 220px;
+    }
+    </style>
 
 
 

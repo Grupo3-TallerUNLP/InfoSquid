@@ -2,36 +2,36 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Oficina</h1>
+        <h3>Oficina</h3>
     </div>
 
      <dl class="dl-horizontal">
         <dt>Nombre</dt>
         <dd>{{ entity.nombre }}</dd>
-       
+
 	   <dt>Descripcion</dt>
        <dd>{{ entity.descripcion }}</dd>
-                        
+
 		<dt>Ubicacion</dt>
         <dd>{{ entity.ubicacion }}</dd>
-        
+
 		<dt>Director</dt>
         <dd>{{ entity.director }}</dd>
-		
+
 		{% if entity.usuariosdered|length > 0 %}
 			<dt>Usuarios de Red</dt>
 		{% for user in entity.usuariosdered %}
 			<dd>{{ user}}</dd>
 		{% endfor %}
 		{% endif %}
-		
+
 		{% if entity.hosts|length > 0 %}
 			<dt>Hosts</dt>
 		{% for host in entity.hosts %}
 			<dd>{{ host}}</dd>
 		{% endfor %}
 		{% endif %}
-            
+
 		{% if plantilla %}
 			<dt>Plantillas</dt>
 			{% for p in plantilla %}
@@ -39,7 +39,7 @@
 			{% endfor %}
 		{% endif %}
     </dl>
-   
+
    <div class="col-md-offset-1">
             <a href="{{ path('oficina') }}" class="btn btn-primary">Volver</a>
     </div>
