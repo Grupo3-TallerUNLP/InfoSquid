@@ -98,6 +98,8 @@ knp_snappy:
     pdf:
         enabled: true
         binary: "%wkhtmltopdf%"
-        options: []
+        options:
+            header-left: '[date] [time]'
+            header-right: '[page]/[toPage]'
     image:
         enabled: false

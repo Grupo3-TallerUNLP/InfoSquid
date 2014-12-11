@@ -138,7 +138,7 @@ class InformeController extends Controller
 
 			return new Response($csv, 200, array(
 				'Content-Type' => 'application/vnd.ms-excel',
-				'Content-Disposition' => 'attachment; filename=Informe.csv',
+				'Content-Disposition' => 'attachment; filename=Informe_'. date('d-m-Y_H-i-s') .'.csv',
 			));
 		}elseif($type == 'pdf'){
 			$html = $this->renderView('Grupo3TallerUNLPInformeBundle:Informe:mostrarInforme.pdf.twig', array(
@@ -150,7 +150,7 @@ class InformeController extends Controller
 				200,
 				array(
 					'Content-Type' => 'application/pdf',
-					'Content-Disposition' => 'attachment; filename=Informe.pdf',
+					'Content-Disposition' => 'attachment; filename=Informe_'. date('d-m-Y_H-i-s') .'.pdf',
 				)
 			);
 		}
@@ -267,7 +267,7 @@ class InformeController extends Controller
 		}
 		if(array_key_exists(9, $filtros)){
 			$gr = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros[9]);
-			
+
 			$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros[9]);
 			if(count($sitios)>0){
 				$informe[] ='Grupo: ' . $gr->getNombre();
@@ -440,7 +440,7 @@ class InformeController extends Controller
 			if(in_array('grupo', $validos)){
 				$gr = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
 				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
-				if(count($sitios)>0){ 
+				if(count($sitios)>0){
 					$informe[] ='Grupo: ' . $gr->getNombre();
 					$like = array();
 					foreach ($sitios as $sitio) {
