@@ -21,7 +21,6 @@
 			$em = $this->getContainer()->get('doctrine')->getManager();
 			$tiempoMantenimiento = $em->getRepository('Grupo3TallerUNLPConfiguracionBundle:Configuracion')->findOneById(1)->getTiempoMantenimiento();
 			$fecha = date('Y-m-d', time() - $tiempoMantenimiento*86400);
-			$output->writeln($fecha);
 			$query = $em->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r')
 							  ->where('r.fecha < :fecha')->setParameter('fecha', $fecha);
 			$inserts = 0;
