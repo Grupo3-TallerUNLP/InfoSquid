@@ -115,7 +115,7 @@ class EnviarCommand extends ContainerAwareCommand
     {
         $this->debug('Creando mensaje... ', false);
 
-        $attachment = \Swift_Attachment::newInstance($informe, 'Informe.pdf', 'application/pdf');
+        $attachment = \Swift_Attachment::newInstance($informe, 'Informe_'. date('d-m-Y_H-i-s') .'.pdf', 'application/pdf');
 
         $message = \Swift_Message::newInstance()
             ->setSubject('InfoSquid - Informe')
