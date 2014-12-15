@@ -168,8 +168,8 @@ class InformeController extends Controller
 		$plantilla = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:Plantilla')->find($id);
 		$valorfiltro = $em->getRepository('Grupo3TallerUNLPPlantillaBundle:ValorFiltro')->findByPlantilla($plantilla);
 		$filtros = array();
-
-		if(!$usuarioSistema->hasRole('ROLE_ADMIN')) {
+        
+		if(! $usuarioSistema->hasRole('ROLE_ADMIN')) {
 			$usuario = $usuarioSistema->getUsuarioRed();
 			$oficina = $usuario->getOficina();
 			$filtros[4] = $oficina->getId();
@@ -177,9 +177,7 @@ class InformeController extends Controller
 		foreach($valorfiltro as $valor){
 			$filtros[$valor->getFiltro()->getId()] = $valor->getValor();
 		}
-
-		//acomodar los if a valorfiltro, pero deberiamos seguir con la misma estructura
-
+		
 		$where = 'where';
 		$query = $em->getRepository('Grupo3TallerUNLPInformeBundle:Request')->createQueryBuilder('r');
 		if(array_key_exists(1, $filtros)){
@@ -260,7 +258,7 @@ class InformeController extends Controller
 		}
 		elseif(array_key_exists(5, $filtros)){
 			$us = $em->getRepository('Grupo3TallerUNLPUsuarioRedBundle:UsuarioRed')->find($filtros[5]);
-			$informe[] ='Usuario: ' . $us->getNombre();
+			$informe[] ='Usuario: ' . $us->__toString();
 			$query->innerJoin('r.ip', 'i')->innerJoin('i.host', 'h')->innerJoin('h.networkUsers', 'u');
 			$query->$where('u.id= :usuario')->setParameter('usuario', $filtros[5]);
 			$where='andWhere';
