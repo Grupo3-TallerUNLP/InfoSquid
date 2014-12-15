@@ -1,170 +1,84 @@
-Symfony Standard Edition
+InfoSquid
 ========================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony2
-application that you can use as the skeleton for your new applications.
+InfoSquid es una aplicación que permite generar informes a partir de la información recopilada en el log de acceso del proxy cache [Squid][1].
 
-This document contains information on how to download, install, and start
-using Symfony. For a more detailed explanation, see the [Installation][1]
-chapter of the Symfony Documentation.
+InfoSquid fue desarrollada por estudiantes como parte de un trabajo para la [FI][2] de la [UNLP][3].
 
-1) Installing the Standard Edition
+Este documento contiene información sobre cómo descargar e instalar la aplicación InfoSquid.
+
+1) Descargar el código fuente
 ----------------------------------
 
-When it comes to installing the Symfony Standard Edition, you have the
-following options.
+Para descargar el código, basta con clonar el repositorio de GitHub:
 
-### Use Composer (*recommended*)
+    git clone https://github.com/Grupo3-TallerUNLP/InfoSquid.git
 
-As Symfony uses [Composer][2] to manage its dependencies, the recommended way
-to create a new project is to use it.
+2) Instalar Software de terceros
+----------------------------------
 
-If you don't have Composer yet, download it following the instructions on
-http://getcomposer.org/ or just run the following command:
+InfoSquid utiliza [wkhtmltopdf][4] para exportar los informes a formato PDF.
+
+Instalar el resto de los vendors utilizando composer:
+
+    composer install --no-dev --optimize-autoloader
+
+De no tener composer, instalarlo con el comando:
 
     curl -s http://getcomposer.org/installer | php
 
-Then, use the `create-project` command to generate a new Symfony application:
 
-    php composer.phar create-project symfony/framework-standard-edition path/to/install
+3) Comprobar la configuración del sistema
+----------------------------------
 
-Composer will install Symfony and all its dependencies under the
-`path/to/install` directory.
-
-### Download an Archive File
-
-To quickly test Symfony, you can also download an [archive][3] of the Standard
-Edition and unpack it somewhere under your web server root directory.
-
-If you downloaded an archive "without vendors", you also need to install all
-the necessary dependencies. Download composer (see above) and run the
-following command:
-
-    php composer.phar install
-
-2) Checking your System Configuration
--------------------------------------
-
-Before starting coding, make sure that your local system is properly
-configured for Symfony.
-
-Execute the `check.php` script from the command line:
+Para comprobar que el sistema cumple con los requerimientos y recomendaciones básicas, ejecutar el comando:
 
     php app/check.php
 
-The script returns a status code of `0` if all mandatory requirements are met,
-`1` otherwise.
+4) Crear Base de Datos
+----------------------------------
 
-Access the `config.php` script from a browser:
+Para comenzar a usar el sistema, se deben crear la base de datos, el es esquema de datos y cargar los datos iniciales de la aplicación.
 
-    http://localhost/path/to/symfony/app/web/config.php
+Para crear la base de datos, ejecutar:
 
-If you get any warnings or recommendations, fix them before moving on.
+    php app/console doctrine:database:create
 
-3) Browsing the Demo Application
---------------------------------
+Para crear el esquema de datos:
 
-Congratulations! You're now ready to use Symfony.
+    php app/console doctrine:schema:create
 
-From the `config.php` page, click the "Bypass configuration and go to the
-Welcome page" link to load up your first Symfony page.
+Para cargar los datos iniciales:
 
-You can also use a web-based configurator by clicking on the "Configure your
-Symfony Application online" link of the `config.php` page.
+    php app/console doctrine:fixtures:load
 
-To see a real-live Symfony page in action, access the following page:
+Además de los datos necesarios para que funcione la aplicación correctamente, se creó un usuario administrador con nombre de usuario `admin` y contraseña `admin`
 
-    web/app_dev.php/demo/hello/Fabien
+5) Instalar los assets
+----------------------------------
 
-4) Getting started with Symfony
--------------------------------
+Para instalar los assets (imágenes, hojas de estilos, javascripts) que utiliza InfoSquid:
 
-This distribution is meant to be the starting point for your Symfony
-applications, but it also contains some sample code that you can learn from
-and play with.
+Limpiar la cache en entorno de producción con el comando:
 
-A great way to start learning Symfony is via the [Quick Tour][4], which will
-take you through all the basic features of Symfony2.
+    php app/console cache:clear --env=prod --no-debug
 
-Once you're feeling good, you can move onto reading the official
-[Symfony2 book][5].
+Instalar los assets:
 
-A default bundle, `AcmeDemoBundle`, shows you Symfony2 in action. After
-playing with it, you can remove it by following these steps:
+    php app/console assetic:dump --env=prod --no-debug
 
-  * delete the `src/Acme` directory;
 
-  * remove the routing entry referencing AcmeDemoBundle in `app/config/routing_dev.yml`;
+InfoSquid fue desarrollado utilizando [Symfony 2.3.18][5] cómo un proyecto para la Facultad de Informática de la Universidad Nacional de La Plata por
 
-  * remove the AcmeDemoBundle from the registered bundles in `app/AppKernel.php`;
+  * [Olsowy, Verena][6]
+  * [Rodriguez Almeyra, Elizabeth][7]
+  * [Tesone, Fernando][8]
 
-  * remove the `web/bundles/acmedemo` directory;
-
-  * empty the `security.yml` file or tweak the security configuration to fit
-    your needs.
-
-What's inside?
----------------
-
-The Symfony Standard Edition is configured with the following defaults:
-
-  * Twig is the only configured template engine;
-
-  * Doctrine ORM/DBAL is configured;
-
-  * Swiftmailer is configured;
-
-  * Annotations for everything are enabled.
-
-It comes pre-configured with the following bundles:
-
-  * **FrameworkBundle** - The core Symfony framework bundle
-
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
-
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
-
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * [**AsseticBundle**][12] - Adds support for Assetic, an asset processing
-    library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **AcmeDemoBundle** (in dev/test env) - A demo bundle with some example
-    code
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  http://symfony.com/doc/2.3/book/installation.html
-[2]:  http://getcomposer.org/
-[3]:  http://symfony.com/download
-[4]:  http://symfony.com/doc/2.3/quick_tour/the_big_picture.html
-[5]:  http://symfony.com/doc/2.3/index.html
-[6]:  http://symfony.com/doc/2.3/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  http://symfony.com/doc/2.3/book/doctrine.html
-[8]:  http://symfony.com/doc/2.3/book/templating.html
-[9]:  http://symfony.com/doc/2.3/book/security.html
-[10]: http://symfony.com/doc/2.3/cookbook/email.html
-[11]: http://symfony.com/doc/2.3/cookbook/logging/monolog.html
-[12]: http://symfony.com/doc/2.3/cookbook/assetic/asset_management.html
-[13]: http://symfony.com/doc/2.3/bundles/SensioGeneratorBundle/index.html
+[1]:  http://www.squid-cache.org/
+[2]:  http://www.info.unlp.edu.ar/
+[3]:  http://www.unlp.edu.ar/
+[4]:  http://wkhtmltopdf.org/
+[5]:  http://symfony.com/
+[6]:  http://github.com/verenaolsowy
+[7]:  http://github.com/elizabethrodriguezalmeyra
+[8]:  http://github.com/fenusa0
