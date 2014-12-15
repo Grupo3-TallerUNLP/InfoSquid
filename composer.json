@@ -6,6 +6,18 @@
     "autoload": {
         "psr-0": { "": "src/" }
     },
+	"repositories": [
+	{
+		"type": "package",
+		"package": {
+			"name": "jquery/jquery",
+			"version": "1.11.1",
+			"dist": {
+				"url": "http://code.jquery.com/jquery-1.11.1.js",
+				"type": "file"
+			}
+		}
+	}],
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.3.18",
@@ -23,6 +35,8 @@
         "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.0",
         "braincrafted/bootstrap-bundle": "~2.0",
+        "twbs/bootstrap": "~3.0.3",
+		"jquery/jquery": "1.11.*",
         "ob/highcharts-bundle": "~1.2",
         "knplabs/knp-snappy-bundle": "v1.2",
 		"doctrine/doctrine-fixtures-bundle": "2.2.*"
