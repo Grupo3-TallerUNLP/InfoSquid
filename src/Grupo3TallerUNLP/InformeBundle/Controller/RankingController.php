@@ -61,7 +61,7 @@ class RankingController extends Controller
 				if ($resultado['protocolo']){
 					$data[] = array($resultado['protocolo'].' ('.$resultado['cant'].')', (int)$resultado['cant']);
 				}else{
-					$data[] = array('Otros. cantidad: '.$resultado['cant'], (int)$resultado['cant']);
+					$data[] = array('Otros ( '.$resultado['cant'].')', (int)$resultado['cant']);
 				}
 			}
 		
