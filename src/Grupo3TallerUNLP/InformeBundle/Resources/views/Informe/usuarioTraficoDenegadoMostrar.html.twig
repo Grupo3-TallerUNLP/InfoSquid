@@ -2,8 +2,10 @@
 
 {% block javascripts %}
     {{ parent() }}
-   {% javascripts '@Grupo3TallerUNLPInformeBundle/Resources/public/*' %}
-    <script src="{{ asset_url }}"></script>
+    {% javascripts 
+		'@Grupo3TallerUNLPInformeBundle/Resources/public/highcharts.js'
+		'@Grupo3TallerUNLPInformeBundle/Resources/public/exporting.js' %}
+		<script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 		<script type="text/javascript">
 		{{ chart(chart) }}

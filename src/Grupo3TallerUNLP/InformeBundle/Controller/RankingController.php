@@ -30,21 +30,23 @@ class RankingController extends Controller
 	{
 		// Chart
 		$data = array();
+		$subindice = array();
 		
 			foreach ($resultados as $resultado){
 				$data[] = array($resultado['ip'], (int)$resultado['cantidad']);
+				$subindice[]= array($resultado['subindice']);
 			}
 		
 		$series = array(
 			array("type" => "column", "name"=>"Cantidad", "data" => $data)
 		);
-
+	
 		$ob = new Highchart();
 		$ob->chart->renderTo('linechart');  // The #id of the div where to render the chart
 		$ob->title->text($titulo);
 		$ob->xAxis->title(array('text'  => $subtitulo));
 		$ob->yAxis->title(array('text'  => "Cantidad"));
-		//$ob->yAxis->categories: []
+		$ob->xAxis->categories($subindice);
 		$ob->series($series);
 
 		return $ob;
@@ -57,9 +59,9 @@ class RankingController extends Controller
 		
 			foreach ($resultados as $resultado){
 				if ($resultado['protocolo']){
-					$data[] = array($resultado['protocolo'], (int)$resultado['cant']);
+					$data[] = array($resultado['protocolo'].'. cantidad:'.$resultado['cant'], (int)$resultado['cant']);
 				}else{
-					$data[] = array('Otros', (int)$resultado['cant']);
+					$data[] = array('Otros. cantidad: '.$resultado['cant'], (int)$resultado['cant']);
 				}
 			}
 		
@@ -82,7 +84,7 @@ class RankingController extends Controller
 		$data = array();
 		
 			foreach ($resultados as $resultado){
-				$data[] = array($resultado['sitio']->getNombre(), (int)$resultado['cantidad']);
+				$data[] = array($resultado['sitio']->getNombre().'. cantidad:'.$resultado['cantidad'] , (int)$resultado['cantidad']);
 			}
 		
 		$series = array(
@@ -396,6 +398,7 @@ class RankingController extends Controller
 				if($ip){
 					$datos[$ip->getId()] = array();
 					$datos[$ip->getId()]['cantidad'] = $resultado['cant'];
+					$datos[$ip->getId()]['subindice'] = $ip->__toString().' Cantidad:'.$resultado['cant'];
 					$datos[$ip->getId()]['ip'] = $ip->__toString();
 					if($host = $ip->getHost()){
 						$datos[$ip->getId()]['ip'] .= ' ('.$host->getDevice()->getName() . ') ';
@@ -558,6 +561,7 @@ class RankingController extends Controller
 				if($ip){
 					$datos[$ip->getId()] = array();
 					$datos[$ip->getId()]['cantidad'] = $resultado['cant'];
+					$datos[$ip->getId()]['subindice'] = $ip->__toString().' Cantidad:'.$resultado['cant'];
 					$datos[$ip->getId()]['ip'] = $ip->__toString();
 					if($host = $ip->getHost()){
 						$datos[$ip->getId()]['ip'] .= ' ('.$host->getDevice()->getName() . ') ';
@@ -576,7 +580,7 @@ class RankingController extends Controller
 			if($datos){	
 				$info = true;
 			}
-			$graficos = $this->chart($datos, 'Top N de usuarios con mas trafico', 'Usuarios');
+			$graficos = $this->chart($datos, 'Top N de usuarios con mas trafico denegado', 'Usuarios');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoDenegadoMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
