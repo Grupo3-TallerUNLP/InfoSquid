@@ -59,7 +59,7 @@ class RankingController extends Controller
 		
 			foreach ($resultados as $resultado){
 				if ($resultado['protocolo']){
-					$data[] = array($resultado['protocolo'].'. cantidad:'.$resultado['cant'], (int)$resultado['cant']);
+					$data[] = array($resultado['protocolo'].' ('.$resultado['cant'].')', (int)$resultado['cant']);
 				}else{
 					$data[] = array('Otros. cantidad: '.$resultado['cant'], (int)$resultado['cant']);
 				}
@@ -84,7 +84,7 @@ class RankingController extends Controller
 		$data = array();
 		
 			foreach ($resultados as $resultado){
-				$data[] = array($resultado['sitio']->getNombre().'. cantidad:'.$resultado['cantidad'] , (int)$resultado['cantidad']);
+				$data[] = array($resultado['sitio']->getNombre().' ('.$resultado['cantidad'] .')' , (int)$resultado['cantidad']);
 			}
 		
 		$series = array(
