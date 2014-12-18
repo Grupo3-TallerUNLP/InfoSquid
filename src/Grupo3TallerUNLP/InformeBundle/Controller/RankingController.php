@@ -26,7 +26,7 @@ class RankingController extends Controller
 		));
 	}
 	
-	public function chart($resultados, $titulo, $subtitulo)
+	public function chart($resultados, $titulo)
 	{
 		// Chart
 		$data = array();
@@ -34,18 +34,17 @@ class RankingController extends Controller
 		
 			foreach ($resultados as $resultado){
 				$data[] = array($resultado['ip'], (int)$resultado['cantidad']);
-				$subindice[]= array($resultado['subindice']);
+				$subindice[]= array($resultado['ip'], 'Total: '.(int)$resultado['cantidad'] );
 			}
 		
 		$series = array(
-			array("type" => "column", "name"=>"Cantidad", "data" => $data)
+			array("type" => "column", "name"=>"Resultados", "data" => $data)
 		);
 	
 		$ob = new Highchart();
 		$ob->chart->renderTo('linechart');  // The #id of the div where to render the chart
 		$ob->title->text($titulo);
-		$ob->xAxis->title(array('text'  => $subtitulo));
-		$ob->yAxis->title(array('text'  => "Cantidad"));
+		$ob->yAxis->title(array('text'  => "Cantidad de Request"));
 		$ob->xAxis->categories($subindice);
 		$ob->series($series);
 
@@ -84,7 +83,7 @@ class RankingController extends Controller
 		$data = array();
 		
 			foreach ($resultados as $resultado){
-				$data[] = array($resultado['sitio']->getNombre().' ('.$resultado['cantidad'] .')' , (int)$resultado['cantidad']);
+				$data[] = array($resultado['sitio']->getNombre().' ('.$resultado['cantidad'] .')'. ' URL: ' .$resultado['url'] , (int)$resultado['cantidad']);
 			}
 		
 		$series = array(
@@ -212,23 +211,41 @@ class RankingController extends Controller
 			if(in_array('grupo', $validos)){
 				$grupo = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
 				$informe[] ='Grupo: ' . $grupo->getNombre();
-				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
+				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->createQueryBuilder('s')
+							->where('s.grupo = :grupo')
+							->setParameter('grupo', $grupo)
+							->orderBy('s.url' , 'DESC')
+							->getQuery()->getResult();
 			}
 			if (!isset ($sitios)){
-				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findAll();
+				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->createQueryBuilder('s')
+							->orderBy('s.url' , 'DESC')
+							->getQuery()->getResult();
 			}
 			$like = array();
 			$datos = array();
-				
+			$ids = array(0);
 			foreach ($sitios as $sitio) {
-				$q = $query;
-				$result = $q->select('COUNT(r.id) AS cant')->$where(' r.uRL LIKE :sitio ')->setParameter('sitio', '%'.$sitio->getUrl().'%')->getQuery()->getOneOrNullResult();	
-				if($result['cant']> 0){
+				$q = clone $query;
+				if(substr($sitio->getUrl(), 0, 1) == '*'){
+					$url = substr($sitio->getUrl(), 1);
+					$result = $q->select('r.id')->$where(' r.uRL LIKE :sitio')->andWhere($q->expr()->notIn('r.id', $ids))
+								->setParameter('sitio', '%'.$url.'%')
+								->getQuery()->getResult();	
+				}else{
+					$result = $q->select('r.id')->$where('r.uRL LIKE :sitio1 or r.uRL LIKE :sitio2 or r.uRL LIKE :sitio3')->andWhere($q->expr()->notIn('r.id', $ids))
+								->setParameter('sitio1', '%'.'www.'.$sitio->getUrl().'%') 
+								->setParameter('sitio2', '%'.'//'.$sitio->getUrl().'%')
+								->setParameter('sitio3', $sitio->getUrl().'%')
+								->getQuery()->getResult();
+				}
+				if(count($result)> 0){
+					$ids = array_merge($ids, array_map('current',$result));
 					$datos[$sitio->getId()] = array();
 					$datos[$sitio->getId()]['sitio']= $sitio;
-					$datos[$sitio->getId()]['cantidad'] = $result['cant'];
+					$datos[$sitio->getId()]['cantidad'] =count($result);
+					$datos[$sitio->getId()]['url'] = $sitio->getUrl();
 				}
-				
 			}	
 			uasort ($datos, function ($item1, $item2){
 				return ($item1['cantidad']<$item2['cantidad'])?-1:1;
@@ -238,7 +255,7 @@ class RankingController extends Controller
 			if($datos){	
 				$info = true;
 			}
-			$graficos = $this->chartPieSitios($datos, 'Top N de sitios mas visitados', 'Sitios');
+			$graficos = $this->chartPieSitios($datos, 'Top ' . $filtros['cantidad'] . ' de sitios mas visitados', 'Sitios');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:sitiosMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
@@ -376,15 +393,24 @@ class RankingController extends Controller
 			}
 			if(in_array('grupo', $validos)){
 				$grupo = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
-				$informe[] ='Grupo: ' . $grupo->getNombre();
-				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
-				$like = array();
-				foreach ($sitios as $sitio) {
-					$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);				
+				if(count($sitios)>0){
+					$informe[] ='Grupo: ' . $grupo->getNombre();
+					$like = array();
+					foreach ($sitios as $sitio) {
+						if(substr($sitio->getUrl(), 0, 1) == '*'){
+							$url = substr($sitio->getUrl(), 1);
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$url.'%'));
+						}else{
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'www.'.$sitio->getUrl().'%'));
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'//'.$sitio->getUrl().'%'));
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal($sitio->getUrl().'%'));
+						}
+					}
+					$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
+					$where = 'andWhere';
 				}
-				$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
-				$where = 'andWhere';
-			}
+			}	
 			if($ok){
 				$resultados = $query->select('i.id,  COUNT(r.id) AS cant')->addOrderBy('cant', 'DESC')->groupBy('i.id')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
 			}else{
@@ -405,9 +431,9 @@ class RankingController extends Controller
 						if($usuarios = $host->getNetworkUsers()){
 							$datos[$ip->getId()]['ip'] .= 'Usuarios: ';
 							foreach($usuarios as $user){
-								$datos[$ip->getId()]['ip'] .= ' ' .$user->__toString() .', ';
+								$datos[$ip->getId()]['ip'] .= ' ' .$user->__toString() .' - ';
 							}
-							$datos[$ip->getId()]['ip'] = substr($datos[$ip->getId()]['ip'], 0, -2);
+							$datos[$ip->getId()]['ip'] = substr($datos[$ip->getId()]['ip'], 0, -3);
 						}
 					}
 				}
@@ -417,7 +443,7 @@ class RankingController extends Controller
 			if($datos){	
 				$info = true;
 			}
-			$graficos = $this->chart($datos, 'Top N de usuarios con mas trafico', 'Usuarios');
+			$graficos = $this->chart($datos, 'Top ' . $filtros['cantidad'] . ' de usuarios con mas trafico');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
@@ -568,9 +594,9 @@ class RankingController extends Controller
 						if($usuarios = $host->getNetworkUsers()){
 							$datos[$ip->getId()]['ip'] .= 'Usuarios: ';
 							foreach($usuarios as $user){
-								$datos[$ip->getId()]['ip'] .= ' ' .$user->__toString() .', ';
+								$datos[$ip->getId()]['ip'] .= ' ' .$user->__toString() .' - ';
 							}
-							$datos[$ip->getId()]['ip'] = substr($datos[$ip->getId()]['ip'], 0, -2);
+							$datos[$ip->getId()]['ip'] = substr($datos[$ip->getId()]['ip'], 0, -3);
 						}
 					}
 				}
@@ -580,7 +606,7 @@ class RankingController extends Controller
 			if($datos){	
 				$info = true;
 			}
-			$graficos = $this->chart($datos, 'Top N de usuarios con mas trafico denegado', 'Usuarios');
+			$graficos = $this->chart($datos, 'Top ' . $filtros['cantidad']. ' de usuarios con mas trafico denegado');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:usuarioTraficoDenegadoMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,
@@ -715,22 +741,31 @@ class RankingController extends Controller
 			}
 			if(in_array('grupo', $validos)){
 				$grupo = $em->getRepository('Grupo3TallerUNLPGrupoBundle:Grupo')->find($filtros['grupo']);
-				$informe[] ='Grupo: ' . $grupo->getNombre();
-				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);
-				$like = array();
-				foreach ($sitios as $sitio) {
-					$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+				$sitios = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->findByGrupo($filtros['grupo']);				
+				if(count($sitios)>0){
+					$informe[] ='Grupo: ' . $grupo->getNombre();
+					$like = array();
+					foreach ($sitios as $sitio) {
+						if(substr($sitio->getUrl(), 0, 1) == '*'){
+							$url = substr($sitio->getUrl(), 1);
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$url.'%'));
+						}else{
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'www.'.$sitio->getUrl().'%'));
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'//'.$sitio->getUrl().'%'));
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal($sitio->getUrl().'%'));
+						}
+					}
+					$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
+					$where = 'andWhere';
 				}
-				$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
-				$where = 'andWhere';
-			}
+			}	
 			
 			$resultados = $query->select('r.protocolo, COUNT(r.id) AS cant')->addOrderBy('cant', 'DESC')->groupBy('r.protocolo')->setMaxResults($filtros['cantidad'])->getQuery()->getResult();
 			$info = false;
 			if($resultados){	
 				$info = true;
 			}
-			$graficos = $this->chartPie($resultados, 'Top N de Protocolos', 'Protocolos');
+			$graficos = $this->chartPie($resultados, 'Top ' . $filtros['cantidad'] . ' de Protocolos', 'Protocolos');
 			return $this->render('Grupo3TallerUNLPInformeBundle:Informe:protocoloMostrar.html.twig',array(
 			'chart' => $graficos,
 			'filtros' => $informe,

@@ -271,7 +271,14 @@ class InformeController extends Controller
 				$informe[] ='Grupo: ' . $gr->getNombre();
 				$like = array();
 				foreach ($sitios as $sitio) {
-					$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+					if(substr($sitio->getUrl(), 0, 1) == '*'){
+						$url = substr($sitio->getUrl(), 1);
+						$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$url.'%'));
+					}else{
+						$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'www.'.$sitio->getUrl().'%'));
+						$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'//'.$sitio->getUrl().'%'));
+						$like[] = $query->expr()->like('r.uRL', $query->expr()->literal($sitio->getUrl().'%'));
+					}
 				}
 				$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
 				$where = 'andWhere';
@@ -279,8 +286,17 @@ class InformeController extends Controller
 		}elseif(array_key_exists(10, $filtros)){
 			$sitio = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($filtros[10]);
 			if($sitio){
-				$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$sitio->getUrl().'%');
-				$where = 'andWhere';
+				if(substr($sitio->getUrl(), 0, 1) == '*'){
+					$url = substr($sitio->getUrl(), 1);
+					$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$url.'%');
+					$where = 'andWhere';
+				}else{
+					$query->$where('r.uRL LIKE :sitio or r.uRL LIKE :sitio2 or r.uRL LIKE :sitio3')
+							->setParameter('sitio', '%'.'www.'.$sitio->getUrl().'%') 
+							->setParameter('sitio2', '%'.'//'.$sitio->getUrl().'%')
+							->setParameter('sitio3', $sitio->getUrl().'%');
+					$where = 'andWhere';
+				}
 			}
 			$informe[] ='Sitio: ' . $sitio->getNombre();
 		}
@@ -442,7 +458,14 @@ class InformeController extends Controller
 					$informe[] ='Grupo: ' . $gr->getNombre();
 					$like = array();
 					foreach ($sitios as $sitio) {
-						$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$sitio->getUrl().'%'));
+						if(substr($sitio->getUrl(), 0, 1) == '*'){
+							$url = substr($sitio->getUrl(), 1);
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.$url.'%'));
+						}else{
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'www.'.$sitio->getUrl().'%'));
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal('%'.'//'.$sitio->getUrl().'%'));
+							$like[] = $query->expr()->like('r.uRL', $query->expr()->literal($sitio->getUrl().'%'));
+						}
 					}
 					$query->$where(call_user_func_array(array($query->expr(), 'orX'), $like));
 					$where = 'andWhere';
@@ -450,8 +473,17 @@ class InformeController extends Controller
 			}elseif(in_array('sitio', $validos)){
 				$sitio = $em->getRepository('Grupo3TallerUNLPSitioBundle:Sitio')->find($filtros['sitio']);
 				if($sitio){
-					$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$sitio->getUrl().'%');
-					$where = 'andWhere';
+					if(substr($sitio->getUrl(), 0, 1) == '*'){
+						$url = substr($sitio->getUrl(), 1);
+						$query->$where('r.uRL LIKE :sitio')->setParameter('sitio', '%'.$url.'%');
+						$where = 'andWhere';
+					}else{
+						$query->$where('r.uRL LIKE :sitio or r.uRL LIKE :sitio2 or r.uRL LIKE :sitio3')
+								->setParameter('sitio', '%'.'www.'.$sitio->getUrl().'%') 
+								->setParameter('sitio2', '%'.'//'.$sitio->getUrl().'%')
+								->setParameter('sitio3', $sitio->getUrl().'%');
+						$where = 'andWhere';
+					}
 				}
 				$informe[] ='Sitio: ' . $sitio->getNombre();
 			}
