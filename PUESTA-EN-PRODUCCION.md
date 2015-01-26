@@ -30,9 +30,13 @@ Para realizar informes, InfoSquid debe primero procesar las requests del log de 
 InfoSquid lee el archivo de logs desde la última linea hacia arriba, por lo que si se interrumpe la ejecución de esta tarea, se deben eliminar las requests (dadas de alta en la ejecución) de la base de datos de forma manual (el campo fechaAlta contiene la fecha y hora de alta en la base de datos).
 Cuando termina de procesar el archivo de logs, InfoSquid busca el archivo más reciente dentro del directorio definido en la configuración y lo procesa de la misma forma que el archivo de logs.
 
+Nota: las URLs se truncarán a 255 caracteres.
+
 El comando a ejecutar es
 
-    php app/console infosquid:altalog
+    php app/console infosquid:altalog --no-debug
+	
+Es importante el parámetro `--no-debug` para evitar errores de consumo de memoria.
 
 ###b) Mover requests antiguos a otra tabla
 

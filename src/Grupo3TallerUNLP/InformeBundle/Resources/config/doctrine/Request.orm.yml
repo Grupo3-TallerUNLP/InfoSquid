@@ -2,6 +2,17 @@ Grupo3TallerUNLP\InformeBundle\Entity\Request:
     type: entity
     table: null
     repositoryClass: Grupo3TallerUNLP\InformeBundle\Entity\RequestRepository
+    indexes:
+        fecha_index:
+            columns: [ fecha ]
+        hora_index:
+            columns: [ hora ]
+        datetime_index:
+            columns: [ dateTime ]
+        protocolo_index:
+            columns: [ protocolo ]
+        denegado_index:
+            columns: [ denegado ]
     id:
         id:
             type: integer

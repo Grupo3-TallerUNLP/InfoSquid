@@ -55,7 +55,7 @@
 			$request->setDateTime($matches[1][0]);
 			$request->setHora($datetime);
 			$request->setFecha($datetime);
-			$request->setURL($matches[8][0]);
+			$request->setURL(substr($matches[8][0], 0, 255));
 			if(preg_match('/DENIED/i', $matches[4][0])){
 				$request->setDenegado(True);
 			}else{
@@ -95,7 +95,7 @@
 		}
 		
 		protected function altaSplFileObject(\SplFileObject $log, Request $ultimaRequest=Null, OutputInterface $output, &$inserts){
-			$em = $this->getContainer()->get('doctrine')->getEntityManager();
+			$em = $this->getContainer()->get('doctrine')->getManager();
 			$batch = 0;
 			while (false !== $log->current()){
 				$log->seek($log->key()+10000);
@@ -109,24 +109,26 @@
 			}
 			$readfile = false !== $log->current();
 			while ($readfile){
-				$readfile = $this->altaLinea($log->current(), $ultimaRequest, $output);			
-				if ($batch++ == 20) {
-					$inserts += $batch;
-					$batch = 0;
-					$em->flush();
-				}
-				if($log->key() > 0){
-					$log->seek($log->key()-1);
-					$readfile = false !== $log->current();
-				}
-				else{
-					$readfile = false;
+				$readfile = $this->altaLinea($log->current(), $ultimaRequest, $output);		
+				if($readfile){	
+					if (++$batch == 100) {
+						$inserts += $batch;
+						$batch = 0;
+						$em->flush();
+						$em->clear();
+					}
+					if($log->key() > 0){
+						$log->seek($log->key()-1);
+						$readfile = false !== $log->current();
+					}
+					else{
+						$readfile = false;
+					}
 				}
 			}
-			if ($batch > 0) {
-				$inserts += $batch;
-				$em->flush();
-			}
+			$inserts += $batch;
+			$em->flush();
+			$em->clear();
 		}
 		
 		protected function execute(InputInterface $input, OutputInterface $output){
